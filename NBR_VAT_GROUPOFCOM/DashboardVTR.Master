@@ -1,0 +1,977 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="DashboardVTR.Master.cs" Inherits="NBR_VAT_GROUPOFCOM.DashboardVTR" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<!DOCTYPE html>
+<html>
+
+<head runat="server">
+
+
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--favicon-->
+    <link rel="icon" href="assets/images/favicon-32x32.png" type="image/png" />
+    <!--plugins-->
+
+    <title>Test</title>
+
+ 
+    <style>
+        .panel-primary > .panel-heading {
+            color: cornflowerblue !important;
+            background-color: #f5f5f5 !important;
+            border-color: cornflowerblue !important;
+        }
+
+        .list-group-item.active, .list-group-item.active:hover, .list-group-item.active:focus {
+            z-index: 2;
+            color: white !important;
+            background-color: cornflowerblue !important;
+            border-color: cornflowerblue !important;
+        }
+    </style>
+  
+
+</head>
+
+<body>
+    <!--------------------------------------------- Css --------------------------------------------->
+
+        <link rel="stylesheet" type="text/css" href='<%= ResolveClientUrl("~/assets/plugins/vectormap/jquery-jvectormap-2.0.2.css") %>'>
+    <link rel="stylesheet" type="text/css" href='<%= ResolveClientUrl("~/assets/plugins/simplebar/css/simplebar.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/plugins/metismenu/css/metisMenu.min.css") %>' />
+
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/pace.min.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/js/pace.min.js") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/plugins/perfect-scrollbar/css/perfect-scrollbar.css") %>' />
+
+
+<%--    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/bootstrap.min.css") %>'>--%>
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/app.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/icons.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/dark-theme.css") %>' />
+
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/semi-dark.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/semi-dark.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/header-colors.css") %>' />
+
+          
+           <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/sweetalert2.all.min.js") %>'></script>
+
+      
+
+<%--    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/js/jquery.min.js") %>'></script>--%>
+
+     <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>'></script>
+      <%-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>--%>
+
+
+          <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/Select2JS/select2.full.min.js") %>'></script>
+
+
+       <script  src="../../Scripts/bootstrap/bootstrap.js"></script>
+
+
+
+ <%--   <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>' />--%>
+
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/assets/css/header-colors.css") %>' />
+ <%--   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />--%>
+
+       
+    
+  
+
+  
+
+        <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/bootstrap/bootstrap.css") %>'>
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/fontawesome/font-awesome.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/str.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Scripts/select2.min.css") %>' />
+
+
+
+       
+        <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/Main.css") %>' />
+<%--            <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/bootstrap/bootstrap.css") %>' />--%>
+            <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/str.css") %>' />
+            <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/panel.css") %>' />
+
+
+    <script>
+
+        function successalert(message) {
+            Swal.fire(
+                        'Success!',
+                        message,
+                        'success'
+                      )
+        }
+
+        function warningalert(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+                footer: ''
+            })
+        }
+
+        function erroralert(message) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: message,
+                footer: ''
+            })
+        }
+
+
+        // successalert();
+    </script>
+
+ 
+
+      <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+
+
+
+    <style>
+        .header {
+            min-height: 80px;
+        }
+        /* Affix */
+        .affix {
+            top: 0;
+            width: 100%;
+        }
+        /* menu */
+        .navbar-wrpper {
+            margin-bottom: 20px;
+        }
+
+        .active-menu {
+            border-bottom: 2px solid #337AB7;
+        }
+
+            .active-menu a {
+                color: #337AB7 !important;
+            }
+
+        .nav li a:hover {
+            background: #ddd !important;
+        }
+
+        .col-sm-5 {
+            padding-left: 0 !important;
+        }
+
+        .col-sm-7 {
+            padding-left: 0 !important;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+            Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(PageLoaded);
+        });
+        function PageLoaded(sender, args) {
+            $(".select2").select2();
+        }
+    </script>
+    <script type="text/javascript">
+        function pageload(scrollY) {
+            if (!isNaN(scrollY)) {
+                setTimeout(function () {
+                    window.scrollTo(0, scrollY);
+                    //console.log('pageload() called');
+                }, 200);
+            }
+            //console.log('pageload() called');
+        }
+
+        window.onscroll = function () {
+            var scrollY = document.body.scrollTop;
+            if (scrollY == 0) {
+                if (window.pageYOffset) {
+                    scrollY = window.pageYOffset;
+                }
+                else {
+                    scrollY = (document.body.parentElement) ? document.body.parentElement.scrollTop : 0;
+                }
+            }
+            if (scrollY > 0) {
+                var input = document.getElementById("scrollY");
+                if (input == null) {
+                    input = document.createElement("input");
+                    input.setAttribute("type", "hidden");
+                    input.setAttribute("id", "scrollY");
+                    input.setAttribute("name", "scrollY");
+                    document.forms[0].appendChild(input);
+                }
+                input.value = scrollY;
+            }
+        };
+    </script>
+    <!----------------------------------------- End Css --------------------------------------------->
+    <div class="wrapper">
+        <!--sidebar wrapper -->
+        <div class="sidebar-wrapper" data-simplebar="true">
+            <div class="sidebar-header">
+                <div>
+                   <img style="height:50px; width:220px;" src="<%= this.ResolveClientUrl("~/assets/images/logo-icon.png") %>" class="logo-icon" alt="logo icon">
+
+
+               
+
+                </div>
+               
+                <div class="toggle-icon ms-auto">
+                    <i class='bx bx-arrow-to-left'></i>
+                </div>
+            </div>
+            <!--navigation-->
+            <ul class="metismenu" id="menu">
+
+
+                 <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon">
+                            <i class='bx bx-home-circle'></i>
+                        </div>
+                        <div class="menu-title">Product Settings</div>
+                    </a>
+                    <ul>
+                        <li><a href="/UI/Item/GiftItemSetups.aspx"><i class="bx bx-right-arrow-alt"></i> Gift Item Setup</a>
+                        </li>
+                        <li><a href="/UI/Item/ItemOpeningInfo.aspx"><i class="bx bx-right-arrow-alt"></i>Item Opening Balance</a>
+                        </li>
+                       
+                 <li><a href="/UI/Item/UnitConversion.aspx"><i class="bx bx-right-arrow-alt"></i>Unit Conversion</a>
+                        </li>
+                         
+   <li><a href="/UI/Item/SetItemOrders.aspx"><i class="bx bx-right-arrow-alt"></i>Set Item Orders</a>
+                        </li>
+
+                                                 
+   <li><a href="/UI/Item/SetPropertyNew.aspx"><i class="bx bx-right-arrow-alt"></i>Set Item Property</a>
+                        </li>
+
+                          <li><a href="/UI/Item/ItemSetSetups.aspx"><i class="bx bx-right-arrow-alt"></i>Set Item Setup</a>
+                        </li>
+
+                         <li><a href="/UI/Others/Disposes.aspx"><i class="bx bx-right-arrow-alt"></i>অব্যবহৃত বা ব্যবহার অনুপযোগী উপকরণ (মূসক-১৮.৭ & ১৮.৮)</a>
+                        </li>
+                               
+
+
+                    </ul>
+                </li>
+
+
+
+                 <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon">
+                            <i class='bx bx-home-circle'></i>
+                        </div>
+                        <div class="menu-title">Settings</div>
+                    </a>
+                    <ul>
+                        <li><a href="/UI/Others/PartySetup.aspx"><i class="bx bx-right-arrow-alt"></i> Party Setup</a>
+                        </li>
+                        <li><a href="/UI/UserSetup/AddNewUser.aspx"><i class="bx bx-right-arrow-alt"></i> User Setup</a>
+                        </li>
+
+                         <li><a href="/UI/UserSetup/UserPermissionSetup.aspx"><i class="bx bx-right-arrow-alt"></i> User Role Permission</a>
+                        </li>
+
+                        <li><a href="/UI/Admin/DepartmentSetup.aspx"><i class="bx bx-right-arrow-alt"></i> Department Setup</a>
+                        </li>
+
+                        <li><a href="/UI/Admin/DesignationSetup.aspx"><i class="bx bx-right-arrow-alt"></i> Designation Setup</a>
+                        </li>
+
+                     
+                        
+
+                         <li><a href="/UI/Item/SetItems.aspx"><i class="bx bx-right-arrow-alt"></i> Goods/Service Setup</a>
+                        </li>
+                            <li><a href="/UI/Admin/BaseDataSetup.aspx"><i class="bx bx-right-arrow-alt"></i> Base Data Setup</a>
+                        </li>
+                       
+
+                            <li><a href="/UI/Admin/MasterDataSetup.aspx"><i class="bx bx-right-arrow-alt"></i> Master Data Setup</a>
+                        </li>
+                         <li><a href="/UI/Admin/ClosingVatSd.aspx"><i class="bx bx-right-arrow-alt"></i> Closing Vat SD</a>
+                        </li>
+
+
+                          <li><a href="/UI/Admin/PartyBalanceSetup.aspx"><i class="bx bx-right-arrow-alt"></i> Party Balance Setup</a>
+                        </li>
+
+                            <li><a href="/UI/Admin/Commissionerates.aspx"><i class="bx bx-right-arrow-alt"></i> Commissionerate Setup</a>
+                        </li>
+
+                            <li><a href="/UI/Admin/Vat_Division_News.aspx"><i class="bx bx-right-arrow-alt"></i> Vat Division Setup</a>
+                        </li>
+
+                            <li><a href="/UI/Admin/Vat_Areas.aspx"><i class="bx bx-right-arrow-alt"></i> Vat Circle Setup</a>
+                        </li>
+
+
+                           <li><a href="/UI/Admin/Bank_Setups.aspx"><i class="bx bx-right-arrow-alt"></i> Bank Setup</a>
+                        </li>
+
+                          <li><a href="/UI/Admin/Bank_Branch_Setups.aspx"><i class="bx bx-right-arrow-alt"></i> Bank Branch Setup</a>
+                        </li>
+
+                          <li><a href="/UI/Admin/Add_Org_Bank_Account.aspx"><i class="bx bx-right-arrow-alt"></i> Bank Organization Setup</a>
+                        </li>
+
+
+
+                        <li><a href="/UI/Admin/Vat_Circle_News.aspx"><i class="bx bx-right-arrow-alt"></i> Vat Areas Setup</a>
+                        </li>
+
+                         <li><a href="/UI/Item/Item_Tax_Values_Setup.aspx"><i class="bx bx-right-arrow-alt"></i> Tax Rate Setup</a>
+                        </li>
+                        <li><a href="/UI/Item/PriceDeclaration.aspx"><i class="bx bx-right-arrow-alt"></i> (Input-Output Coefficient) ঘোষণা (৪.৩)</a>
+                        </li>
+
+                         <li><a href="/UI/Admin/ChallanSetup.aspx"><i class="bx bx-right-arrow-alt"></i> Challan Book Setup</a>
+                        </li>
+
+                        
+
+                       
+                         <li><a href="/UI/Item/OtherPrincipalAndValueAdditionSetups.aspx"><i class="bx bx-right-arrow-alt"></i> (Input-Output Coefficient) Setup</a>
+                        </li>
+                       
+                        
+
+
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon">
+                            <i class='bx bx-home-circle'></i>
+                        </div>
+                        <div class="menu-title">VAT Operation</div>
+                    </a>
+                    <ul>
+                        <li><a href="/UI/Purchase/LocalPurchase.aspx"><i class="bx bx-right-arrow-alt"></i> ক্রয় চালানপত্র</a>
+                        </li>
+                        <li><a href="/UI/Purchase/BillOfEntry_6.3s.aspx"><i class="bx bx-right-arrow-alt"></i>আমদানি চালানপত্র</a>
+                        </li>
+                       
+                         
+
+                         <li><a href="/UI/Admin/VDSIssue.aspx"><i class="bx bx-right-arrow-alt"></i>  উৎসে কর কর্তন সনদ পত্র (মূসক-৬.৬)</a>
+                        </li>
+
+                           <li><a href="/UI/Admin/CreditNote_6.7s.aspx"><i class="bx bx-right-arrow-alt"></i>  ক্রেডিট নোট (মূসক-৬.৭)</a>
+                        </li>
+
+                           <li><a href="/UI/Admin/CreditNote_ExtensionDeduct.aspx"><i class="bx bx-right-arrow-alt"></i>  হ্রাসকারী সমন্বয়</a>
+                        </li>
+                           <li><a href="/UI/Admin/DebitNote_6.8s.aspx""><i class="bx bx-right-arrow-alt"></i>  ডেবিট নোট (মূসক-৬.৮)</a>
+                        </li>
+                           <li><a href="/UI/Admin/DebitNote_ExtensionIncrease.aspx"><i class="bx bx-right-arrow-alt"></i>  বৃদ্ধিকারী সমন্বয়</a>     </li>
+                        <li><a href="/UI/Admin/TreasuryChallan_6s.aspx"><i class="bx bx-right-arrow-alt"></i>   চালান ফরম (টি.আর. ফর্ম নং-৬)</a>     </li>
+                   
+                        <li><a href="/Reports/SourceTaxDedutForm.aspx"><i class="bx bx-right-arrow-alt"></i> Receive/উৎসে কর কর্তন সনদপত্র</a>
+                      </li>
+
+                          <li><a href="/UI/Admin/ContractualProduction_6.4s.aspx"><i class="bx bx-right-arrow-alt"></i> Issue / চুক্তিভিত্তিক উৎপাদনের চালানপত্র (মূসক-৬.৪)</a>
+                      </li>
+                           <li><a href="/UI/Admin/ContractualProduction_Receive_6.4s.aspx"><i class="bx bx-right-arrow-alt"></i> Receive / চুক্তিভিত্তিক উৎপাদনের চালানপত্র (মূসক-৬.৪)</a>
+                      </li>
+
+                          <li><a href="/UI/Admin/Own_Production_6.4s.aspx"><i class="bx bx-right-arrow-alt"></i> Issue / উৎপাদনের চালানপত্র</a>
+                      </li>
+
+                         <li><a href="/UI/Admin/Own_Production_Receive6.4s.aspx"><i class="bx bx-right-arrow-alt"></i> Receive /উৎপাদনের চালানপত্র</a>
+                      </li>
+
+                        <li><a href="/UI/Admin/WasteManagements.aspx"><i class="bx bx-right-arrow-alt"></i>Waste Management</a>
+                      </li>
+
+                          <li><a href="/UI/Admin/Band_roll_requisition_forms.aspx"><i class="bx bx-right-arrow-alt"></i>Bandroll Requisition Form</a>
+                      </li>
+
+                         <li><a href="/UI/Admin/Bandrollrequisition_receives.aspx"><i class="bx bx-right-arrow-alt"></i>Bandroll Requisition Receive Form</a>
+                      </li>
+
+                         <li><a href="/UI/Sale/SaleChallan_11s.aspx"><i class="bx bx-right-arrow-alt"></i>Sale Challan / বিক্রয় চালানপত্র (মূসক-৬.৩)</a>
+                      </li>
+
+                          <li><a href="/UI/Sale/ConsumableItemSales.aspx"><i class="bx bx-right-arrow-alt"></i>Consumable Item Uses</a>
+                      </li>
+
+                          <li><a href="/UI/Admin/ProductsTransfer_6.5s.aspx"><i class="bx bx-right-arrow-alt"></i>Issue / কেন্দ্রীয় নিবন্ধিত প্রতিষ্ঠানের পণ্য স্থানান্তর চালানপত্র (মুসক-৬.৫)</a>
+                      </li>
+
+                       <%--    <li><a href="/UI/Admin/ProductsTransfer_6.5s.aspx"><i class="bx bx-right-arrow-alt"></i>Receive / কেন্দ্রীয় নিবন্ধিত প্রতিষ্ঠানের পণ্য স্থানান্তর চালানপত্র (মুসক-৬.৫)</a>
+                      </li>--%>
+
+                            <li><a href="/UI/Admin/ProductsTransfer_receive_6.5s.aspx"><i class="bx bx-right-arrow-alt"></i>Receive / কেন্দ্রীয় নিবন্ধিত প্রতিষ্ঠানের পণ্য স্থানান্তর চালানপত্র (মুসক-৬.৫)</a>
+                      </li>
+
+                       
+                               
+
+
+                    </ul>
+                </li>
+
+
+                 <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon">
+                            <i class='bx bx-home-circle'></i>
+                        </div>
+                        <div class="menu-title">Vat Report</div>
+                    </a>
+                    <ul>
+                        <li><a href="/Reports/VATReturnMushok19sR.aspx"><i class="bx bx-right-arrow-alt"></i>  মূল্য সংযোজন কর দাখিলপত্র (মূসক-৯.১)</a>
+                        </li>
+                        <li><a href="/Reports/treasuryChallan_forms.aspx"><i class="bx bx-right-arrow-alt"></i> টি. আর. ফরম-৬</a>
+                        </li>
+                      <li><a href="/Reports/Challan_Form11s.aspx"><i class="bx bx-right-arrow-alt"></i>  চালানপত্র (মূসক-৬.৩)</a>
+                        </li>
+                        <li><a href="/Reports/AboveTwoLacRep_6.10s.aspx"><i class="bx bx-right-arrow-alt"></i> দুই লাখ টাকার বেশি মূল্য মানের ক্রয় বিক্রয় চালানপত্রের তথ্য (মূসক-৬.১০)</a>
+                        </li>
+                        <li><a href="/Reports/DebitNoteReport.aspx"><i class="bx bx-right-arrow-alt"></i> ডেবিট নোট</a>
+                        </li>
+
+                           <li><a href="/Reports/CreditNoteReport.aspx"><i class="bx bx-right-arrow-alt"></i>  ক্রেডিট নোট</a>
+                        </li>
+
+
+                           <li><a href="/Reports/Mushok4_3Report.aspx"><i class="bx bx-right-arrow-alt"></i>  উপকরণ - উৎপাদ সহগ (Input-Output Coefficient) ঘোষণা (৪.৩)</a>
+                        </li>
+
+                           <li><a href="/UI/Admin/VDSIssue.aspx"><i class="bx bx-right-arrow-alt"></i>  উৎসে কর কর্তন সনদ পত্র (মূসক-৬.৬)</a>
+                      </li>
+
+                        <li><a href="/UI/Admin/VDS_Monitorings.aspx"><i class="bx bx-right-arrow-alt"></i>  VDS Monitoring Report</a>
+                      </li>
+                        <li><a href="/UI/Admin/Rebate_Monitorings.aspx"><i class="bx bx-right-arrow-alt"></i>  Rebate Monitoring Report</a>
+                      </li>
+                         
+                        <li><a href="/Reports/PurchaseAccountSixOneMushak.aspx"><i class="bx bx-right-arrow-alt"></i>    ক্রয় হিসাব পুস্তক (মূসক-৬.১) </a>
+
+                      </li>
+
+                         <li><a href="/Reports/SaleAccountBookSIXTwo.aspx"><i class="bx bx-right-arrow-alt"></i>    বিক্রয় হিসাব পুস্তক (মূসক-৬.২)</a>
+
+                      </li>
+
+                        
+                           <li><a href="/Reports/musuk_6_2_1_s.aspx"><i class="bx bx-right-arrow-alt"></i>   ক্রয় ও বিক্রয় হিসাব পুস্তক (মূসক-৬.২.১) </a>
+
+                      </li>
+
+                         
+
+
+                    </ul>
+                </li>
+
+
+
+
+
+
+
+                 <li>
+                    <a href="javascript:;" class="has-arrow">
+                        <div class="parent-icon">
+                            <i class='bx bx-home-circle'></i>
+                        </div>
+                        <div class="menu-title">MIS Report</div>
+                    </a>
+                    <ul>
+                        <li><a href="/Reports/PurchaseReports.aspx"><i class="bx bx-right-arrow-alt"></i>  Purchase Report</a>
+                        </li>
+                        <li><a href="/Reports/Periodic_Purchase_Report_BIs.aspx"><i class="bx bx-right-arrow-alt"></i> Purchase Challan (B/I)</a>
+                        </li>
+
+                         <li><a href="/Reports/SaleReportsNew.aspx"><i class="bx bx-right-arrow-alt"></i> Periodic Sale Report</a>
+                        </li>
+                   
+                        <li><a href="/Reports/PeriodicStockReports.aspx"><i class="bx bx-right-arrow-alt"></i> Stock Report</a>
+                        </li>
+                        <li><a href="/Reports/RawMaterialConsumptionReports.aspx"><i class="bx bx-right-arrow-alt"></i> Raw Material Consumption Reports</a>
+                        </li>
+
+                        <li><a href="/Reports/FinishGoodProductionReports.aspx"><i class="bx bx-right-arrow-alt"></i> Finish Good Production Reports</a>
+                        </li>
+
+                         <li><a href="/Reports/ValueAdditionPctwiseReport4_3s.aspx"><i class="bx bx-right-arrow-alt"></i>  Value Added Percentage wise Report(4.3)</a>
+                        </li>
+
+                        <li><a href="/Reports/Summary_Of_Value_Additions.aspx"><i class="bx bx-right-arrow-alt"></i>  Value Addition summary (4.3)</a>
+                        </li>
+
+                        <li><a href="/Reports/QuantityWiseSaleReports.aspx"><i class="bx bx-right-arrow-alt"></i>  Sale Sub Report</a>
+                        </li>
+                          <li><a href="/Reports/DailySaleReports.aspx"><i class="bx bx-right-arrow-alt"></i> Monthly Sales-Purchase Summary Report (Day Basis)</a>
+                        </li>
+
+                          <li><a href="/Reports/SalesPurchaseComparativeReports.aspx"><i class="bx bx-right-arrow-alt"></i> Sales-Purchase Comparative Report</a>
+                        </li>
+                           <li><a href="/Reports/SaleSummaryMonthwises.aspx"><i class="bx bx-right-arrow-alt"></i> Sale Summary Report</a>
+                        </li>
+                        <li><a href="/UI/Audit/IngredientsPurchaseInformations.aspx"><i class="bx bx-right-arrow-alt"></i> উপকরণ সংক্রান্ত তথ্য (মূসক-৬.১ রেজিষ্টার মোতাবেক)</a>
+                        </li>
+                         
+                         <li><a href="/UI/Audit/ProductionNSalesStatements.aspx"><i class="bx bx-right-arrow-alt"></i> উৎপাদন ও বিক্রয় বিবরণী (মূসক-৬.২ রেজিস্টার মোতাবেক)</a>
+                        </li>
+                         <li><a href="/UI/Audit/RebateStatements.aspx"><i class="bx bx-right-arrow-alt"></i> রেয়াত গ্রহণের বিবরণী</a>
+                        </li>
+                          <li><a href="/UI/Audit/PriceDeclarationInformations.aspx"><i class="bx bx-right-arrow-alt"></i> অনুমোদিত মূল্যভিত্তি ঘোষণাপত্র (মূসক-৪.৩ মোতাবেক)</a>
+                        </li>
+                             <li><a href="/UI/Audit/VDSStatements.aspx"><i class="bx bx-right-arrow-alt"></i> অনুমোদিত মূল্যভিত্তি ঘোষণাপত্র (মূসক-৪.৩ মোতাবেক)</a>
+                        </li>
+                        
+                    </ul>
+                </li>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </ul>
+            <!--end navigation-->
+        </div>
+        <!--end sidebar wrapper -->
+        <!--start header -->
+        <header>
+            <div class="topbar d-flex align-items-center">
+                <nav class="navbar navbar-expand">
+                     <div style="display:none;" class="mobile-toggle-menu">
+                        <i class='bx bx-menu'></i>
+                    </div>
+                    <div style="display:none;" class="search-bar flex-grow-1">
+                        <div class="position-relative search-bar-box">
+                            <input type="text" class="form-control search-control" placeholder="Type to search..."> <span class="position-absolute top-50 search-show translate-middle-y"><i class='bx bx-search'></i></span>
+                            <span class="position-absolute top-50 search-close translate-middle-y"><i class='bx bx-x'></i></span>
+                        </div>
+                    </div>
+                    <div style="display:none;" class="top-menu ms-auto">
+                        <ul class="navbar-nav align-items-center">
+                            <li class="nav-item mobile-search-icon">
+                                <a class="nav-link" href="#">
+                                    <i class='bx bx-search'></i>
+                                </a>
+                            </li>
+                            <li style="display:none;"  class="nav-item dropdown dropdown-large">
+                                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class='bx bx-category'></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <div class="row row-cols-3 g-3 p-3">
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-cosmic text-white">
+                                                <i class='bx bx-group'></i>
+                                            </div>
+                                            <div class="app-title">Teams</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-burning text-white">
+                                                <i class='bx bx-atom'></i>
+                                            </div>
+                                            <div class="app-title">Projects</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-lush text-white">
+                                                <i class='bx bx-shield'></i>
+                                            </div>
+                                            <div class="app-title">Tasks</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-kyoto text-dark">
+                                                <i class='bx bx-notification'></i>
+                                            </div>
+                                            <div class="app-title">Feeds</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-blues text-dark">
+                                                <i class='bx bx-file'></i>
+                                            </div>
+                                            <div class="app-title">Files</div>
+                                        </div>
+                                        <div class="col text-center">
+                                            <div class="app-box mx-auto bg-gradient-moonlit text-white">
+                                                <i class='bx bx-filter-alt'></i>
+                                            </div>
+                                            <div class="app-title">Alerts</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li style="display:none;" class="nav-item dropdown dropdown-large">
+                                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="alert-count">7</span>
+                                    <i class='bx bx-bell'></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="javascript:;">
+                                        <div class="msg-header">
+                                            <p class="msg-header-title">Notifications</p>
+                                            <p class="msg-header-clear ms-auto">Marks all as read</p>
+                                        </div>
+                                    </a>
+                                    <div class="header-notifications-list">
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-primary text-primary">
+                                                    <i class="bx bx-group"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        New Customers<span class="msg-time float-end">
+                                                            14 Sec
+                                                            ago
+                                                        </span>
+                                                    </h6>
+                                                    <p class="msg-info">5 new user registered</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-danger text-danger">
+                                                    <i class="bx bx-cart-alt"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        New Orders <span class="msg-time float-end">
+                                                            2 min
+                                                            ago
+                                                        </span>
+                                                    </h6>
+                                                    <p class="msg-info">You have recived new orders</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-success text-success">
+                                                    <i class="bx bx-file"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        24 PDF File<span class="msg-time float-end">
+                                                            19 min
+                                                            ago
+                                                        </span>
+                                                    </h6>
+                                                    <p class="msg-info">The pdf files generated</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-warning text-warning">
+                                                    <i class="bx bx-send"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        Time Response <span class="msg-time float-end">
+                                                            28 min
+                                                            ago
+                                                        </span>
+                                                    </h6>
+                                                    <p class="msg-info">5.1 min avarage time response</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-info text-info">
+                                                    <i class="bx bx-home-circle"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        New Product Approved <span class="msg-time float-end">2 hrs ago</span>
+                                                    </h6>
+                                                    <p class="msg-info">Your new product has approved</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-danger text-danger">
+                                                    <i class="bx bx-message-detail"></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        New Comments <span class="msg-time float-end">
+                                                            4 hrs
+                                                            ago
+                                                        </span>
+                                                    </h6>
+                                                    <p class="msg-info">New customer comments recived</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-success text-success">
+                                                    <i class='bx bx-check-square'></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        Your item is shipped <span class="msg-time float-end">
+                                                            5 hrs
+                                                            ago
+                                                        </span>
+                                                    </h6>
+                                                    <p class="msg-info">Successfully shipped your item</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-primary text-primary">
+                                                    <i class='bx bx-user-pin'></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        New 24 authors<span class="msg-time float-end">
+                                                            1 day
+                                                            ago
+                                                        </span>
+                                                    </h6>
+                                                    <p class="msg-info">24 new authors joined last week</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a class="dropdown-item" href="javascript:;">
+                                            <div class="d-flex align-items-center">
+                                                <div class="notify bg-light-warning text-warning">
+                                                    <i class='bx bx-door-open'></i>
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                        Defense Alerts <span class="msg-time float-end">
+                                                            2 weeks
+                                                            ago
+                                                        </span>
+                                                    </h6>
+                                                    <p class="msg-info">45% less alerts last 4 weeks</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <a href="javascript:;">
+                                        <div class="text-center msg-footer">View All Notifications</div>
+                                    </a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown dropdown-large">
+                                <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <span class="alert-count"></span>
+                                    <i class='bx bx-bell'></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="javascript:;">
+                                        <div class="msg-header">
+                                            <p class="msg-header-title">Messages</p>
+                                            <p class="msg-header-clear ms-auto">Marks all as read</p>
+                                        </div>
+                                    </a>
+                                    <div class="header-message-list">
+                                        <a  class="dropdown-item" href="#">
+                                            <div class="d-flex align-items-center">
+                                                <div class="user-online">
+                                                    <img src="" class="msg-avatar" alt="user avatar">
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="msg-name">
+                                                       
+                                                        
+                                                    </h6>
+                                                    <p class="msg-info"></p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                      
+                                    </div>
+                                    <a href="javascript:;">
+                                        <div class="text-center msg-footer">View All Messages</div>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                 
+                    <div style="float:right; margin-right:100px;" class="user-box dropdown">
+                        <a class="dropdown-item" href="/"><i class='bx bx-log-out-circle'></i><span>Logout</span></a>
+                           <ul class="dropdown-menu dropdown-menu-end">
+                     
+                            <li>
+                               
+                            </li>
+                        </ul>
+                      
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <!--end header -->
+        <!--start page wrapper -->
+        <div class="page-wrapper">
+            <div  class="page-content">
+
+                <form runat="server" class="form-horizontal">
+
+
+
+                    <asp:Label runat="server" ID="orgname" Style="color: darkblue; font-weight: bold"></asp:Label>
+
+                    <ajaxToolkit:ToolkitScriptManager runat="Server" ID="ToolkitScriptManager1" />
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+
+
+                </form>
+
+
+            </div>
+        </div>
+        <!--end page wrapper -->
+        <!--start overlay-->
+        <div class="overlay toggle-icon"></div>
+        <!--end overlay-->
+        <!--Start Back To Top Button-->
+        <a href="javaScript:;" class="back-to-top"><i class='bx bxs-up-arrow-alt'></i></a>
+        <!--End Back To Top Button-->
+        <footer class="page-footer">
+            <p class="mb-0">Copyright © 2021. All right reserved.</p>
+        </footer>
+    </div>
+
+    <!--end switcher-->
+    <!-- Bootstrap JS -->
+
+
+     
+
+<%--    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/js/app.js") %>'></script>--%>
+
+
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/js/app.js") %>'></script>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/simplebar/js/simplebar.min.js") %>'></script>
+
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/metismenu/js/metisMenu.min.js") %>'></script>
+       <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js") %>'></script>
+
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/chartjs/js/Chart.min.js") %>'></script>
+
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js") %>'></script>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js") %>'></script>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/jquery.easy-pie-chart/jquery.easypiechart.min.js") %>'></script>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/sparkline-charts/jquery.sparkline.min.js") %>'></script>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/jquery-knob/excanvas.js") %>'></script>
+
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/plugins/jquery-knob/jquery.knob.js") %>'></script>
+
+
+
+<%--        <script type="text/javascript" src='<%= this.ResolveClientUrl("~/app/script/angular.min.js") %>'></script>
+    
+  
+         <script type="text/javascript" src='<%= this.ResolveClientUrl("~/app/modules/fileUploader.js") %>'></script>
+
+       
+       <script type="text/javascript" src='<%= this.ResolveClientUrl("~/app/modules/application.js") %>'></script>--%>
+     <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/angular.js") %>'></script>
+         <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/angular-resource.min.js") %>'></script>
+        <script type="text/javascript" src='<%= this.ResolveClientUrl("~/app/modules/application.js") %>'></script>
+
+         <script type="text/javascript" src='<%= this.ResolveClientUrl("~/app/controllers/NBRVatReport.js") %>'></script>
+   
+   
+
+   
+
+<%--    <script src="assets/js/app.js"></script>--%>
+
+
+
+    <%--
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<!--plugins-->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/plugins/simplebar/js/simplebar.min.js"></script>
+	<script src="assets/plugins/metismenu/js/metisMenu.min.js"></script>
+	<script src="assets/plugins/perfect-scrollbar/js/perfect-scrollbar.js"></script>
+	<script src="assets/plugins/chartjs/js/Chart.min.js"></script>
+	<script src="assets/plugins/vectormap/jquery-jvectormap-2.0.2.min.js"></script>
+    <script src="assets/plugins/vectormap/jquery-jvectormap-world-mill-en.js"></script>
+	<script src="assets/plugins/jquery.easy-pie-chart/jquery.easypiechart.min.js"></script>
+	<script src="assets/plugins/sparkline-charts/jquery.sparkline.min.js"></script>
+	<script src="assets/plugins/jquery-knob/excanvas.js"></script>
+	<script src="assets/plugins/jquery-knob/jquery.knob.js"></script>--%>
+    <script>
+        $(function () {
+            $(".knob").knob();
+        });
+    </script>
+
+
+      
+
+
+
+
+
+      
+<%--    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/assets/js/app.js") %>'></script>--%>
+ <%--   <script src="assets/js/index.js"></script>
+    <!--app JS-->
+    <script src="assets/js/app.js"></script>--%>
+
+
+
+
+
+
+
+    <%--<script type="text/javascript" src="Scripts/Select2JS/select2.full.min.js"></script>--%>
+    <%-- <script type="text/javascript" src="Scripts/Select2JS/select2.full.min.js"></script>--%>
+    <%-- <script  src="../../Scripts/jquery-ui-1.12.1.js"></script>
+    <script  src="../../Scripts/jquery-3.1.1.min.js"></script>
+ 
+    <script  src="../../Scripts/main.js"></script>--%>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/select2.full.min.js") %>'></script>
+    <%--  <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/jquery-1.4.4.min.js") %>'></script>--%>
+    <%-- <script type="text/javascript" src="Scripts/jquery-1.4.4.min.js"></script>--%>
+    <%-----------------------------------------------End javascript---------------------------------------------%>
+ <%--   <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>--%>
+    <script>
+
+        //  $(function () { $('.jstree_demo_div').jstree(); });
+
+    </script>
+</body>
+
+</html>

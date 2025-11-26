@@ -1,0 +1,77 @@
+﻿#nav {position: relative;}
+#nav li {
+    list-style:none;
+    float: left;
+}
+#nav li a {
+    display: block;
+    padding: 10px 12px;
+    text-decoration: none;
+}
+#nav li a:hover {
+	background-color:red;
+	color:#FFF;
+	opacity:1;
+}
+
+/* Targeting the first level menu */
+#nav {  
+    top:250px;
+    min-width:850px;
+    background:#fff;
+    opacity:1;
+    display: block;
+    height: 2px;
+    z-index: 100;
+    position: absolute;
+}
+#nav > li > a {
+}
+
+/* Targeting the second level menu */
+#nav li ul 
+{
+    color: #333;
+    display: none;
+    position: absolute; 
+    width:850px;
+    margin:25;
+}
+#nav li ul li {
+    display: inline;
+}
+#nav li ul li a {
+    background: #ccc;
+    border: none;
+    line-height: 34px;
+    margin: 10;
+    padding: 0 8px 0 10px;
+}
+#nav li ul li a:hover {
+    background-color:blue;
+    color:#FFF;
+    opacity:1;
+}
+
+/* Third level menu */
+#nav li ul li ul{
+    top: 0;
+}
+ul.child {
+background-color:#FFF;  
+}
+/* A class of current will be added via jQuery */
+#nav li.current > a {
+    background: #f7f7f7;
+    float:left;
+}
+/* CSS fallback */
+#nav li:hover > ul.child {
+    left:0;
+    top:34px;
+    display:inline;
+    position:absolute;
+    text-align:left;
+}
+#nav li:hover > ul.grandchild  {
+    display:block;

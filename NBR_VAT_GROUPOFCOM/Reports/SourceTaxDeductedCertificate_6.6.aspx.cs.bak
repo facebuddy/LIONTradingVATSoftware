@@ -1,0 +1,523 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Collections;
+using System.Globalization;
+
+public partial class SourceTaxDeductedCertificate_6_6 : System.Web.UI.Page
+{
+    #region Declare
+    string dFormat = "dd/MM/yyyy";
+    CultureInfo provider = CultureInfo.InvariantCulture;
+    #endregion
+
+    #region Constructor
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        try
+        {
+            MQMM.LoginCheckForUser();
+            if (!IsPostBack)
+            {
+                lblOrgName.Text = Session["ORGANIZATION_NAME"].ToString();
+                lblOrgAddress.Text = Session["ORGANIZATION_ADDRESS"].ToString();
+                lblOrgBIN.Text = Session["ORGANIZATION_BIN"].ToString();
+                fillParty();
+                txtCertificateDate.Text = DateTime.Today.Date.ToString("dd/MM/yyyy");
+
+                dtpDateFrom.Text = DateTime.Today.Date.ToString("01/MM/yyyy");
+                dtpDateTo.Text = DateTime.Today.Date.ToString("dd/MM/yyyy");
+                GetBranchInformation();
+                GetNextChallanNo();
+                lblPrintDateTime.Text = DateTime.Now.ToString("dd-MMM-yyyy hh:mm:ss tt");
+                lblUser.Text = Session["employee_name"].ToString();
+
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+        
+
+    }
+    #endregion
+
+    #region Event
+
+    protected void drpBranchName_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        if (drpBranchName.SelectedValue == "-99")
+        {
+            lblBranchAddress.Text = string.Empty;
+        }
+        else
+        {
+            GetBranchAddress();
+            GetBranchBIN();
+        }
+    }
+    protected void btnSearch_Click(object sender, EventArgs e)
+    { 
+         
+        try
+        {
+            fillDetail();
+            loadGridview();
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void btnShow_Click(object sender, EventArgs e)
+    {
+
+        try
+        {
+            string displayHTML = "";
+            Int16 row = 0;
+
+            if (btnShow.Text == "Show Report")
+            {
+                OrgName.Text = lblOrgName.Text.ToString();
+                OrgAddress.Text = lblOrgAddress.Text.ToString();
+                OrgBin.Text = lblOrgBIN.Text.ToString();//commented on 01-Aug-2019
+                lblTaxDeductedCertificateNo.Text = txtSTDCertificate.Text.ToString();
+                issuesDate.Text = txtCertificateDate.Text.ToString();
+                //MushokRegNo.Text = "NA";
+                //EmployeeName.Text = Session["EMPLOYEE_NAME"].ToString();
+                //EmployeeName2.Text = Session["EMPLOYEE_NAME"].ToString();//commented on 01-Aug-2019
+
+                for (int i = 0; i < gvChallanItem.Rows.Count; i++)
+                {
+                    CheckBox chkChallan = (CheckBox)gvChallanItem.Rows[i].FindControl("chkChallan");
+                    if (chkChallan.Checked)
+                    {
+                        HiddenField hscode = gvChallanItem.Rows[i].FindControl("HSCode") as HiddenField;
+                        HiddenField trchallan = gvChallanItem.Rows[i].FindControl("TRChallan") as HiddenField;
+                        HiddenField remark = gvChallanItem.Rows[i].FindControl("Remarks") as HiddenField;
+                        row++;
+                        displayHTML += "<tr>";
+                        displayHTML += "<td>" + row + "</td>";
+                        //displayHTML += "<td style='text-align:left'>" + lblOrgName.Text + "</td>";
+                        //displayHTML += "<td style='text-align:left'>" + lblOrgBIN.Text + "</td>";
+                        displayHTML += "<td style='text-align:left'>" + gvChallanItem.Rows[i].Cells[4].Text.ToString() + "</td>";
+                        displayHTML += "<td style='text-align:left'>" + gvChallanItem.Rows[i].Cells[5].Text.ToString() + "</td>";
+
+                        displayHTML += "<td style='text-align:left'>" + gvChallanItem.Rows[i].Cells[1].Text.ToString() + "</td>";
+                        displayHTML += "<td style='text-align:left'>" + gvChallanItem.Rows[i].Cells[2].Text.ToString() + "</td>";
+                        displayHTML += "<td style='text-align:left'>" + gvChallanItem.Rows[i].Cells[6].Text.ToString() + "</td>";
+                        displayHTML += "<td style='text-align:left'>" + gvChallanItem.Rows[i].Cells[7].Text.ToString() + "</td>";
+                        displayHTML += "<td style='text-align:left'>" + gvChallanItem.Rows[i].Cells[8].Text.ToString() + "</td>";
+                        //displayHTML += "<td>" + gvChallanItem.Rows[i].Cells[2].Text.ToString() + "</td>";
+                        //displayHTML += "<td>" + gvChallanItem.Rows[i].Cells[7].Text.ToString() + "</td>";
+                        //displayHTML += "<td>" + hscode.Value + "</td>";
+                        //displayHTML += "<td>" + trchallan.Value + "</td>";
+                        //displayHTML += "<td>" + remark.Value + "</td>";
+                        displayHTML += "</tr>";
+
+                        lblSTDC.Text = displayHTML;
+                        //string challan = gvChallanItem.Rows[i].Cells[1].Text.ToString();
+                        //challan_numbers.Add(challan);
+                    }
+                }
+
+                report.Visible = true;
+                btnShow.Text = "Hide Report";
+                btnPrintReport.Visible = true;
+                chkAll.Checked = false;
+                clearMaster();
+                clearDetail();
+                loadGridview();
+            }
+            else
+            {
+                report.Visible = false;
+                btnShow.Text = "Show Report";
+                btnPrintReport.Visible = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+        
+    }
+    protected void gvChallan_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        e.Row.Cells[9].Visible = false;
+        e.Row.Cells[10].Visible = false;
+        e.Row.Cells[11].Visible = false;
+    }
+    protected void drpParty_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+           Int32 partyId = Convert.ToInt32(drpParty.SelectedValue);
+            DataTable dt = (DataTable)Session["PARTY_INFO"];
+            if (dt != null)
+            {
+                DataRow[] dr = dt.Select("party_id = " + partyId);
+                DataRow dr0 = dr[0];
+                if (dr0 != null)
+                {
+                    txtAddress.Text = dr0["party_address"].ToString();
+                    txtPartyBIN.Text = dr0["party_bin"].ToString();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void btnAddParty_Click(object sender, EventArgs e)
+    {
+        try
+        {
+           
+
+        }
+        catch (Exception ex)
+        { ReallySimpleLog.WriteLog(ex); }
+    }
+    protected void drpChDtHr_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+    protected void drpChDtMin_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+    protected void drpVatType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnAdd_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            loadGridview();
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void gvItem_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        try
+        {
+            ArrayList arrDetailList = (ArrayList)Session["DETAIL_VDS"];
+            arrDetailList.RemoveAt(e.RowIndex);
+            Session["DETAIL_VDS"] = arrDetailList;
+            loadGridview();
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+
+    }
+    protected void txtChallanNumber_TextChanged(object sender, EventArgs e)
+    {
+        ChallanBLL objChallan = new ChallanBLL();
+        try
+        {
+            string challan = txtChallanNumber.Text.Trim();
+            DataTable dt = objChallan.loadPartyByChallanNo(challan);
+            if (dt.Rows.Count > 0)
+            {
+                drpParty.SelectedValue = dt.Rows[0]["party_id"].ToString();
+                txtAddress.Text = dt.Rows[0]["party_address"].ToString();
+                txtPartyBIN.Text = dt.Rows[0]["party_bin"].ToString();
+            }
+            else
+            {
+                msgBox.AddMessage("Data Not Found",MsgBoxs.enmMessageType.Attention);
+            }
+           
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    
+    #endregion
+
+    #region Method
+    private void fillParty()
+    {
+        VATReturnBLL objBL = new VATReturnBLL();
+        try
+        {
+            DataTable dt = objBL.fillPartyName();
+            if (dt != null)
+            {
+                drpParty.DataSource = dt;
+                drpParty.DataTextField = dt.Columns["party_name"].ToString();
+                drpParty.DataValueField = dt.Columns["party_id"].ToString();
+                drpParty.DataBind();
+
+                ListItem li = new ListItem("---Select---", "-99");
+                drpParty.Items.Insert(0,li);
+            }
+            Session["PARTY_INFO"] = dt;
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    private void clearMaster()
+    {
+        drpParty.SelectedValue = "-99";
+        txtPartyName.Visible = false;
+        txtAddress.Text = "";
+        txtPartyBIN.Text = "";
+        txtSTDCertificate.Text = "";
+        txtCertificateDate.Text = DateTime.Today.Date.ToString("dd-MM-yyyy");
+        
+    }
+    private void clearDetail()
+    {
+        Session["GRID_DATA"] = new DataTable();
+    }
+    private void fillDetail()
+    {
+        Int64 partyId = 0;
+        VATReturnBLL objBLL = new VATReturnBLL();
+        DateTime fdate = DateTime.ParseExact(dtpDateFrom.Text.Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+       // fDate = fd.ToString("yyyy-MM-dd");
+        DateTime date = DateTime.ParseExact(dtpDateTo.Text.Trim(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+        DateTime tdate = date.AddDays(+1);
+        //tDate = nextDate.ToString("yyyy-MM-dd");
+        string challan = txtChallanNumber.Text.Trim();
+        if (drpParty.SelectedValue != "-99")
+        {
+            partyId = Convert.ToInt64(drpParty.SelectedValue);
+        }
+
+
+        int drpBranchID = Convert.ToInt32(drpBranchName.SelectedItem.Value.ToString());
+
+        DataTable dt = objBLL.getVDSData(fdate, tdate, challan, partyId, drpBranchID);
+        Session["GRID_DATA"] = dt;
+    }
+    private void loadGridview()
+    {
+        DataTable dt = (DataTable)Session["GRID_DATA"];
+        gvChallanItem.DataSource = dt;
+        gvChallanItem.DataBind();
+    }
+    private void GetNextChallanNo()
+    {
+        ChallanBLL objBLL = new ChallanBLL();
+        int orgID = Convert.ToInt32(Session["ORGANIZATION_ID"]);
+        Int16 brnhID = Convert.ToInt16(drpBranchName.SelectedValue);
+        DataTable dtChallanNo = objBLL.GetNextChallanNo(7, orgID, brnhID);
+
+
+        if (dtChallanNo != null && dtChallanNo.Rows.Count > 0)
+        {
+            txtSTDCertificate.Text = dtChallanNo.Rows[0]["challan_no"].ToString();
+            hdBookId.Value = dtChallanNo.Rows[0]["challan_book_id"].ToString();
+            hdPageNo.Value = dtChallanNo.Rows[0]["page_no"].ToString();
+        }
+        else
+        {
+            txtSTDCertificate.Text = "";
+            hdBookId.Value = "";
+            hdPageNo.Value = "";
+        }
+    }
+    private void GetBranchInformation()
+    {
+        drpBranchName.Items.Clear();
+        ChallanBLL objBLL = new ChallanBLL();
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            int userLevel = Convert.ToInt32(Session["USER_LEVEL"].ToString());
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int organID = Convert.ToInt32(Session["ORGANIZATION_ID"].ToString());
+            if (organID > 0)
+            {
+
+            }
+            else
+            {
+                organID = 0;
+            }
+
+            if (userLevel == 3)
+            {
+                drpBranchName.Enabled = false;
+                if (BranchID == 0)
+                {
+                    ListItem li = new ListItem("Head Office", "0");
+                    drpBranchName.Items.Insert(1, li);
+                }
+
+                else
+                {
+                    DataTable ds = objBLL.GetBranchInformation(organID, BranchID);
+                    if (ds != null && ds.Rows.Count > 0)
+                    {
+                        drpBranchName.DataSource = ds;
+                        drpBranchName.DataTextField = ds.Columns["branch_unit_name"].ToString();
+                        drpBranchName.DataValueField = ds.Columns["org_branch_reg_id"].ToString();
+                        drpBranchName.DataBind();
+
+                    }
+
+                }
+            }
+
+            if (userLevel == 2 || userLevel == 1)
+            {
+                drpBranchName.Enabled = true;
+                DataTable ds = objBLL.GetBranchInformationFormanager(organID);
+                if (ds != null && ds.Rows.Count > 0)
+                {
+                    drpBranchName.DataSource = ds;
+                    drpBranchName.DataTextField = ds.Columns["branch_unit_name"].ToString();
+                    drpBranchName.DataValueField = ds.Columns["org_branch_reg_id"].ToString();
+                    drpBranchName.DataBind();
+                }
+
+                ListItem li = new ListItem("Head Office", "0");
+                drpBranchName.Items.Insert(0, li);
+                //ListItem li1 = new ListItem("ALL", "-99");
+                //drpBranchName.Items.Insert(0, li1);
+
+            }
+
+        }
+
+
+    }
+    private void GetBranchAddress()
+    {
+        #region Present Address
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            OrgRegistrationInfoDAO orgRegDAO = new OrgRegistrationInfoDAO();
+
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int drpBranchID =Convert.ToInt32(drpBranchName.SelectedItem.Value.ToString());
+
+            DataTable dtPre = orgRegDAO.GetORGorBranch(drpBranchID);
+
+            if (dtPre != null && dtPre.Rows.Count > 0)
+            {
+
+                string result = dtPre.Rows[0]["IS_branch_registration"].ToString();
+
+
+
+                if (result == "False")
+                {
+
+                    DataTable dtOrgReg = orgRegDAO.GetBranchAddORGRegistration(BranchID);
+                    string holding = dtOrgReg.Rows[0]["holding"].ToString();
+                    string roadno = dtOrgReg.Rows[0]["road_no"].ToString();
+                    string districtname = dtOrgReg.Rows[0]["district_name"].ToString();
+
+                    lblBranchAddress.Text = "  " + holding + "," + roadno + "," + districtname + ".";
+
+                }
+
+                if (result == "True")
+                {
+
+                    DataTable dtBranchReg = orgRegDAO.GetBranchAddBrachRegistration(BranchID);
+                    string holding = dtBranchReg.Rows[0]["holding"].ToString();
+                    string roadno = dtBranchReg.Rows[0]["road_no"].ToString();
+                    string districtname = dtBranchReg.Rows[0]["district_name"].ToString();
+
+                    lblBranchAddress.Text = "  " + holding + "," + roadno + "," + districtname + ".";
+
+                }
+
+
+
+
+            }
+            else
+            {
+                lblBranchAddress.Text = string.Empty;
+            }
+
+        }
+
+
+
+        #endregion
+    }
+    private void GetBranchBIN()
+    {
+
+        ChallanBLL objBLL = new ChallanBLL();
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            int userLevel = Convert.ToInt32(Session["USER_LEVEL"].ToString());
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int drpBranchID = Convert.ToInt32(drpBranchName.SelectedItem.Value.ToString());
+
+            if (userLevel == 1 || userLevel == 2 || userLevel == 3)
+            {
+
+                if (BranchID == 0)
+                {
+
+                }
+
+                else
+                {
+                    DataTable ds = objBLL.GetBranchBIN(drpBranchID);
+                    if (ds != null && ds.Rows.Count > 0)
+                    {
+
+                        lblBranchBin.Text = ds.Rows[0]["branch_unit_bin"].ToString();
+                    }
+
+                    else
+                    {
+                        lblBranchBin.Text = string.Empty;
+                    }
+
+
+                }
+            }
+
+
+
+        }
+
+
+    }
+    #endregion
+
+    
+}

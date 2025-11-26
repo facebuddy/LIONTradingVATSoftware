@@ -1,0 +1,1370 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Xml;
+
+public partial class VATReturnMushok19 : System.Web.UI.Page
+{
+    #region Init
+    VATReturnBLL objVatReturn = new VATReturnBLL();
+    CSVXMLBLL dbBLL = new CSVXMLBLL();
+    #endregion
+
+    #region Constructor
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        MQMM.LoginCheckForUser();
+        if (!IsPostBack)
+        {
+            dtpDateFrom.Text = DateTime.Now.ToString("01/MM/yyyy");
+            dtpDateTo.Text = DateTime.Now.ToString("dd/MM/yyyy");
+            TaxOrganizationName.Text = Session["ORGANIZATION_NAME"] != null ? Session["ORGANIZATION_NAME"].ToString() : "n/a";
+            //TaxOrganizationBIN.Text = Session["ORGANIZATION_BIN"] != null ? Session["ORGANIZATION_BIN"].ToString() : "n/a";
+            TaxOrganizationAddress.Text = Session["ORGANIZATION_ADDRESS"] != null ? Session["ORGANIZATION_ADDRESS"].ToString() : "n/a";
+            string BIN = Session["ORGANIZATION_BIN"].ToString();
+            string display = "";
+            for (int i = 0; i < BIN.Length; i++)
+            {
+                display += "<input type='text' value = '" + BIN[i] + "' runat='server' style='width:25px; text-align:center;border:1px solid #000'>";
+                TaxOrganizationBIN.Text = display;
+            }
+
+            TaxpayerNameP10.Text = Session["EMPLOYEE_NAME"] != null ? Session["EMPLOYEE_NAME"].ToString() : "NA";
+            string Designation = objVatReturn.GetDesignation(Convert.ToInt32(Session["DESIGNATION_ID"]));
+            TaxpayerDesignationP10.Text = Designation;
+            TaxPaymentDateP10.Text = DateTime.UtcNow.ToString("dd-MMM-yyyy");
+            TaxpayerMobileNoP10.Text = Session["MOBILE_NO"] != null ? Session["MOBILE_NO"].ToString() : "NA";
+            TaxpayerEmailP10.Text = Session["EMAIL"] != null ? Session["EMAIL"].ToString() : "NA";
+            //lblTaxPeriod.Text = fDate.ToString("MMMM") + " / " + fDate.ToString("yyyy");
+            lblPrintDateTime.Text = DateTime.Now.ToString("dd-MMM-yyyy hh:mm:ss tt");
+            lblUser.Text = Session["employee_name"].ToString();
+            //03/09/2019
+            DataTable dtorj = dbBLL.getOrganizationName(TaxOrganizationName.Text.Trim());
+            OrganizationBusinessNature.Text = dtorj.Rows[0]["business_type_name"].ToString();
+            NatureOfBusiness.Text = dtorj.Rows[0]["business_process_activity_name"].ToString();
+
+
+            //22-07-2019
+            DataTable dt = dbBLL.getOrganizationCommissionarateCode(TaxOrganizationName.Text.Trim());
+            //১/১১৩৩/ অপারেশনাল কোড /০৩১১
+            //oc1.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/০৩১১";
+            //oc2.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/০৭১১";
+            //oc3.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/২২১৪";
+            //oc4.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/২২১৪";
+            //oc5.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/১৯০১";
+            //oc6.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/০৬০১";
+
+            //oc7.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/২২১৪";
+            //oc8.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/০৩১১";
+            //oc9.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/০৩১১";
+            //oc10.InnerText = "১/১১৩৩/" + dt.Rows[0]["comm_code"].ToString() + "/০৩১১";
+        }
+    }
+    #endregion
+
+    #region Event
+    protected void btnShow_OnClick(object sender, EventArgs e)
+    {
+        ShowReport();
+    }
+    //protected void btnXMLFormat_OnClick(object sender, EventArgs e)
+    //{
+    //    xmlVAT19();
+    //}
+    #endregion
+
+    #region Method
+    private void ShowReport()
+    {
+        DateTime fDate = DateTime.MinValue;
+        DateTime tDate = DateTime.MinValue;
+        #region /* Part-3 */
+        double DirectExportPrice = 0.00;
+        double DeemedExportPrice = 0.00;
+        double ExemptSupplyPrice = 0.00;
+        double typicalSupplyPrice = 0.00;
+        double typicalSupplyVat = 0.00;
+        double typicalSupplySd = 0.00;
+        double nonTypicalSupplyPrice = 0.00;
+        double nonTypicalSupplyVat = 0.00;
+        double nonTypicalSupplySd = 0.00;
+        double law53Price = 0.00;
+        double law53Vat = 0.00;
+        double law53SD = 0.00;
+        double Note7 = 0.00;
+        double AroshoHarBatitoMullo = 0.00;
+        double AroshoHarBatitoMushok = 0.00;
+        double AroshoHarBatitoSD = 0.00;
+
+        double ExemptedMullo = 0.00;
+        double ExemptedMushok = 0.00;
+        double ExemptedSD = 0.00;
+        #endregion
+        #region /* Part-4 */
+        double exemptedLocalPurchasePrice = 0.00;
+        double exemptedForeignPurchasePrice = 0.00;
+        double zeroRateLocalPurchasePrice = 0.00;
+        double zeroRateForeignPurchasePrice = 0.00;
+        double StandardPurchaseLocalPrice = 0.00;
+        double StandardPurchaseLocalVat = 0.00;
+        double StandardPurchaseLocalSD = 0.00;
+        double StandardPurchaseLocalCD = 0.00;
+        double StandardPurchaseLocalRD = 0.00;
+        double StandardPurchaseForeignPrice = 0.00;
+        double StandardPurchaseForeignVat = 0.00;
+        double StandardPurchaseForeignSD = 0.00;
+        double StandardPurchaseForeignCD = 0.00;
+        double StandardPurchaseForeignRD = 0.00;
+
+        double ExemptedPurchaseLocalPrice = 0.00;
+        double ExemptedPurchaseImportPrice = 0.00;
+
+
+        double LandBuildingPriceP4 = 0.00;
+        double LandBuildingVatP4 = 0.00;
+        double partialRebateLPPriceP4 = 0.00;
+        double partialRebateLPVatP4 = 0.00;
+        double nonRebateLPPriceP4 = 0.00;
+        double nonRebateLPVatP4 = 0.00;
+        double Note16 = 0.00;
+
+        double AdorshoHarBatitoMulloLcl = 0.00;
+        double AdorshoHarBatitoMushokLcl = 0.00;
+        double AdorshoHarBatitoMushokLclSD = 0.00;
+        double AdorshoHarBatitoMushokLclCD = 0.00;
+        double AdorshoHarBatitoMushokLclRD = 0.00;
+        double AdorshoHarBatitoMulloImp = 0.00;
+        double AdorshoHarBatitoMushokImp = 0.00;
+
+        double AdorshoHarBatitoMushokImpSD = 0.00;
+        double AdorshoHarBatitoMushokImpCD = 0.00;
+        double AdorshoHarBatitoMushokImpRD = 0.00;
+        #endregion
+        #region /* Part-5 */
+        double purchaseVDS = 0.00;
+        double purchaseRebatable = 0.00;
+        double purchasePriceSuspend = 0.00;
+        double purchaseAnotherVat = 0.00;
+        double Note21 = 0.00;
+        #endregion
+        #region /* Part-6 */
+        double saleVDS = 0.00;
+        double salePriceSuspend = 0.00;
+        double saleSuplimentaryDuty = 0.00;
+        double saleAnotherVat = 0.00;
+        double Note26 = 0.00;
+        #endregion
+        #region /* Part-7 */
+        double aitP7 = 0.00;
+        double mushok18 = 0.00;
+        double mushok25 = 0.00;
+        #endregion
+
+        try
+        {
+            //fDate = DateTime.ParseExact(dtpDateFrom.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            //tDate = DateTime.ParseExact(dtpDateTo.Text, "dd/MM/yyyy", CultureInfo.InvariantCulture).AddDays(1);
+
+            //fDate = Convert.ToDateTime(dtpDateFrom.Text.Trim());
+            //tDate = Convert.ToDateTime(dtpDateTo.Text.Trim()).AddDays(1);
+
+            //01-Sep-2019 start
+            string fromDate = string.Empty;
+            string toDate = string.Empty;
+            string toDateN = string.Empty;
+            fromDate = dtpDateFrom.Text.ToString();
+            toDate = dtpDateTo.Text.ToString();
+            DateTime datte = DateTime.ParseExact(toDate, "dd/MM/yyyy", null);
+            DateTime date1 = datte.AddDays(1);
+            toDateN = date1.ToString("dd/MM/yyyy");
+            //01-Sep-2019 end
+
+            Session["fDateSub"] = fromDate;
+            Session["tDateSub"] = toDateN;
+
+
+            #region /*Part-2*/
+            lblTaxPeriod.Text = fDate.ToString("MMMM") + " / " + fDate.ToString("yyyy");
+            string date = DateTime.Now.ToString("dd/MM/yyyy");
+            string display = "";
+
+            //17-July-2019
+            string sToDate = tDate.ToString("dd/MM/yyyy");//if to date can be secectable then loop will be from this variable
+            //
+
+            for (int i = 0; i < date.Length; i++)
+            {
+                display += "<input type='text' value = '" + date[i] + "' runat='server' style='width:25px; text-align:center;'>";
+                lblReturnSubmitDate.Text = display;
+            }
+            #endregion
+
+            #region /*Part-3*/
+            DataTable dt = dbBLL.getVatReturnPart3Data(fromDate, toDateN);
+            DataTable dtPart3AdorshoHarBatito = dbBLL.getVatReturnPart3DataAdorshoHarBatito(fromDate, toDateN);
+            DataTable dtPart3Adorsho = dbBLL.getVatReturnPart3DataAdorsho(fromDate, toDateN);
+            DataTable dtExempted = dbBLL.getSaleExempted(fromDate, toDateN);//অব্যাহতিপ্রাপ্ত পণ্য/সেবা (৩)
+            DataTable dtFixed6 = dbBLL.getFixedVatInfo(fromDate, toDateN);//21-Aug-2019
+            DataTable dtMRP5 = dbBLL.getMRPInfo5(fromDate, toDateN);//সর্বোচ্চ খুচরা মূলভিত্তিক পণ্য
+            #region
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    double price = 0.00;
+                    double vat = 0.00;
+                    double sd = 0.00;
+
+
+
+                    char realProperty = '0';
+
+
+
+                    bool deemedExport = Convert.ToBoolean(dt.Rows[i]["deemed_export"]);
+                    bool isExampted = Convert.ToBoolean(dt.Rows[i]["is_exempted"]);
+
+
+
+
+                    price = Convert.ToDouble(dt.Rows[i]["price"]);
+                    vat = Convert.ToDouble(dt.Rows[i]["vat"]);
+                    sd = Convert.ToDouble(dt.Rows[i]["sd"]);
+
+                    char trnsType = Convert.ToChar(dt.Rows[i]["trans_type"]);
+                    if (dt.Rows[i]["real_property"].ToString() != "")
+                    {
+                        realProperty = Convert.ToChar(dt.Rows[i]["real_property"]);
+
+                    }
+                    if (trnsType == 'E' && deemedExport == true)
+                    {
+                        DeemedExportPrice += price;
+
+                    }
+                    if (trnsType == 'E' && deemedExport == false)
+                    {
+                        DirectExportPrice += price;
+                    }
+                    if (isExampted == true && deemedExport == false)
+                    {
+                        ExemptSupplyPrice += price;
+                    }
+                    if (realProperty == 'W')
+                    {
+                        //LandBuildingPriceP3 += price;
+                        //LandBuildingVatP3 += vat;
+
+                    }
+
+                    //commented on 22-07-201-
+                    //if (realProperty != 'W' && trnsType == 'L' && isExampted == false && deemedExport == false)
+                    //{
+                    //    typicalSupplyPrice += price;
+                    //    typicalSupplyVat += vat;
+                    //    typicalSupplySd += sd;
+                    //}
+
+                    //আদর্শ কর হার ব্যাতীত ভিন্ন কর হার ভিত্তিক পণ্য/সেবা
+                    //AroshoHarBatitoMullo += price;//মূল্য
+                    //AroshoHarBatitoMushok += vat;//মূসক
+                    //AroshoHarBatitoSD += sd;//এসডি
+
+                }
+
+                zerorateDeemedExportAmountN1P3.Text = DeemedExportPrice.ToString("0.00");
+                zerorateDirectExportAmountN2P3.Text = DirectExportPrice.ToString("0.00");
+                exemptedSupplyAmountN3P3.Text = ExemptSupplyPrice.ToString("0.00");
+                //lblLandBuildingPriceP3.Text = LandBuildingPriceP3.ToString("0.00");
+                //lblLandBuildingVatP3.Text = LandBuildingVatP3.ToString("0.00");
+
+                //আদর্শ কর হার ব্যাতীত ভিন্ন কর হার ভিত্তিক পণ্য/সেবা
+                //lblAdorshoHarBatitoMullo.Text = AroshoHarBatitoMullo.ToString("0.00");//মূল্য (ক)
+                //lblAdorshoHarBatitoMushok.Text = AroshoHarBatitoMushok.ToString("0.00");//মূসক (খ)
+                //lblAdorshHarBatitoSD.Text = AroshoHarBatitoSD.ToString("0.00");//এসডি (গ) 
+
+                ////Adoesho har..............
+                //typicalSupplyAmountN4P3.Text = typicalSupplyPrice.ToString("0.00");
+                //typicalSupplyVATN4P3.Text = typicalSupplyVat.ToString("0.00");
+                //typicalSupplySDN4P3.Text = typicalSupplySd.ToString("0.00");
+                ////Adoesho har..............
+
+                nonTypicalSupplyAmountN6P3.Text = nonTypicalSupplyPrice.ToString("0.00");
+                nonTypicalSupplySDN6P3.Text = nonTypicalSupplySd.ToString("0.00");
+                //note5AmountP3.Text = law53Price.ToString("0.00");
+                //note5VATP3.Text = law53Vat.ToString("0.00");
+                //note5SDP3.Text = law53SD.ToString("0.00");
+
+                if (typicalSupplyVat == null)
+                    typicalSupplyVat = 0.00;
+                if (typicalSupplySd == null)
+                    typicalSupplySd = 0.00;
+                
+                Note7 = typicalSupplyVat + typicalSupplySd + nonTypicalSupplyVat + nonTypicalSupplySd + law53Vat + law53SD;
+            }
+            #region সর্বোচ্চ খুচরা মূলভিত্তিক পণ্য 
+            double mullo5 = 0.00;
+            double mushok5 = 0.00;
+            double sd5 = 0.00;
+            if (dtMRP5 != null && dtMRP5.Rows.Count > 0)
+            {
+                for (int mr = 0; mr < dtMRP5.Rows.Count; mr++)
+                {
+                    double price = 0.00;
+                    double vat = 0.00;
+                    double sd = 0.00;
+                    price = Convert.ToDouble(dtMRP5.Rows[mr]["price"]);
+                    vat = Convert.ToDouble(dtMRP5.Rows[mr]["vat"]);
+                    sd = Convert.ToDouble(dtMRP5.Rows[mr]["sd"]);
+                    mullo5 += price;
+                    mushok5 += vat;
+                    sd5 += sd;
+                }
+                note5AmountP3.Text = mullo5.ToString("0.00");
+                note5VATP3.Text = mushok5.ToString("0.00");
+                note5SDP3.Text = sd5.ToString("0.00");
+            }
+            else
+            {
+                note5AmountP3.Text = mullo5.ToString("0.00");
+                note5VATP3.Text = mushok5.ToString("0.00");
+                note5SDP3.Text = sd5.ToString("0.00");
+            }
+            #endregion
+            #endregion
+            #region  /আদর্শ করহার ব্যতীত ভিন্ন করহার ভিত্তিক পণ্য/সেবা নোট ৭/
+            //07-Aug-2019
+
+            if (dtPart3AdorshoHarBatito != null && dtPart3AdorshoHarBatito.Rows.Count > 0)
+            {
+                for (int a = 0; a < dtPart3AdorshoHarBatito.Rows.Count; a++)
+                {
+                    double price = 0.00;
+                    double vat = 0.00;
+                    double sd = 0.00;
+                    price = Convert.ToDouble(dtPart3AdorshoHarBatito.Rows[a]["price"]);
+                    vat = Convert.ToDouble(dtPart3AdorshoHarBatito.Rows[a]["vat"]);
+                    sd = Convert.ToDouble(dtPart3AdorshoHarBatito.Rows[a]["sd"]);
+                    AroshoHarBatitoMullo += price;//মূল্য
+                    AroshoHarBatitoMushok += vat;//মূসক
+                    AroshoHarBatitoSD += sd;//এসডি
+                }
+                lblAdorshoHarBatitoMullo.Text = AroshoHarBatitoMullo.ToString("0.00");//মূল্য (ক)
+                lblAdorshoHarBatitoMushok.Text = AroshoHarBatitoMushok.ToString("0.00");//মূসক (খ)
+                lblAdorshHarBatitoSD.Text = AroshoHarBatitoSD.ToString("0.00");//এসডি (গ) 
+
+            }
+            else
+            {
+                lblAdorshoHarBatitoMullo.Text = AroshoHarBatitoMullo.ToString("0.00");//মূল্য (ক)
+                lblAdorshoHarBatitoMushok.Text = AroshoHarBatitoMushok.ToString("0.00");//মূসক (খ)
+                lblAdorshHarBatitoSD.Text = AroshoHarBatitoSD.ToString("0.00");//এসডি (গ) 
+            }
+            #endregion
+            #region
+            //22-07-2019
+            if (dtPart3Adorsho != null && dtPart3Adorsho.Rows.Count > 0)
+            {
+                for (int j = 0; j < dtPart3Adorsho.Rows.Count; j++)
+                {
+                    double priceAdorsho = 0.00;
+                    double vatAdorsho = 0.00;
+                    double sdAdorsho = 0.00;
+                    char realPropertyAdorsho = '0';
+
+                    priceAdorsho = Convert.ToDouble(dtPart3Adorsho.Rows[j]["price"]);
+                    vatAdorsho = Convert.ToDouble(dtPart3Adorsho.Rows[j]["vat"]);
+                    sdAdorsho = Convert.ToDouble(dtPart3Adorsho.Rows[j]["sd"]);
+
+                    bool deemedExportAdorsho = false;
+                    bool isExamptedAdorsho = false;
+                    if (dtPart3Adorsho.Rows.Count > 0)
+                    {
+                        deemedExportAdorsho = Convert.ToBoolean(dtPart3Adorsho.Rows[j]["deemed_export"]);
+                        isExamptedAdorsho = Convert.ToBoolean(dtPart3Adorsho.Rows[j]["is_exempted"]);
+                    }
+                    char trnsTypeAdorsho = '0';
+                    if (dtPart3Adorsho.Rows.Count > 0)
+                    {
+                        trnsTypeAdorsho = Convert.ToChar(dtPart3Adorsho.Rows[j]["trans_type"]);
+                    }
+                    if (dtPart3Adorsho.Rows[j]["real_property"].ToString() != "")
+                    {
+                        realPropertyAdorsho = Convert.ToChar(dtPart3Adorsho.Rows[j]["real_property"]);
+                    }
+                    if (realPropertyAdorsho != 'W' && trnsTypeAdorsho == 'L' && isExamptedAdorsho == false && deemedExportAdorsho == false)
+                    {
+                        typicalSupplyPrice += priceAdorsho;
+                        typicalSupplyVat += vatAdorsho;
+                        typicalSupplySd += sdAdorsho;
+                    }
+
+                }
+                //Adoesho har..............
+                //typicalSupplyAmountN4P3.Text = (typicalSupplyPrice + typicalSupplySd).ToString("0.00");
+                typicalSupplyAmountN4P3.Text = typicalSupplyPrice.ToString("0.00");
+                typicalSupplyVATN4P3.Text = typicalSupplyVat.ToString("0.00");
+                typicalSupplySDN4P3.Text = typicalSupplySd.ToString("0.00");
+                //Adoesho har..............
+
+            }
+            else
+            {
+                typicalSupplyAmountN4P3.Text = typicalSupplyPrice.ToString("0.00");
+                typicalSupplyVATN4P3.Text = typicalSupplyVat.ToString("0.00");
+                typicalSupplySDN4P3.Text = typicalSupplySd.ToString("0.00");
+            }
+            #endregion
+            #region  /অব্যাহতিপ্রাপ্ত পণ্য/সেবা নোট (৩)/
+            //17-Aug-2019 start
+
+            if (dtExempted != null && dtExempted.Rows.Count > 0)
+            {
+                for (int a = 0; a < dtExempted.Rows.Count; a++)
+                {
+                    double price = 0.00;
+                    double vat = 0.00;
+                    double sd = 0.00;
+                    price = Convert.ToDouble(dtExempted.Rows[a]["price"]);
+                    vat = Convert.ToDouble(dtExempted.Rows[a]["vat"]);
+                    sd = Convert.ToDouble(dtExempted.Rows[a]["sd"]);
+                    ExemptedMullo += price;//মূল্য
+                    ExemptedMushok += vat;//মূসক
+                    ExemptedSD += sd;//এসডি
+                }
+                exemptedSupplyAmountN3P3.Text = ExemptedMullo.ToString("0.00");//মূল্য (ক)
+            }
+            else
+            {
+                exemptedSupplyAmountN3P3.Text = ExemptedMullo.ToString("0.00");//মূল্য (ক)
+            }
+            #endregion
+            #region /সুনির্দিষ্ট কর ভিত্তিক পণ্য/সেবা নোট(৬)/
+
+            double fixedPrice6 = 0.00;
+            double fixedVat6 = 0.00;
+            if (dtFixed6 != null && dtFixed6.Rows.Count > 0)
+            {
+                //here price= only price. no sd will added bcos fixed value item has no sd
+                for (int m = 0; m < dtFixed6.Rows.Count; m++)
+                {
+                    double price = 0.00;
+                    double vat = 0.00;
+                    price = Convert.ToDouble(dtFixed6.Rows[m]["price"]);
+                    vat = Convert.ToDouble(dtFixed6.Rows[m]["vat"]);
+                    fixedPrice6 += price;
+                    fixedVat6 += vat;
+                }
+                nonTypicalSupplyAmountN6P3.Text = fixedPrice6.ToString("0.00");
+                nonTypicalSupplyVATN6P3.Text = fixedVat6.ToString("0.00");
+
+            }
+            else
+            {
+                nonTypicalSupplyAmountN6P3.Text = fixedPrice6.ToString("0.00");
+                nonTypicalSupplyVATN6P3.Text = fixedVat6.ToString("0.00");
+            }
+            #endregion
+            //17-Aug-2019 end
+
+            //৯ মূল্য (ক) 
+            //lblTotalPriceP3.Text = (DirectExportPrice + DeemedExportPrice + ExemptSupplyPrice + typicalSupplyPrice + law53Price + nonTypicalSupplyPrice + AroshoHarBatitoMullo).ToString("0.00");
+            //lblTotalPriceP3.Text = (DirectExportPrice + DeemedExportPrice + ExemptSupplyPrice + typicalSupplyPrice + typicalSupplySd + law53Price + nonTypicalSupplyPrice + AroshoHarBatitoMullo+ fixedPrice6).ToString("0.00");
+            lblTotalPriceP3.Text = (DirectExportPrice + DeemedExportPrice + ExemptSupplyPrice + typicalSupplyPrice + mullo5 + nonTypicalSupplyPrice + AroshoHarBatitoMullo + fixedPrice6).ToString("0.00");
+            //৯ মূসক (খ) 
+            lblNineMushokKhaTotal.Text = (typicalSupplyVat + mushok5 + nonTypicalSupplyVat + AroshoHarBatitoMushok+ fixedVat6).ToString("0.00");
+            //৯ এসডি (গ)
+            lblTotalVatN7P3.Text = (typicalSupplySd + sd5 + nonTypicalSupplySd + AroshoHarBatitoSD).ToString("0.00");
+            #endregion P3
+
+            #region /*Part-4*/
+            DataTable dt4 = dbBLL.getVatReturnPart4Data(fromDate, toDateN);//আদর্শ হারের ব্যতীত অন্যান্য হারে পণ্য/সেবা (স্থানীয় ক্রয়)
+            DataTable dtImp = dbBLL.getVatReturnPart4DataImport(fromDate, toDateN);//আদর্শ হারের ব্যতীত অন্যান্য হারে পণ্য/সেবা (আমদানি)
+            //22-07-2019
+            DataTable dt4AdorshoLocal = dbBLL.getVatReturnPart4DataAdorshoLocal(fromDate, toDateN); //adorsho local
+            DataTable dt4AdorshoImport = dbBLL.getVatReturnPart4DataAdorshoImport(fromDate, toDateN); //adorsho import
+            DataTable dt4ExemptedLocal = dbBLL.getPart4DataForExemptedLocal(fromDate, toDateN); // অব্যাহতিপ্রাপ্ত পণ্য / সেবা (স্থানীয় ক্রয়)
+            DataTable dt4ExemptedImport = dbBLL.getPart4DataForExemptedImport(fromDate, toDateN); // অব্যাহতিপ্রাপ্ত পণ্য / সেবা (আমদানি)
+            DataTable dt4LocalFixed = dbBLL.getPart4DataForFixedLocal(fromDate, toDateN); //সুনির্দিষ্ট কর ভিত্তিক পণ্য/সেবা নোট(১৮)
+            DataTable dt4ZeroRateNote10 = dbBLL.getZeroRateNote10(fromDate, toDateN);//শূন্যহার বিশিষ্ট পণ্য/সেবা (স্থানীয় ক্রয়)
+            DataTable dt4ZeroRateNote11 = dbBLL.getZeroRateNote11(fromDate, toDateN); //শূন্যহার বিশিষ্ট পণ্য/সেবা(আমদানি )
+
+            #region আদর্শ হারের ব্যতীত অন্যান্য হারে পণ্য/সেবা (স্থানীয় ক্রয়)
+            //Transaction Type Local
+            if (dt4 != null && dt4.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt4.Rows.Count; i++)
+                {
+                    double price = 0.00;
+                    double vat = 0.00;
+                    double sd = 0.00;
+                    double cd = 0.00;
+                    double rd = 0.00;
+                    char realProperty = '0';
+                    bool isExampted = Convert.ToBoolean(dt4.Rows[i]["is_exempted"]);
+                    bool zeroRate = Convert.ToBoolean(dt4.Rows[i]["zero_rate"]);
+                    price = Convert.ToDouble(dt4.Rows[i]["price"]);
+                    vat = Convert.ToDouble(dt4.Rows[i]["vat"]);
+                    sd = Convert.ToDouble(dt4.Rows[i]["purchase_sd"]);
+                    cd = Convert.ToDouble(dt4.Rows[i]["cd"]);
+                    rd = Convert.ToDouble(dt4.Rows[i]["rd"]);
+                    char purchaseType = Convert.ToChar(dt4.Rows[i]["purchase_type"]);
+                    if (dt4.Rows[i]["real_property"].ToString() != "")
+                    {
+                        realProperty = Convert.ToChar(dt4.Rows[i]["real_property"]);
+                    }
+                    if (isExampted == true && purchaseType == 'L')
+                    {
+                        exemptedLocalPurchasePrice += price;
+                    }
+                    if (isExampted == true && purchaseType == 'I')
+                    {
+                        exemptedForeignPurchasePrice += price;
+                    }
+                    if (zeroRate == true && purchaseType == 'L')
+                    {
+                        zeroRateLocalPurchasePrice += price;
+                    }
+                    if (zeroRate == true && purchaseType == 'I')
+                    {
+                        zeroRateForeignPurchasePrice += price;
+                    }
+                    //commented on 22-07-2019
+                    //if (realProperty != 'W' && isExampted == false && purchaseType == 'L')
+                    //{
+                    //    StandardPurchaseLocalPrice += price;
+                    //    StandardPurchaseLocalVat += vat;
+                    //}
+                    if (isExampted == false && purchaseType == 'I')
+                    {
+                        StandardPurchaseForeignPrice += price;
+                        StandardPurchaseForeignVat += vat;
+                    }
+                    if (realProperty == 'W')
+                    {
+                        LandBuildingPriceP4 += price;
+                        LandBuildingVatP4 += vat;
+                    }
+
+                    //আদর্শ হারের ব্যতীত অন্যান্য হারে পণ্য/সেবা (স্থানীয় ক্রয়)
+                    AdorshoHarBatitoMulloLcl += price;//মূল্য(স্থানীয় ক্রয়)
+                    AdorshoHarBatitoMushokLcl += vat;//মূসক(স্থানীয় ক্রয়)
+                    AdorshoHarBatitoMushokLclSD += sd;
+                    AdorshoHarBatitoMushokLclCD += cd;
+                    AdorshoHarBatitoMushokLclRD += rd;
+
+
+                }
+                //আদর্শ হারের ব্যতীত অন্যান্য হারে পণ্য/সেবা (স্থানীয় ক্রয়)
+                //lblAdorshoHarBatitoMulloLcl.Text = (AdorshoHarBatitoMulloLcl + AdorshoHarBatitoMushokLclSD + AdorshoHarBatitoMushokLclCD + AdorshoHarBatitoMushokLclRD).ToString("0.00");
+                lblAdorshoHarBatitoMulloLcl.Text = AdorshoHarBatitoMulloLcl.ToString("0.00");
+                lblAdorshoHarBatitoMushokLcl.Text = AdorshoHarBatitoMushokLcl.ToString("0.00");
+                zerorateLocalPurchaseAmountN10P4.Text = zeroRateLocalPurchasePrice.ToString("0.00");
+                zerorateForeignPurchaseAmountN11P4.Text = zeroRateForeignPurchasePrice.ToString("0.00");
+                partialRebatePurchaseVatN14P4.Text = partialRebateLPVatP4.ToString("0.00");
+                nonRebatePurchaseAmountN15P4.Text = nonRebateLPPriceP4.ToString("0.00");
+                nonRebatePurchaseVatN15P4.Text = nonRebateLPVatP4.ToString("0.00");
+
+
+                if (StandardPurchaseLocalVat == null)
+                    StandardPurchaseLocalVat = 0.00;
+                if (StandardPurchaseForeignVat == null)
+                    StandardPurchaseForeignVat = 0.00;
+                if (LandBuildingVatP4 == null)
+                    LandBuildingVatP4 = 0.00;
+
+                Note16 = StandardPurchaseLocalVat + StandardPurchaseForeignVat + partialRebateLPVatP4 + nonRebateLPVatP4;
+
+                //lblTotalVatN16P4.Text = Note16.ToString("0.00");
+            }
+            else
+            {
+                lblAdorshoHarBatitoMulloLcl.Text= AdorshoHarBatitoMulloLcl.ToString("0.00");
+                zerorateForeignPurchaseAmountN11P4.Text = zeroRateLocalPurchasePrice.ToString("0.00");
+                zerorateLocalPurchaseAmountN10P4.Text = zeroRateLocalPurchasePrice.ToString("0.00");
+                nonRebatePurchaseAmountN15P4.Text = nonRebateLPPriceP4.ToString("0.00");
+            }
+            #endregion
+
+            #region আদর্শ হারের ব্যতীত অন্যান্য হারে পণ্য/সেবা (আমদানি)
+            //Transaction Type Import
+            if (dtImp != null && dtImp.Rows.Count > 0)
+            {
+                for (int i = 0; i < dtImp.Rows.Count; i++)
+                {
+                    double price = 0.00;
+                    double vat = 0.00;
+                    double sd = 0.00;
+                    double cd = 0.00;
+                    double rd = 0.00;
+
+                    price = Convert.ToDouble(dtImp.Rows[i]["price"]);
+                    vat = Convert.ToDouble(dtImp.Rows[i]["vat"]);
+                    sd = Convert.ToDouble(dtImp.Rows[i]["purchase_sd"]);
+                    cd = Convert.ToDouble(dtImp.Rows[i]["cd"]);
+                    rd = Convert.ToDouble(dtImp.Rows[i]["rd"]);
+
+                    //আদর্শ হারের ব্যতীত অন্যান্য হারে পণ্য/সেবা (আমদানি)
+                    AdorshoHarBatitoMulloImp += price;//মূল্য(আমদানি)
+                    AdorshoHarBatitoMushokImp += vat;//মূসক(আমদানি)
+                    AdorshoHarBatitoMushokImpSD += sd;
+                    AdorshoHarBatitoMushokImpCD += cd;
+                    AdorshoHarBatitoMushokImpRD += rd;
+                }
+                //আদর্শ হারের ব্যতীত অন্যান্য হারে পণ্য/সেবা (আমদানি)
+                //lblAdorshoHarBatitoMulloImp.Text = (AdorshoHarBatitoMulloImp + AdorshoHarBatitoMushokImpSD + AdorshoHarBatitoMushokImpCD + AdorshoHarBatitoMushokImpRD).ToString("0.00");
+                lblAdorshoHarBatitoMulloImp.Text = AdorshoHarBatitoMulloImp.ToString("0.00");
+                lblAdorshoHarBatitoMushokImp.Text = AdorshoHarBatitoMushokImp.ToString("0.00");
+            }
+            else
+            {
+                lblAdorshoHarBatitoMulloImp.Text = "0.00";
+                lblAdorshoHarBatitoMushokImp.Text = "0.00";
+            }
+            #endregion
+
+            #region
+            //22-07-2019
+            //adorsho local
+            if (dt4AdorshoLocal != null && dt4AdorshoLocal.Rows.Count > 0)
+            {
+                for (int l = 0; l < dt4AdorshoLocal.Rows.Count; l++)
+                {
+                    char realProperty = '0';
+                    if (dt4AdorshoLocal.Rows[l]["real_property"].ToString() != "")
+                    {
+                        realProperty = Convert.ToChar(dt4AdorshoLocal.Rows[l]["real_property"]);
+                    }
+
+                    bool isExampted = Convert.ToBoolean(dt4AdorshoLocal.Rows[l]["is_exempted"]);
+                    char purchaseType = Convert.ToChar(dt4AdorshoLocal.Rows[l]["purchase_type"]);
+                    double price = 0.00;
+                    double vat = 0.00;
+                    double sd = 0.00;
+                    double cd = 0.00;
+                    double rd = 0.00;
+                    price = Convert.ToDouble(dt4AdorshoLocal.Rows[l]["price"]);
+                    vat = Convert.ToDouble(dt4AdorshoLocal.Rows[l]["vat"]);
+                    sd = Convert.ToDouble(dt4AdorshoLocal.Rows[l]["purchase_sd"]);
+                    cd = Convert.ToDouble(dt4AdorshoLocal.Rows[l]["cd"]);
+                    rd = Convert.ToDouble(dt4AdorshoLocal.Rows[l]["rd"]);
+                    if (realProperty != 'W' && isExampted == false && purchaseType == 'L')
+                    {
+
+                        StandardPurchaseLocalPrice += price;
+                        StandardPurchaseLocalVat += vat;
+                        StandardPurchaseLocalSD += sd;
+                        StandardPurchaseLocalCD += cd;
+                        StandardPurchaseLocalRD += rd;
+                    }
+                }
+                //Adorsho local 
+                //normally local purchase has no cd and rd but somatimes it may have. so we create universal formula both for local and import
+                // and that is price+sd+cd+rd
+                //standardLocalPurchaseAmountN12P4.Text = (StandardPurchaseLocalPrice + StandardPurchaseLocalSD + StandardPurchaseLocalCD + StandardPurchaseLocalRD).ToString("0.00");
+                standardLocalPurchaseAmountN12P4.Text = StandardPurchaseLocalPrice.ToString("0.00");
+                standardLocalPurchaseVatN12P4.Text = StandardPurchaseLocalVat.ToString("0.00");
+                //
+            }
+            else
+            {
+                standardLocalPurchaseAmountN12P4.Text = StandardPurchaseLocalPrice.ToString("0.00");
+                standardLocalPurchaseVatN12P4.Text = StandardPurchaseLocalVat.ToString("0.00");
+            }
+            #endregion
+            #region
+            //adorsho import
+            if (dt4AdorshoImport != null && dt4AdorshoImport.Rows.Count > 0)
+            {
+                for (int m = 0; m < dt4AdorshoImport.Rows.Count; m++)
+                {
+                    char realProperty = '0';
+                    if (dt4AdorshoImport.Rows[m]["real_property"].ToString() != "")
+                    {
+                        realProperty = Convert.ToChar(dt4AdorshoImport.Rows[m]["real_property"]);
+                    }
+
+                    bool isExampted = Convert.ToBoolean(dt4AdorshoImport.Rows[m]["is_exempted"]);
+                    char purchaseType = Convert.ToChar(dt4AdorshoImport.Rows[m]["purchase_type"]);
+                    double price = 0.00;
+                    double vat = 0.00;
+                    double sd = 0.00;
+                    double cd = 0.00;
+                    double rd = 0.00;
+                    price = Convert.ToDouble(dt4AdorshoImport.Rows[m]["price"]);
+                    vat = Convert.ToDouble(dt4AdorshoImport.Rows[m]["vat"]);
+                    sd = Convert.ToDouble(dt4AdorshoImport.Rows[m]["purchase_sd"]);
+                    cd = Convert.ToDouble(dt4AdorshoImport.Rows[m]["cd"]);
+                    rd = Convert.ToDouble(dt4AdorshoImport.Rows[m]["rd"]);
+                    if (isExampted == false && purchaseType == 'I')
+                    {
+                        StandardPurchaseForeignPrice += price;
+                        StandardPurchaseForeignVat += vat;
+                        StandardPurchaseForeignSD += sd;
+                        StandardPurchaseForeignCD += cd;
+                        StandardPurchaseForeignRD += rd;
+                    }
+                }
+                //Adorsho import
+                //common formula for 9.1 both local and import purchase price+sd+cd+rd
+                //standardForeignPurchaseAmountN13P4.Text = (StandardPurchaseForeignPrice + StandardPurchaseForeignSD + StandardPurchaseForeignCD + StandardPurchaseForeignRD).ToString("0.00");
+                standardForeignPurchaseAmountN13P4.Text = StandardPurchaseForeignPrice.ToString("0.00");
+                standardForeignPurchaseVatN13P4.Text = StandardPurchaseForeignVat.ToString("0.00");
+                //
+            }
+            else
+            {
+                standardForeignPurchaseAmountN13P4.Text = StandardPurchaseForeignPrice.ToString("0.00");
+                standardForeignPurchaseVatN13P4.Text = StandardPurchaseForeignVat.ToString("0.00");
+            }
+            #endregion
+
+            #region
+            //17-Aug-2019 start
+            //অব্যাহতিপ্রাপ্ত পণ্য/সেবা (স্থানীয় ক্রয়)
+            //For exempted product vat and sd not considerable
+            if (dt4ExemptedLocal != null && dt4ExemptedLocal.Rows.Count > 0)
+            {
+                for (int m = 0; m < dt4ExemptedLocal.Rows.Count; m++)
+                {
+                    double price = 0.00;
+                    price = Convert.ToDouble(dt4ExemptedLocal.Rows[m]["price"]);
+                    ExemptedPurchaseLocalPrice += price;
+                }
+                exemptedLocalPurchaseAmountN8P4.Text = ExemptedPurchaseLocalPrice.ToString("0.00");
+
+            }
+            else
+            {
+                exemptedLocalPurchaseAmountN8P4.Text = ExemptedPurchaseLocalPrice.ToString("0.00");
+            }
+            #endregion
+            #region
+            //অব্যাহতিপ্রাপ্ত পণ্য/সেবা (আমদানি)
+            if (dt4ExemptedImport != null && dt4ExemptedImport.Rows.Count > 0)
+            {
+                for (int m = 0; m < dt4ExemptedImport.Rows.Count; m++)
+                {
+                    double price = 0.00;
+                    price = Convert.ToDouble(dt4ExemptedImport.Rows[m]["price"]);
+                    ExemptedPurchaseImportPrice += price;
+                }
+                exemptedForeignPurchaseAmountN9P4.Text = ExemptedPurchaseImportPrice.ToString("0.00");
+
+            }
+            else
+            {
+                exemptedForeignPurchaseAmountN9P4.Text = ExemptedPurchaseImportPrice.ToString("0.00");
+            }
+            #endregion
+            #region
+            //সুনির্দিষ্ট কর ভিত্তিক পণ্য/ সেবা নোট(১৮)--21-Aug-2019
+            double fixedPrice18 = 0.00;
+            double fixedVat18 = 0.00;
+            if (dt4LocalFixed != null && dt4LocalFixed.Rows.Count > 0)
+            {
+                //here price= only price. no sd will added bcos fixed value item has no sd
+                for (int m = 0; m < dt4LocalFixed.Rows.Count; m++)
+                {
+                    double price = 0.00;
+                    double vat = 0.00;
+                    price = Convert.ToDouble(dt4LocalFixed.Rows[m]["price"]);
+                    vat= Convert.ToDouble(dt4LocalFixed.Rows[m]["vat"]);
+                    fixedPrice18 += price;
+                    fixedVat18 += vat;
+                }
+                partialRebatePurchaseAmountN14P4.Text = fixedPrice18.ToString("0.00");
+                partialRebatePurchaseVatN14P4.Text = fixedVat18.ToString("0.00");
+
+            }
+            else
+            {
+                partialRebatePurchaseAmountN14P4.Text = fixedPrice18.ToString("0.00");
+                //exemptedForeignPurchaseAmountN9P4.Text = fixedPrice18.ToString("0.00");
+                partialRebatePurchaseVatN14P4.Text = fixedVat18.ToString("0.00");
+            }
+            #endregion
+            #region শূন্যহার বিশিষ্ট পণ্য/সেবা (স্থানীয় ক্রয়) note10
+            double zeroRatePrice10 = 0.00;
+            if (dt4ZeroRateNote10 != null && dt4ZeroRateNote10.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt4ZeroRateNote10.Rows.Count; i++)
+                {
+                    double price = 0.00;
+                    price = Convert.ToDouble(dt4ZeroRateNote10.Rows[i]["price"]);
+                    zeroRatePrice10 += price;
+                }
+                zerorateLocalPurchaseAmountN10P4.Text = zeroRatePrice10.ToString("0.00");
+
+            }
+            else
+            {
+                zerorateLocalPurchaseAmountN10P4.Text = zeroRatePrice10.ToString("0.00");
+            }
+            #endregion
+            #region শূন্যহার বিশিষ্ট পণ্য/সেবা(আমদানি ) Note11
+            double zeroRatePrice11 = 0.00;
+            if (dt4ZeroRateNote11 != null && dt4ZeroRateNote11.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt4ZeroRateNote11.Rows.Count; i++)
+                {
+                    double price = 0.00;
+                    price = Convert.ToDouble(dt4ZeroRateNote11.Rows[i]["price"]);
+                    zeroRatePrice11 += price;
+                }
+                zerorateForeignPurchaseAmountN11P4.Text = zeroRatePrice11.ToString("0.00");
+            }
+            else
+            {
+                zerorateForeignPurchaseAmountN11P4.Text = zeroRatePrice11.ToString("0.00");
+            }
+            #endregion
+            //17-Aug-2019 end
+            //২৩ মূল্য (ক)
+            double total23Ka = 0.00;
+            //need to add 20,21,22 later after done the note value
+            total23Ka = Convert.ToDouble(zerorateLocalPurchaseAmountN10P4.Text.Trim()) + Convert.ToDouble(zerorateForeignPurchaseAmountN11P4.Text.Trim()) + Convert.ToDouble(exemptedLocalPurchaseAmountN8P4.Text.Trim()) + Convert.ToDouble(exemptedForeignPurchaseAmountN9P4.Text.Trim()) + Convert.ToDouble(standardLocalPurchaseAmountN12P4.Text.Trim()) + Convert.ToDouble(standardForeignPurchaseAmountN13P4.Text.Trim()) + Convert.ToDouble(lblAdorshoHarBatitoMulloLcl.Text.Trim()) + Convert.ToDouble(lblAdorshoHarBatitoMulloImp.Text.Trim()) + Convert.ToDouble(partialRebatePurchaseAmountN14P4.Text.Trim()) + Convert.ToDouble(nonRebatePurchaseAmountN15P4.Text.Trim());
+            lblTotalPriceP4.Text = total23Ka.ToString("0.00");
+            //২৩ মূসক (খ)
+            lblTotalVatN16P4.Text = (StandardPurchaseLocalVat + StandardPurchaseForeignVat + AdorshoHarBatitoMushokLcl + AdorshoHarBatitoMushokImp + partialRebateLPVatP4+ fixedVat18).ToString("0.00");
+            #endregion
+
+            #region /*Part-5*/
+            double otheAdjustment27 = 0.00;
+            DataTable dt5 = dbBLL.getVatReturnPart5Data(fromDate, toDateN);
+            DataTable dt27 =dbBLL.getVatReturnPart5Data27(fromDate, toDateN);//অন্যকোনো সমন্বয় ঘটনার জন্য (২৭)
+            DataTable dt26 = dbBLL.getVatReturnPart5Data26(fromDate, toDateN); //ডেবিট নোটের জন্য (২৬)
+
+            if (dt5 != null && dt5.Rows.Count > 0)
+            {
+
+                for (int i = 0; i < dt5.Rows.Count; i++)
+                {
+                    purchaseVDS += Convert.ToDouble(dt5.Rows[i]["vds"]);
+                    purchaseRebatable += Convert.ToDouble(dt5.Rows[i]["rebatable_amount"]);
+                    purchasePriceSuspend += Convert.ToDouble(dt5.Rows[i]["return_amount"]);
+                    purchaseAnotherVat += Convert.ToDouble(dt5.Rows[i]["other_tax"]);
+                }
+
+                receiveVDSAmountN17P5.Text = purchaseVDS.ToString("0.00");
+                nonBankingPaymentVatN18P5.Text = purchaseRebatable.ToString("0.00");
+                //changePurchaseAllVatN19P5.Text = purchasePriceSuspend.ToString("0.00");
+                otherAdjusmentVatN20P5.Text = purchaseAnotherVat.ToString("0.00");
+                Note21 = purchaseVDS + purchaseRebatable + purchasePriceSuspend + purchaseAnotherVat;
+                lblTotalVatN21P5.Text = Note21.ToString("0.00");
+            }
+            //অন্যকোনো সমন্বয় ঘটনার জন্য
+            if (dt27 != null && dt27.Rows.Count > 0)
+            {
+                otheAdjustment27= Convert.ToDouble(dt27.Rows[0]["price"]);
+                otherAdjusmentVatN20P5.Text = otheAdjustment27.ToString("0.00");
+            }
+            else
+            {
+                otherAdjusmentVatN20P5.Text = otheAdjustment27.ToString("0.00");
+            }
+            //ডেবিট নোটের জন্য 
+            double vat26 = 0.00;
+            if (dt26 != null && dt26.Rows.Count > 0)
+            {
+                vat26 = Convert.ToDouble(dt26.Rows[0]["vat"]);
+                changePurchaseAllVatN19P5.Text = vat26.ToString("0.00");
+            }
+            else
+            {
+                changePurchaseAllVatN19P5.Text = vat26.ToString("0.00");
+            }
+            #endregion
+
+            #region /*Part-6*/
+            double otheAdjustment33 = 0.00;
+            double forCreditNoteIssue = 0.00;
+            DataTable dt6 = dbBLL.getVatReturnPart6Data(fromDate, toDateN);
+            DataTable dt6AT = dbBLL.getATDataPart6(fromDate, toDateN);
+            DataTable dt33 = dbBLL.getVatReturnPart5Data33(fromDate, toDateN);//অন্যকোনো সমন্বয় ঘটনার জন্য (৩৩ )
+            DataTable dt32 = dbBLL.getVatReturnPart6Data32(fromDate, toDateN); //ক্রেডিট নোট্ ইস্যুর জন্য (৩২)
+            if (dt6 != null && dt6.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt6.Rows.Count; i++)
+                {
+                    //saleVDS += Convert.ToDouble(dt6.Rows[i]["vds_amount"]);//commented on 31-July-2019
+                    saleVDS += Convert.ToDouble(dt6.Rows[i]["vds_amt"]);//mohi uddin 31-July-2019
+                    salePriceSuspend += Convert.ToDouble(dt6.Rows[i]["return_vat"]);
+                    saleSuplimentaryDuty += Convert.ToDouble(dt6.Rows[i]["return_sd"]);
+                    saleAnotherVat += Convert.ToDouble(dt6.Rows[i]["other_tax"]);
+                    //30-July-2019
+                    forCreditNoteIssue += Convert.ToDouble(dt6.Rows[i]["return_amount"]);
+                }
+                paidVDSAmountN22P6.Text = saleVDS.ToString("0.00");
+                //changeSaleAllVatN23P6.Text = salePriceSuspend.ToString("0.00");//commented on 18-Aug-2019
+                //SDAmountN24P6.Text = saleSuplimentaryDuty.ToString("0.00");
+                //SDAmountN24P6.Text = salePriceSuspend.ToString("0.00");
+                double aaa = 0.00;
+                SDAmountN24P6.Text = aaa.ToString("0.00");
+                otherAdjusmentAmountN25P6.Text = saleAnotherVat.ToString("0.00");
+                //Note26 = saleVDS + salePriceSuspend + saleSuplimentaryDuty + saleAnotherVat;
+                //lblTotalVatN26P6.Text = Note26.ToString("0.00");
+                //30-July-2019
+                lblforCreditNoteIssue.Text = forCreditNoteIssue.ToString("0.00");
+                
+            }                         
+            if (dt6AT != null && dt6AT.Rows.Count > 0)
+            {
+                double at6 = 0.00;
+                at6= Convert.ToDouble(dt6AT.Rows[0]["at"]);
+                changeSaleAllVatN23P6.Text = at6.ToString("0.00");
+            }
+            //ক্রেডিট নোট্ ইস্যুর জন্য
+            double vat32 = 0.00;
+            double dNote32 = 0.00;
+            if (dt32 != null && dt32.Rows.Count > 0)
+            {
+                vat32 = Convert.ToDouble(dt32.Rows[0]["vat"]);
+                lblforCreditNoteIssue.Text = vat32.ToString("0.00");
+            }
+            else
+            {
+                lblforCreditNoteIssue.Text = vat32.ToString("0.00");
+            }
+            dNote32 = Convert.ToDouble(lblforCreditNoteIssue.Text.Trim());
+            if (dt33 != null && dt33.Rows.Count > 0)
+            {
+                otheAdjustment33 = Convert.ToDouble(dt33.Rows[0]["price"]);
+                otherAdjusmentAmountN25P6.Text = otheAdjustment33.ToString("0.00");
+            }
+            else
+            {
+                otherAdjusmentAmountN25P6.Text = otheAdjustment33.ToString("0.00");
+            }
+            //22-Aug-2019
+            double dNote29 = 0.00;
+            double dNote30 = 0.00;
+            double dNote31 = 0.00;
+            //double dNote32 = 0.00;
+            double dNote33 = 0.00;
+
+            dNote29 = Convert.ToDouble(paidVDSAmountN22P6.Text.Trim());
+            dNote30 = Convert.ToDouble(changeSaleAllVatN23P6.Text.Trim());
+            dNote31 = Convert.ToDouble(SDAmountN24P6.Text.Trim());
+            //dNote32 = Convert.ToDouble(lblforCreditNoteIssue.Text.Trim());
+            dNote33 = Convert.ToDouble(otherAdjusmentAmountN25P6.Text.Trim());
+            lblTotalVatN26P6.Text = (dNote29 + dNote30 + dNote31 + dNote32 + dNote33).ToString("0.00");
+
+
+            #endregion
+
+            #region /*Part-7*/
+            DataTable dt7 = dbBLL.getVatReturnPart7Data(fromDate, toDateN);
+            DataTable dt39 = dbBLL.getVatReturnPart7Data39(fromDate, toDateN); //ডেবিট নোট ইসুর জন্য সমন্বয় সম্পূরূক শুল্ক (৩৯)
+            DataTable dt40 = dbBLL.getVatReturnPart7Data40(fromDate, toDateN); //ক্রেডিট নোট ইসুর জন্য সমন্বয় সম্পূরূক শুল্ক (৪০)
+            if (dt7 != null && dt7.Rows.Count > 0)
+            {
+                aitP7 += Convert.ToDouble(dt7.Rows[0]["at"]);
+            }
+            //TotalVatSDAmountN27P7.Text = (Note7 - Note16 + Note21 - Note26).ToString("0.00");
+            AdvanceVatAmountN28P7.Text = aitP7.ToString("0.00");
+            PrevAdvanceAmountN29P7.Text = "0.00";
+            ExciseDutyN30P7.Text = "0.00";
+            //SurchargeN31P7.Text = "0.00";
+
+            //ডেবিট নোট ইসুর জন্য সমন্বয় সম্পূরূক শুল্ক (৩৯)
+            double sd39 = 0.00;
+            if (dt39 != null && dt39.Rows.Count > 0)
+            {
+                sd39 = Convert.ToDouble(dt39.Rows[0]["sd"]);
+                SurchargeN31P7.Text = sd39.ToString("0.00");
+            }
+            else
+            {
+                SurchargeN31P7.Text = sd39.ToString("0.00");
+            }
+            //ক্রেডিট নোট ইসুর জন্য সমন্বয় সম্পূরূক শুল্ক  (৪০)
+            double sd40 = 0.00;
+            if (dt40 != null && dt40.Rows.Count > 0)
+            {
+                sd40 = Convert.ToDouble(dt40.Rows[0]["sd"]);
+                Label16.Text = sd40.ToString("0.00");
+            }
+            else
+            {
+                Label16.Text = sd40.ToString("0.00");
+            }
+            //17-Aug-2019 start
+            double nineGha = 0;
+            double teishKha = 0;
+            double atash = 0;
+            double choitrish = 0;
+            double poitrish = 0;
+            double ponchash = 0;
+            double nineKha = 0;
+            double thirtyNine = 0;
+            double forty = 0;
+            double fortyOne = 0;
+            if (lblTotalVatN7P3.Text != "")
+            {
+                nineGha = Convert.ToDouble(lblTotalVatN7P3.Text.Trim());
+            }
+            else
+            {
+                nineGha = 0;
+            }
+            if (AdvanceVatAmountN28P7.Text != "")
+            {
+                teishKha = Convert.ToDouble(lblTotalVatN16P4.Text.Trim());
+            }
+            else
+            {
+                teishKha = 0;
+            }
+            if (lblTotalVatN21P5.Text != "")
+            {
+                atash = Convert.ToDouble(lblTotalVatN21P5.Text.Trim());
+            }
+            else
+            {
+                atash = 0;
+            }
+            if (lblTotalVatN26P6.Text != "")
+            {
+                choitrish = Convert.ToDouble(lblTotalVatN26P6.Text.Trim());
+            }
+            else
+            {
+                choitrish = 0;
+            }
+            TotalVatSDAmountN27P7.Text = ((nineGha - teishKha) + (atash - choitrish)).ToString();
+
+            if (lblTotalVatN26P6.Text != "")
+            {
+                poitrish = Convert.ToDouble(lblTotalVatN26P6.Text.Trim());
+            }
+            else
+            {
+                poitrish = 0;
+            }
+            if (Label26.Text != "")
+            {
+                ponchash = Convert.ToDouble(Label26.Text.Trim());
+            }
+            else
+            {
+                ponchash = 0;
+            }
+
+            AdvanceVatAmountN28P7.Text = (poitrish + ponchash).ToString();
+            if (lblNineMushokKhaTotal.Text != "")
+            {
+                nineKha = Convert.ToDouble(lblNineMushokKhaTotal.Text.Trim());
+            }
+            else
+            {
+                nineKha = 0;
+            }
+            if (SurchargeN31P7.Text != "")
+            {
+                thirtyNine = Convert.ToDouble(SurchargeN31P7.Text.Trim());
+            }
+            else
+            {
+                thirtyNine = 0;
+            }
+            if (Label16.Text != "")
+            {
+                forty = Convert.ToDouble(Label16.Text.Trim());
+            }
+            else
+            {
+                forty = 0;
+            }
+            if (Label17.Text != "")
+            {
+                fortyOne = Convert.ToDouble(Label17.Text.Trim());
+            }
+            else
+            {
+                fortyOne = 0;
+            }
+
+            //17-Aug-2019 end
+           
+            #endregion
+
+            #region /*Part-8*/
+
+            DataTable dt852 = dbBLL.getVatReturnPart852Data(fromDate, toDateN);
+            //TotalVatN32P8.Text = ((Convert.ToDouble(TotalVatSDAmountN27P7.Text)) - (Convert.ToDouble(AdvanceVatAmountN28P7.Text)) - (Convert.ToDouble(PrevAdvanceAmountN29P7.Text))).ToString("0.00");
+            if (dt852 != null && dt852.Rows.Count > 0)
+            {
+                TotalVatN32P8.Text = dt852.Rows[0]["amount"].ToString();
+                oc1.Text = dt852.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt853 = dbBLL.getVatReturnPart853Data(fromDate, toDateN);
+            if (dt853 != null && dt853.Rows.Count > 0)
+            {
+                SDdepositN33P8.Text = dt853.Rows[0]["amount"].ToString();
+                oc2.Text = dt853.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt854 = dbBLL.getVatReturnPart854Data(fromDate, toDateN);
+            if (dt854 != null && dt854.Rows.Count > 0)
+            {
+                DueVatN34P8.Text = dt854.Rows[0]["amount"].ToString();
+                oc3.Text = dt854.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt855 = dbBLL.getVatReturnPart855Data(fromDate, toDateN);
+            if (dt855 != null && dt855.Rows.Count > 0)
+            {
+                DueSDN34P8.Text = dt855.Rows[0]["amount"].ToString();
+                oc4.Text = dt855.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt856 = dbBLL.getVatReturnPart856Data(fromDate, toDateN);
+            if (dt856 != null && dt856.Rows.Count > 0)
+            {
+                FinepenaltyN34P8.Text = dt856.Rows[0]["amount"].ToString();
+                oc5.Text = dt856.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt857 = dbBLL.getVatReturnPart857Data(fromDate, toDateN);
+            if (dt857 != null && dt857.Rows.Count > 0)
+            {
+                ExciseDutyN33P8.Text = dt857.Rows[0]["amount"].ToString();
+                oc6.Text = dt857.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt858 = dbBLL.getVatReturnPart858Data(fromDate, toDateN);
+            if (dt858 != null && dt858.Rows.Count > 0)
+            {
+                DevelopmentN33P8.Text = dt858.Rows[0]["amount"].ToString();
+                oc7.Text = dt858.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt859 = dbBLL.getVatReturnPart859Data(fromDate, toDateN);
+            if (dt859 != null && dt859.Rows.Count > 0)
+            {
+                ICTN33P8.Text = dt859.Rows[0]["amount"].ToString();
+                oc8.Text = dt859.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt860 = dbBLL.getVatReturnPart860Data(fromDate, toDateN);
+            if (dt860 != null && dt860.Rows.Count > 0)
+            {
+                HealthN33P8.Text = dt860.Rows[0]["amount"].ToString();
+                oc9.Text = dt860.Rows[0]["code_no"].ToString();
+            }
+            DataTable dt861 = dbBLL.getVatReturnPart861Data(fromDate, toDateN);
+            if (dt861 != null && dt861.Rows.Count > 0)
+            {
+                EnvironmentN33P8.Text = dt861.Rows[0]["amount"].ToString();
+                oc10.Text = dt861.Rows[0]["code_no"].ToString();
+            }
+
+            #endregion
+
+
+            #region /*Part-9*/
+            #endregion
+
+        }
+        catch (Exception ex)
+        {
+            //ReallySimpleLog.WriteLog(ex);
+            throw ex;
+        }
+    }
+    //21/7/19
+    protected void SubForm_3Row4K_Click(object sender, EventArgs e)
+    {
+
+        Response.Redirect("SubForms/SubForm_k.aspx");//move to the next link i.e default.aspx
+    }
+    protected void SubForm_4Row14k_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_k_Note_14.aspx");
+    }
+
+    protected void SubForm_4Row15k_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_Note_15.aspx");
+    }
+
+    protected void SubForm_4Row17k_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_Note_17.aspx");
+    }
+
+    protected void SubForm_3Row1K_Click(object sender, EventArgs e)
+    {
+
+        //Session["NoteNo"] = 1;
+        Response.Redirect("SubForms/SubForm_K_Note_1.aspx");
+    }
+    protected void SubForm_3Row2K_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_Note_2.aspx");
+    }
+    protected void SubForm_3Row3K_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_Note_3.aspx");
+    }
+    protected void SubForm_3Row5K_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_Note_5.aspx");
+    }
+    protected void SubForm_3Row6K_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_G_Note_6.aspx");
+
+    }
+    protected void SubForm_3Row7K_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_Note_7.aspx");
+    }
+    protected void SubForm_3Row8KH_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_KH_Note_8.aspx");
+    }
+    protected void SubForm_4Row10k_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_Note_10.aspx");
+    }
+
+    protected void SubForm_4ROW11K_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_Note_11.aspx");
+    }
+
+    protected void SubForm_4Row16k_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_k_Note_16.aspx");
+    }
+    protected void SubForm_5Row24GHA_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_GHA_Note_24.aspx");
+    }
+
+    protected void SunForm_6Row29UMO_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_UMO_Note_29.aspx");
+    }
+    protected void SubForm_5_K_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("SubForms/SubForm_K_5.aspx");
+    }
+    
+    //Ehsan
+
+
+
+    private void xmlVAT19()
+    {
+        try
+        {
+            XmlDocument xmlDoc = new XmlDocument();
+            XmlNode docNode = xmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null);
+            xmlDoc.AppendChild(docNode);
+            XmlElement root = xmlDoc.CreateElement("ArrayOfVAT_18");
+            xmlDoc.AppendChild(root);
+
+            XmlNode dataRoot = csXML.XmlHelper.AddElement("VAT19", null, root);
+            XmlNode sessionvalue = csXML.XmlHelper.AddElement("sessionvalue", "999", dataRoot);
+            XmlNode VatRegistrationNo = csXML.XmlHelper.AddElement("VatRegistrationNo", Session["ORGANIZATION_BIN"].ToString(), dataRoot);
+
+            XmlNode Column1A = csXML.XmlHelper.AddElement("ColumnP1A", TaxOrganizationName.Text.ToString(), dataRoot);
+            XmlNode Column1B = csXML.XmlHelper.AddElement("ColumnP1B", Session["ORGANIZATION_BIN"].ToString(), dataRoot);
+            XmlNode Column2A = csXML.XmlHelper.AddElement("ColumnP2A", lblTaxPeriod.Text.ToString(), dataRoot);
+            XmlNode Column2B = csXML.XmlHelper.AddElement("ColumnP2B", (chkHa.Checked == true ? true : false).ToString(), dataRoot);
+            XmlNode Column2C = csXML.XmlHelper.AddElement("ColumnP2C", DateTime.UtcNow.ToString("dd-MMM-yyyy"), dataRoot);
+
+            XmlNode Column3 = csXML.XmlHelper.AddElement("ColumnP3N1A", zerorateDeemedExportAmountN1P3.Text.ToString(), dataRoot);
+            XmlNode Column4 = csXML.XmlHelper.AddElement("ColumnP3N2A", zerorateDirectExportAmountN2P3.Text.ToString(), dataRoot);
+            XmlNode Column5 = csXML.XmlHelper.AddElement("ColumnP3N3A", exemptedSupplyAmountN3P3.Text.ToString(), dataRoot);
+            XmlNode Column6 = csXML.XmlHelper.AddElement("ColumnP3N4A", typicalSupplyAmountN4P3.Text.ToString(), dataRoot);
+            XmlNode Column7A = csXML.XmlHelper.AddElement("ColumnP3N4B", typicalSupplyVATN4P3.Text.ToString(), dataRoot);
+            XmlNode Column7B = csXML.XmlHelper.AddElement("ColumnP3N4C", typicalSupplySDN4P3.Text.ToString(), dataRoot);
+            XmlNode Column8A = csXML.XmlHelper.AddElement("ColumnP3N5A", note5AmountP3.Text.ToString(), dataRoot);
+            XmlNode Column8B = csXML.XmlHelper.AddElement("ColumnP3N5B", note5VATP3.Text.ToString(), dataRoot);
+            XmlNode Column9A = csXML.XmlHelper.AddElement("ColumnP3N5C", note5SDP3.Text.ToString(), dataRoot);
+            XmlNode Column9B = csXML.XmlHelper.AddElement("ColumnP3N6A", nonTypicalSupplyAmountN6P3.Text.ToString(), dataRoot);
+            XmlNode Column10 = csXML.XmlHelper.AddElement("ColumnP3N6B", nonTypicalSupplyVATN6P3.Text.ToString(), dataRoot);
+            XmlNode Column11 = csXML.XmlHelper.AddElement("ColumnP3N6C", nonTypicalSupplySDN6P3.Text.ToString(), dataRoot);
+            XmlNode Column12 = csXML.XmlHelper.AddElement("ColumnP3N7BC", lblTotalVatN7P3.Text.ToString(), dataRoot);
+
+            XmlNode Column13 = csXML.XmlHelper.AddElement("ColumnP4N8A", exemptedLocalPurchaseAmountN8P4.Text.ToString(), dataRoot);
+            XmlNode Column14 = csXML.XmlHelper.AddElement("ColumnP4N9A", exemptedForeignPurchaseAmountN9P4.Text.ToString(), dataRoot);
+            XmlNode Column15 = csXML.XmlHelper.AddElement("ColumnP4N10A", zerorateLocalPurchaseAmountN10P4.Text.ToString(), dataRoot);
+            XmlNode Column16 = csXML.XmlHelper.AddElement("ColumnP4N11A", zerorateForeignPurchaseAmountN11P4.Text.ToString(), dataRoot);
+            XmlNode Column17 = csXML.XmlHelper.AddElement("ColumnP4N12A", standardLocalPurchaseAmountN12P4.Text.ToString(), dataRoot);
+            XmlNode Column18 = csXML.XmlHelper.AddElement("ColumnP4N12B", standardLocalPurchaseVatN12P4.Text.ToString(), dataRoot);
+            XmlNode Column19 = csXML.XmlHelper.AddElement("ColumnP4N13A", standardForeignPurchaseAmountN13P4.Text.ToString(), dataRoot);
+            XmlNode Column20 = csXML.XmlHelper.AddElement("ColumnP4N13B", standardForeignPurchaseVatN13P4.Text.ToString(), dataRoot);
+            XmlNode Column21 = csXML.XmlHelper.AddElement("ColumnP4N14A", partialRebatePurchaseAmountN14P4.Text.ToString(), dataRoot);
+            XmlNode Column22 = csXML.XmlHelper.AddElement("ColumnP4N14B", partialRebatePurchaseVatN14P4.Text.ToString(), dataRoot);
+            XmlNode Column23 = csXML.XmlHelper.AddElement("ColumnP4N15A", nonRebatePurchaseAmountN15P4.Text.ToString(), dataRoot);
+            XmlNode Column24 = csXML.XmlHelper.AddElement("ColumnP4N15B", nonRebatePurchaseVatN15P4.Text.ToString(), dataRoot);
+            XmlNode Column25 = csXML.XmlHelper.AddElement("ColumnP4N16B", lblTotalVatN16P4.Text.ToString(), dataRoot);
+
+            XmlNode Column26 = csXML.XmlHelper.AddElement("ColumnP5N17A", receiveVDSAmountN17P5.Text.ToString(), dataRoot);
+            XmlNode Column27 = csXML.XmlHelper.AddElement("ColumnP5N18A", nonBankingPaymentVatN18P5.Text.ToString(), dataRoot);
+            XmlNode Column28 = csXML.XmlHelper.AddElement("ColumnP5N19A", changePurchaseAllVatN19P5.Text.ToString(), dataRoot);
+            XmlNode Column29 = csXML.XmlHelper.AddElement("ColumnP5N20A", otherAdjusmentVatN20P5.Text.ToString(), dataRoot);
+            XmlNode Column30 = csXML.XmlHelper.AddElement("ColumnP5N21A", lblTotalVatN21P5.Text.ToString(), dataRoot);
+
+            XmlNode Column31 = csXML.XmlHelper.AddElement("ColumnP6N22A", paidVDSAmountN22P6.Text.ToString(), dataRoot);
+            XmlNode Column32 = csXML.XmlHelper.AddElement("ColumnP6N23A", changeSaleAllVatN23P6.Text.ToString(), dataRoot);
+            XmlNode Column33 = csXML.XmlHelper.AddElement("ColumnP6N24A", SDAmountN24P6.Text.ToString(), dataRoot);
+            XmlNode Column34 = csXML.XmlHelper.AddElement("ColumnP6N25A", otherAdjusmentAmountN25P6.Text.ToString(), dataRoot);
+            XmlNode Column35 = csXML.XmlHelper.AddElement("ColumnP6N26A", lblTotalVatN26P6.Text.ToString(), dataRoot);
+
+            XmlNode Column36 = csXML.XmlHelper.AddElement("ColumnP7N27A", TotalVatSDAmountN27P7.Text.ToString(), dataRoot);
+            XmlNode Column37 = csXML.XmlHelper.AddElement("ColumnP7N28A", AdvanceVatAmountN28P7.Text.ToString(), dataRoot);
+            XmlNode Column38 = csXML.XmlHelper.AddElement("ColumnP7N29A", PrevAdvanceAmountN29P7.Text.ToString(), dataRoot);
+            XmlNode Column39 = csXML.XmlHelper.AddElement("ColumnP7N30A", ExciseDutyN30P7.Text.ToString(), dataRoot);
+            XmlNode Column40 = csXML.XmlHelper.AddElement("ColumnP7N31A", SurchargeN31P7.Text.ToString(), dataRoot);
+            XmlNode Column52 = csXML.XmlHelper.AddElement("ColumnP8N32A", TotalVatN32P8.Text.ToString(), dataRoot);
+            XmlNode Column53 = csXML.XmlHelper.AddElement("ColumnP8N33A", SDdepositN33P8.Text.ToString(), dataRoot);
+            XmlNode Column54 = csXML.XmlHelper.AddElement("ColumnP8N34A", DueVatN34P8.Text.ToString(), dataRoot);
+            XmlNode Column55 = csXML.XmlHelper.AddElement("ColumnP8N35A", DueSDN34P8.Text.ToString(), dataRoot);
+            XmlNode Column56 = csXML.XmlHelper.AddElement("ColumnP8N36A", FinepenaltyN34P8.Text.ToString(), dataRoot);
+            XmlNode Column57 = csXML.XmlHelper.AddElement("ColumnP8N37A", ExciseDutyN33P8.Text.ToString(), dataRoot);
+            XmlNode Column58 = csXML.XmlHelper.AddElement("ColumnP8N38A", DevelopmentN33P8.Text.ToString(), dataRoot);
+            XmlNode Column59 = csXML.XmlHelper.AddElement("ColumnP8N39A", ICTN33P8.Text.ToString(), dataRoot);
+            XmlNode Column60 = csXML.XmlHelper.AddElement("ColumnP8N310A", HealthN33P8.Text.ToString(), dataRoot);
+            XmlNode Column61 = csXML.XmlHelper.AddElement("ColumnP8N311A", EnvironmentN33P8.Text.ToString(), dataRoot);
+
+
+            //  XmlNode Column41 = csXML.XmlHelper.AddElement("ColumnP8N32A", TotalVatN32P8.Text.ToString(), dataRoot);
+            // XmlNode Column42 = csXML.XmlHelper.AddElement("ColumnP8N33A", ExciseDutyN33P8.Text.ToString(), dataRoot);
+            // XmlNode Column43 = csXML.XmlHelper.AddElement("ColumnP8N34A", SurchargeN34P8.Text.ToString(), dataRoot);
+
+            XmlNode Column44 = csXML.XmlHelper.AddElement("ColumnP9N35A", txtRefundMoneyN35P9.Text.ToString(), dataRoot);
+
+            XmlNode Column45 = csXML.XmlHelper.AddElement("ColumnP10A", TaxpayerNameP10.Text.ToString(), dataRoot);
+            XmlNode Column46 = csXML.XmlHelper.AddElement("ColumnP10B", TaxpayerDesignationP10.Text.ToString(), dataRoot);
+            XmlNode Column47 = csXML.XmlHelper.AddElement("ColumnP10C", TaxPaymentDateP10.Text.ToString(), dataRoot);
+            XmlNode Column48 = csXML.XmlHelper.AddElement("ColumnP10D", TaxpayerMobileNoP10.Text.ToString(), dataRoot);
+            XmlNode Column49 = csXML.XmlHelper.AddElement("ColumnP10E", TaxpayerEmailP10.Text.ToString(), dataRoot);
+
+            xmlDoc.Save(Server.MapPath("VAT_19.xml"));
+            String filePath = Path.GetFullPath(Server.MapPath("VAT_19.xml"));
+            FileInfo objFileInfo = new FileInfo(filePath);
+            System.Web.HttpResponse response = System.Web.HttpContext.Current.Response;
+            response.Clear();
+            response.Cache.SetCacheability(System.Web.HttpCacheability.Private);
+            response.AddHeader("Content-Disposition", "attachment; filename=" + objFileInfo.Name);
+            response.ContentType = "application/xml";
+            response.WriteFile(filePath);
+            response.End();
+
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+
+
+
+    }
+    #endregion
+
+}

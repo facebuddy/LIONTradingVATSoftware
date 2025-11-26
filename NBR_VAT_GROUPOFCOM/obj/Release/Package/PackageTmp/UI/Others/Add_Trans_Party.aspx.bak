@@ -1,0 +1,517 @@
+﻿<%@ Page Title="" Language="C#" masterpagefile="~/DashboardVTR.Master" AutoEventWireup="true" CodeFile="Add_Trans_Party.aspx.cs" Inherits="UI_Admin_Add_Trans_Party" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ Register Src="~/UserControls/MsgBox.ascx" TagName="MsgBox" TagPrefix="uc2" %>
+<%@ Register Src="~/UserControls/Others.ascx" TagName="others" TagPrefix="uc1" %>
+<%@ Register Src="../../UserControls/admin.ascx" TagName="admin" TagPrefix="uc1" %>
+
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
+   <link href="../../Styles/Main.css" rel="stylesheet" />
+    <link href="../../Styles/Box_Border.css" rel="Stylesheet" type="text/css" />
+    <link href="../../Styles/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../../Styles/str.css" rel="stylesheet" />
+    <link href="../../Styles/panel.css" rel="stylesheet" />
+    <style type="text/css">
+        .style1 {
+            height: 23px;
+        }
+
+        .style2 {
+        }
+
+        .style3 {
+            width: 77px;
+        }
+
+        .style4 {
+            width: 117px;
+            height: 23px;
+        }
+
+        .style5 {
+            width: 77px;
+            height: 23px;
+        }
+
+        .PnlDesign {
+            border: solid 0.5px #E0E0E0;
+            height: 100px;
+            width: 100%;
+            overflow: scroll;
+            background-color: White;
+            font-size: 11px;
+            font-family: Arial;
+        }
+
+        .hide {
+            /*display: none;*/
+            color:white;
+        }
+         .hiddencol {
+            display: none;
+        }
+
+    </style>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="Server">
+    <div class="container-fluid">
+        <div class="panel-group">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="text-align: center; font-size: 21px; font-weight: bold; height: 30px; padding-top: 0px">Party/Client Profile Setup</div>
+                <div class="panel-body">
+                     <div class="row">
+                        <div class="col-md-4 col-md-offset-4">
+                            <asp:RadioButton runat="server" ID="chkManualInput" Text="  Manual Input" GroupName="party" OnCheckedChanged="chkManualInput_OnCheckedChanged" AutoPostBack="true" Checked="true" />
+                            <asp:RadioButton runat="server" ID="chkExcelImport" Text="  Import from Excel" GroupName="party" OnCheckedChanged="chkExcelImport_OnCheckedChanged" AutoPostBack="true" /></div>
+                    </div>
+                    <br />
+                    <div class="row" runat="server" id="Div4">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label"><span class="required">*</span>Registration Type :</label>
+                                <div class="col-sm-7">
+                                    <asp:DropDownList runat="server" CssClass="form-control" ID="drpRegistrationType" OnSelectedIndexChanged="drpRegistrationType_SelectedIndexChanged" AutoPostBack="true">
+                                        <asp:ListItem Value="1">Regular Registered (VAT)</asp:ListItem>
+                                        <asp:ListItem Value="4">Registered For Turnover</asp:ListItem>
+                                        <asp:ListItem Value="5">Not Registered</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label"><span class="required">*</span>Party Name :</label>
+                                <div class="col-sm-7">
+                                    <asp:TextBox runat="server" CssClass="form-control" ID="txtPartyName" />
+                                    <asp:Label ID="lblPartyID" runat="server" Visible="false" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row" runat="server" id="part_a" visible="false">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+<%--                                 <label class="col-sm-5 control-label">Party BIN :</label>--%>
+                   <asp:label ID="labelpartyBIN" runat="server" CssClass="control-label col-sm-5">Party BIN :</asp:label>
+
+                                <div class="col-sm-7">
+                                   <asp:TextBox runat="server" CssClass="form-control" ID="txtPartyTIN" MaxLength="13" placeholder="13 digit BIN"/>
+                                            <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender1"
+                                                        runat="server" Enabled="True" TargetControlID="txtPartyTIN"
+                                                        ValidChars="0123456789">
+                                                    </ajaxToolkit:FilteredTextBoxExtender>
+                                    <asp:Label ID="Label1" runat="server" Visible="false" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <%-- <label class="col-sm-5 control-label">Phone/Mobile :</label>--%>
+                                <%--<label class="col-sm-5 control-label">National Id No :</label>--%>
+                                   <asp:label ID="lblNID" runat="server" CssClass="control-label col-sm-5">National Id No :</asp:label>
+                                <div class="col-sm-7">
+                                    <%--   <asp:TextBox runat="server" CssClass="form-control" ID="txtPhone" />--%>
+                                    <asp:TextBox runat="server" CssClass="form-control" ID="txtNationalIdNo" MaxLength="18" />
+                                <ajaxToolkit:FilteredTextBoxExtender ID="txtExchangeRate_FilteredTextBoxExtender1"
+                                                        runat="server" Enabled="True" TargetControlID="txtNationalIdNo"
+                                                        ValidChars="0123456789">
+                                                    </ajaxToolkit:FilteredTextBoxExtender>
+                                     </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+
+                    <div class="row" runat="server" id="Div5">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label"><span class="required">*</span>Business Info :</label>
+                                <div class="col-sm-7">
+                                    <asp:DropDownList runat="server" CssClass="form-control" ID="drpBusinessInfo" />
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label">Phone/Mobile :</label>
+                                <div class="col-sm-7">
+                                   <asp:TextBox runat="server" CssClass="form-control" ID="txtPhone" />
+                                     <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender3"
+                                                        runat="server" Enabled="True" TargetControlID="txtPhone" 
+                                                        ValidChars="0123456789">
+                                                    </ajaxToolkit:FilteredTextBoxExtender>
+                              <%-- <ajaxToolkit:MaskedEditExtender ID="MaskedEditExtender1" runat="server" TargetControlID="txtPhone"
+
+                                     MaskType ="Number" Mask="999-9999-9999" MessageValidatorTip="true"  ClearMaskOnLostFocus="False" >
+                                  </ajaxToolkit:MaskedEditExtender>--%>
+                                     </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+
+
+
+                  <%--  <div class="row" runat="server" id="Div7">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label">Major Area of Economic Activity :</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" runat="server" id="Div8">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-8">
+                            <div class="form-group form-group-sm">
+                                <asp:DropDownList ID="drpTypeofBusiness" runat="server" ReadOnly="true" class="form-input" Height="20px"
+                                    data-toggle="dropdown" Visible="false">
+                                </asp:DropDownList>
+                                <asp:Panel ID="Panel1" runat="server" CssClass="PnlDesign">
+                                    <asp:CheckBoxList ID="chklistTypeofBusiness" runat="server" OnSelectedIndexChanged="chklistTypeofBusiness_Changed"
+                                        AutoPostBack="true" Style="width: 100%">
+                                    </asp:CheckBoxList>
+                                </asp:Panel>
+
+                            </div>
+                        </div>
+                    </div>--%>
+
+
+                    <%-- <div class="row" runat="server" id="Div7">
+                        <div class="col-sm-2"></div>
+                       <div class="dropdown col-sm-8">
+                                    <asp:DropDownList ID="drpTypeofBusiness" runat="server" ReadOnly="true" class="form-input" height = "20px"
+                                        data-toggle="dropdown" Visible = "false">
+                                    </asp:DropDownList>
+                                      <asp:Panel ID="Panel1" runat="server" CssClass="PnlDesign">
+                                    <asp:CheckBoxList ID="chklistTypeofBusiness" runat="server" style="width:100%" >
+                                    </asp:CheckBoxList>
+                                    </asp:Panel>
+                                    
+                                </div>
+                          
+                        <div class="col-sm-2"></div>
+                    </div>--%>
+            
+
+                    <div class="row" runat="server" id="part_b" visible="false">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                             <label class="col-sm-5 control-label">Email :</label>
+                                <div class="col-sm-7">
+                                    <asp:TextBox runat="server" CssClass="form-control" ID="txtEmail" />
+                                <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender2"
+                                                        runat="server" Enabled="True" TargetControlID="txtEmail" FilterType="Numbers, LowercaseLetters, Custom"
+                                                        ValidChars=".@com">
+                                                    </ajaxToolkit:FilteredTextBoxExtender>
+                                     </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                    <label class="col-sm-5 control-label">Web :</label>
+                                <div class="col-sm-7">
+                                   <asp:TextBox runat="server" CssClass="form-control" ID="txtWeb" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                     <div class="row" runat="server" id="part_d" visible="false">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label">Owner Name :</label>
+                                <div class="col-sm-7">
+                                    <asp:TextBox runat="server" CssClass="form-control" ID="txtOwnerName" />
+                                    <asp:Label ID="Label2" runat="server" Visible="false" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label">VDS :</label>
+                                <div class="col-sm-7">
+                                    <asp:DropDownList runat="server" CssClass="form-control" ID="drpVDS" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row" runat="server" id="part_c" visible="false">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label">Ultimate Destination :</label>
+                                <div class="col-sm-7">
+                                    <asp:TextBox runat="server" CssClass="form-control" ID="txtUltimateDesignation" />
+                                    <asp:Label ID="Label5" runat="server" Visible="false" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label"><span class="required">*</span>Party Type :</label>
+                                <div class="col-sm-7">
+                                    <asp:RadioButton id="isVendor" runat="server" GroupName="partyType" Text="Vendor"></asp:RadioButton>
+                                    <asp:RadioButton id="isCustomer" runat="server" GroupName="partyType" Text="Customer"></asp:RadioButton>
+                                    <asp:RadioButton id="isVc" runat="server" GroupName="partyType" Text="Both"></asp:RadioButton>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    
+                    <div class="row" runat="server" id="part_f" visible="false">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label">Party Address :</label>
+                                <div class="col-sm-7">
+                                    <%--<asp:TextBox runat="server" CssClass="form-control" ID="txtPartyAddress" TextMode="MultiLine" />--%>
+                                    <asp:TextBox runat="server" CssClass="form-control" ID="txtPartyAddress" />
+                                </div>
+                            </div>
+                        </div>
+                         <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label">Credit Limit :</label>
+                                <div class="col-sm-7">
+                                    <%--<asp:TextBox runat="server" CssClass="form-control" ID="txtPartyAddress" TextMode="MultiLine" />--%>
+                                    <asp:TextBox runat="server" CssClass="form-control onlyFloat" ID="txtcreditlmt" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" runat="server" id="Div7">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                   <label class="col-sm-5 control-label">Major Area of Economic Activity :</label>
+                                <div class="col-sm-7">
+                                   <asp:DropDownList ID="drpTypeofBusiness" runat="server" ReadOnly="true" class="form-input" Height="20px"
+                                    data-toggle="dropdown" Visible="false">
+                                </asp:DropDownList>
+                                <asp:Panel ID="Panel1" runat="server" CssClass="PnlDesign">
+                                    <asp:CheckBoxList ID="chklistTypeofBusiness" runat="server" OnSelectedIndexChanged="chklistTypeofBusiness_Changed"
+                                        AutoPostBack="true" Style="width: 100%">
+                                    </asp:CheckBoxList>
+                                </asp:Panel>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                               <label class="col-sm-5 control-label">Area of Manufacturing :</label>
+                                <div class="col-sm-7">
+                                     <asp:DropDownList runat="server" CssClass="form-control" ID="drpAreaOfMfg" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                   
+                    <div class="row" runat="server" id="part_e" visible="false">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-2">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-10 control-label">VDS Deducted :</label>
+                                <div class="col-sm-2">
+                                    <asp:CheckBox runat="server" ID="chkVDS" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-10 control-label">Excise Duty :</label>
+                                <div class="col-sm-2">
+                                    <asp:CheckBox runat="server" ID="chkExciseDuty" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-10 control-label">Development Surcharge :</label>
+                                <div class="col-sm-2">
+                                    <asp:CheckBox runat="server" ID="chkDevelopmentSurCharge" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-10 control-label">Information Technology :</label>
+                                <div class="col-sm-2">
+                                    <asp:CheckBox runat="server" ID="chkInformationTechology" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row" runat="server" id="Div2" visible="false">
+                        <div class="col-sm-2"></div>
+                        <div class="col-md-2">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-10 control-label">Health Safety? :</label>
+                                <div class="col-sm-2">
+                                    <asp:CheckBox runat="server" ID="chkHealthSafety" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-10 control-label">Environment Safety? :</label>
+                                <div class="col-sm-2">
+                                    <asp:CheckBox runat="server" ID="chkEnvironmentSafety" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row" runat="server" id="part_g" visible="false">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-6">
+                            <asp:Button ID="btnSave" runat="server" CssClass="btn-btn" Style="background-color:#4CAF50;" Text="Save" OnClick="btnSave_Click" />
+                            <asp:Button ID="btnUpdate" runat="server" CssClass="btn-btn" Style="background-color:#4CAF50;" Text="Update" OnClick="btnUpdate_Click" Visible="false" />
+                            <asp:Button ID="btnShow" runat="server" CssClass="btn-btn" Style="background-color:#5CB85C;" Text="Show all Party" OnClick="btnShow_Click" />
+                            <asp:Button ID="btnRefresh" runat="server" CssClass="btn-btn" Style="background-color:#5CB85C;" Text="Refresh" OnClick="btnRefresh_Click" />
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row" runat="server" id="part_h" visible="false">
+                        <div class="col-sm-3"></div>
+                        <div class="col-md-6">
+                            <asp:FileUpload ID="FileUpload1" runat="server" Style="background: #E0EBF5" />
+                            <asp:Button ID="btnUpload" runat="server" OnClick="btnUpload_Click" Text="Upload and Check" CssClass="btn btn-primary btn-sm" />
+                            <asp:Label ID="Label11" runat="server"></asp:Label>
+                            <asp:Button ID="btnExcelSave" runat="server" OnClick="btnExcelSave_Click" Text="Save" CssClass="btn btn-primary btn-sm" />
+                        </div>
+                        <div class="col-sm-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div style="overflow: hidden; overflow-x: scroll">
+                        <asp:GridView ID="gvExcelFile" runat="server" AutoGenerateColumns="False" CssClass="mydatagrid"
+                            DataKeyNames="PartyID" Width="100%" HeaderStyle-CssClass="gvheader" RowStyle-CssClass="gvrows" PagerStyle-CssClass="gvpager" OnRowDataBound="gvExcelFile_OnRowDataBound" >
+                            <Columns>
+                                <asp:TemplateField HeaderText="">
+                                    <ItemTemplate>
+                                        <asp:HiddenField ID="rowNo" Value='<%# Eval("rowNo") %>' runat="server" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel panel-primary" visible="false" id="partyDetailsDiv" runat="server">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 id="partyHeader" runat="server"></h4>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <b>Party Name :</b>
+                            <span id="detailsPartyName" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-12">
+                            <b>Party Address :</b>
+                            <span id="detailsPartyAddress" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Party TIN :</b>
+                            <span id="detailsPartyTin" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>NID :</b>
+                            <span id="detailsPartyNid" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Owner Name :</b>
+                            <span id="detailsOwnerName" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Business Type :</b>
+                            <span id="detailsBusinessType" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Phone :</b>
+                            <span id="detailsPhone" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Email :</b>
+                            <span id="detailsEmail" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Web :</b>
+                            <span id="detailsWeb" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Major Area of Economid Activity :</b>
+                            <span id="detailsMajorAreaOfEcnActivity" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Vendor :</b>
+                            <span id="detailsVendor" runat="server">N/A</span>
+                        </div>
+                        <div class="col-md-3">
+                            <b>Customer :</b>
+                            <span id="detailsCustomer" runat="server">N/A</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div class="">
+                        <asp:GridView ID="gvShowParty" runat="server" AutoGenerateColumns="False" CssClass="mydatagrid"
+                            DataKeyNames="party_id" Width="100%"
+                            OnSelectedIndexChanged="gvItem_SelectedIndexChanged"
+                            OnRowDeleting="gvItem_RowDeleting"
+                            OnRowDataBound="gvShowParty_RowDataBound"
+                            OnRowCommand="gvShowParty_RowCommand"
+                            HeaderStyle-CssClass="gvheader" RowStyle-CssClass="gvrows" PagerStyle-CssClass="gvpager"
+                            AllowPaging="true" PageSize="5" OnPageIndexChanging="gvShowParty_PageIndexChanging">
+                            <Columns>
+                                <asp:CommandField ButtonType="Image" SelectImageUrl="~/Images/edit.png" ShowSelectButton="True" />
+                                <asp:BoundField DataField="party_id" HeaderStyle-CssClass="hiddencol" ItemStyle-CssClass="hiddencol" />
+                                <asp:BoundField HeaderText="Party Name" DataField="party_name" />
+                                <asp:BoundField HeaderText="Party Address" DataField="party_address" />
+                                <asp:BoundField HeaderText="Party BIN" DataField="party_tin" />
+                                <asp:BoundField HeaderText="Owner Name" DataField="owner_name" />
+                                <asp:BoundField HeaderText="Phone" DataField="phone" />
+                                <asp:BoundField HeaderText="VDS" DataField="is_vds_deduct" />
+                                <asp:BoundField HeaderText="Vendor" DataField="is_vendor" />
+                                <asp:BoundField HeaderText="Customer" DataField="is_customer" />
+                                <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Images/Trash.gif" ShowDeleteButton="True" />
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button Text="Details" runat="server" CommandName="Details" CommandArgument="<%# Container.DataItemIndex %>" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                        </asp:GridView>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <uc2:MsgBox ID="msgBox" runat="server" />
+</asp:Content>
+

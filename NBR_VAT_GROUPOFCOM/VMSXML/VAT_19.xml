@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ArrayOfVAT_18>
+  <VAT_19>
+    <sessionvalue>1</sessionvalue>
+    <VatRegistrationNo>123456789</VatRegistrationNo>
+    <Column1A>0</Column1A>
+    <Column1B>0</Column1B>
+    <Column1C>0</Column1C>
+    <Column2A>0</Column2A>
+    <Column2B>0</Column2B>
+    <Column2C>0</Column2C>
+    <Column3>0</Column3>
+    <Column4>0</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7A>12500</Column7A>
+    <Column7B>0</Column7B>
+    <Column8A>330000</Column8A>
+    <Column8B>64680</Column8B>
+    <Column9A>0</Column9A>
+    <Column9B>0</Column9B>
+    <Column10>0</Column10>
+    <Column11>64680</Column11>
+    <Column12>0</Column12>
+    <Column13>0</Column13>
+    <Column14>64680</Column14>
+    <Column15>-64680</Column15>
+    <Column16>0</Column16>
+    <Column17>64680</Column17>
+    <Column18>0</Column18>
+    <Column19>52730</Column19>
+  </VAT_19>
+</ArrayOfVAT_18>

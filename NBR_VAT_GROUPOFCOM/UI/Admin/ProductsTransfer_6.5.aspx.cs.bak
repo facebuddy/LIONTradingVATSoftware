@@ -1,0 +1,1423 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Collections;
+
+public partial class ProductsTransfer_6_5 : System.Web.UI.Page
+{
+    #region Declare
+    ChallanBLL objBLL = new ChallanBLL();
+    #endregion
+
+    #region Constructor
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        MQMM.LoginCheckForUser();
+        try
+        {
+            if (!IsPostBack)
+            {
+                ProductTransferMaster objMaster = new ProductTransferMaster();
+                Session["DETAIL_INFO"] = new ArrayList();
+                Session["MASTER_DATA"] = objMaster;
+                orgName.Text = Session["organization_name"].ToString();
+                orgAddress.Text = Session["organization_address"].ToString();
+                orgBIN.Text = Session["organization_bin"].ToString();
+               
+                txtChallanIssueDate.Text = DateTime.Now.ToShortDateString();
+                txtChallanIssueTime.Text = DateTime.Now.ToLocalTime().ToShortTimeString();
+                GetBranchRcvrInformation();
+                GetBranchInProviderformation();
+               // UtilityK.fillItemCategoryDropDownList(drpCategory);
+                LoadCategory("C");
+                ListItem li = new ListItem("-- Select --", "-99");
+                drpCategory.Items.Insert(0, li);
+                UtilityK.fillSubCategoryByCatDropDownList(drpCategory, drpSubCategory);
+                drpSubCategory.Items.Insert(0, li);
+                LoadItems();
+                //fillProviderBranch();
+               // fillReceipentBranch();
+               // GetProviderBranchInformation();
+               // GetReceipentBranchInformation();
+                GetNextChallanNo();
+               
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+        
+    }
+    #endregion
+
+    #region Event
+    protected void drpCategory_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+
+            LoadSubCategory();
+
+            LoadItems();
+        }
+        catch (Exception ex)
+        { 
+            ReallySimpleLog.WriteLog(ex); 
+        }
+    }
+    protected void drpSubCategory_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            LoadItems();
+
+        }
+        catch (Exception ex)
+        { 
+            ReallySimpleLog.WriteLog(ex); 
+        }
+    }
+    protected void drpItem_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string name = drpItem.SelectedItem.ToString();
+            string value = drpItem.SelectedValue;
+            Int32 itemID;
+            if (drpItem.SelectedValue != "-99")
+            {
+                string[] strItem = drpItem.SelectedItem.Text.Split('-');
+                if (strItem != null && strItem.Count() > 0)
+                    lblHSCode.Text = strItem[strItem.Count() - 1];
+
+                itemID = Convert.ToInt32(drpItem.SelectedValue);
+                DataTable dt = (DataTable)Session["ITEM_INFO"];
+                DataRow[] dr = dt.Select("item_id = " + itemID);
+                DataRow dr0 = dr[0];
+                if (dr0 != null)
+                {
+                    lblProductType.Text = dr0["PRODUCT_TYPE"].ToString();
+                }
+                getAvailableStock();
+                getAllProperty();
+                fillCatSubCat();
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void txtQuantity_TextChanged(object sender, EventArgs e)
+    {
+       // if()
+    }
+    protected void productName_TextChanged(object sender, EventArgs e)
+    {
+    
+        try
+        {
+            getProductInfo();
+            getAvailableStock();
+            getAllProperty();
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void gvItem_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        try
+        {
+            ArrayList detailArray = (ArrayList)Session["DETAIL_INFO"];
+            detailArray.RemoveAt(e.RowIndex);
+            Session["DETAIL_INFO"] = detailArray;
+            loadGridView();
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void btnAddItem_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            fillDetailData();
+            loadGridView();
+            clearDetail();
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void btnAddParty_Click(object sender, EventArgs e) 
+    {
+        if (btnAddParty.Text == "New")
+        {
+            drpReceipentBranch.Enabled = false;
+           // txtPartyName.Visible = true;
+            btnAddParty.Text = "Cancel";
+        }
+        else
+        {
+            drpReceipentBranch.Enabled = true;
+            //txtPartyName.Visible = false;
+            btnAddParty.Text = "New";
+        }
+
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        ProductTransferBLL objProductTransfer = new ProductTransferBLL();
+        ProductTransferMaster objMaster = new ProductTransferMaster();
+        ArrayList arrDetail = new ArrayList();
+        try
+        {
+            if (validation() == true)
+            {
+
+                objMaster = fillMasterData(objMaster);
+                //getCPMasterData();
+                if (objMaster == null)
+                {
+                    msgBox.AddMessage("Please insert master data properly.", MsgBoxs.enmMessageType.Error);
+                    return;
+                }
+
+                arrDetail = (ArrayList)Session["DETAIL_INFO"];
+                bool result = objProductTransfer.insertProductTransferIssuingData(objMaster, arrDetail);
+                if (result)
+                {
+
+                    msgBox.AddMessage("Product Transfer Data " + AllConstraint.strSaveSuccessMessage, MsgBoxs.enmMessageType.Success);
+                    showReport();
+                    clearMaster();
+
+                }
+                else
+                {
+                    msgBox.AddMessage(AllConstraint.strSaveFailMessage, MsgBoxs.enmMessageType.Error);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    protected void drpProviderBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //try
+        //{
+        //    if (drpProviderBranch.SelectedValue != "-99")
+        //    {
+        //        Int32 branchId = Convert.ToInt32(drpProviderBranch.SelectedValue);
+        //        DataTable dt = (DataTable)Session["PBRANCH_INFO"];
+        //        DataRow[] dr = dt.Select("branch_id = " + branchId);
+        //        DataRow dr0 = dr[0];
+        //        if (dr0 != null)
+        //        {
+        //            txtProviderBIN.Text = dr0["bin"].ToString();
+        //            txtProviderAddress.Text = dr0["address"].ToString();
+        //        }
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    ReallySimpleLog.WriteLog(ex);
+        //}
+        if (drpProviderBranch.SelectedValue == "-99")
+        {
+            txtProviderAddress.Text = string.Empty;
+        }
+        else
+        {
+            GetBranchProviderAddress();
+            GetBranchProviderBIN();
+        }
+
+        
+    }
+    protected void drpReceipentBranch_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        //try
+        //{
+        //    if (drpReceipentBranch.SelectedValue != "-99")
+        //    {
+        //        Int32 branchId = Convert.ToInt32(drpReceipentBranch.SelectedValue);
+        //        DataTable dt = (DataTable)Session["RBRANCH_INFO"];
+        //        DataRow[] dr = dt.Select("branch_id = " + branchId);
+        //        DataRow dr0 = dr[0];
+        //        if (dr0 != null)
+        //        {
+        //            txtReceipentBIN.Text = dr0["bin"].ToString();
+        //            txtReceipentAddress.Text = dr0["address"].ToString();
+        //        }
+        //    }
+        //}
+        //catch (Exception ex)
+        //{
+        //    ReallySimpleLog.WriteLog(ex);
+        //}
+
+        if (drpReceipentBranch.SelectedValue == "-99")
+        {
+            txtReceipentAddress.Text = string.Empty;
+            txtReceipentBIN.Text = string.Empty;
+
+        }
+        else
+        {
+            GetBranchRcvrAddress();
+            GetBranchRcvrBIN();
+        }
+
+    }
+    protected void btnClear_Click(object sender, EventArgs e)
+    {
+
+    }
+    protected void btnShowReport_OnClick(object sender, EventArgs e)
+    {
+        //ProductTransferMaster objMaster = new ProductTransferMaster();
+        //string[] eng = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49" };
+        //string[] bng = { "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "১০", "১১", "১২", "১৩", "১৪", "১৫", "১৬", "১৭", "১৮", "১৯", "২০", "২১", "২২", "২৩", "২৪", "২৫", "২৬", "২৭", "২৮", "২৯", "৩০", "৩১", "৩২", "৩৩", "৩৪", "৩৫", "৩৬", "৩৭", "৩৮", "৩৯", "৪০", "৪১", "৪২", "৪৩", "৪৪", "৪৫", "৪৬", "৪৭", "৪৮", "৪৯", "৫০" };
+        if (btnShowReport.Text == "Show Report")
+        {
+        //   // objMaster = fillMasterData(objMaster);
+        //    objMaster = (ProductTransferMaster)Session["MASTER_DATA"];
+        //    lblOrgName.Text = objMaster.OrgName1;
+        //    lblOrgBIN.Text = objMaster.OrgBIN;
+        //    lblPNameAddress.Text = objMaster.ProviderName + "," + objMaster.ProviderAddress;
+        //    lblReceipentName.Text = objMaster.ReceipentName;
+        //    lblReceipentAddress.Text = objMaster.ReceipentAddress;
+        //    lblChallanNo.Text = objMaster.ChallanNo;
+        //    lblIssueDate.Text = objMaster.IssueDate.ToString();
+        //    lblIssueTime.Text = objMaster.IssueTime;
+
+        //    ArrayList detailArray = (ArrayList)Session["DETAIL_INFO"];
+        //    ProductTransferDetail onjDetail;
+        //    string displayHTML = "";
+        //    string row;
+        //    for (int i = 0; i < detailArray.Count; i++)
+        //    {
+        //        string strRow = i.ToString();
+        //        onjDetail = (ProductTransferDetail)detailArray[i];
+        //        row = strRow.Replace(eng[i], bng[i]);
+                
+
+        //        displayHTML += "<tr>";
+        //        displayHTML += "<td style='border:1px solid gray'>" + row + "</td>";
+        //        displayHTML += "<td style='border:1px solid gray'>" + onjDetail.Item + "</td>";
+        //        displayHTML += "<td style='border:1px solid gray'>" + onjDetail.Quantity + "</td>";
+        //        displayHTML += "<td style='border:1px solid gray'>" + onjDetail.Remark + "</td>";
+        //        displayHTML += "</tr>";
+        //        tblProductTransferChallan.Text = displayHTML;
+        //    }
+
+        //    lblDutyOfficer.Text = Session["EMPLOYEE_NAME"].ToString();
+        //    ptPrint.Visible = true;
+        //    btnShowReport.Text = "Hide Report";
+        //    btnPrint.Visible = true;
+            msgBox.AddMessage("Please Save Your Data First...", MsgBoxs.enmMessageType.Attention);
+        }
+        else
+        {
+            ptPrint.Visible = false;
+            btnShowReport.Text = "Show Report";
+            btnPrint.Visible = false;
+        }
+    }
+    protected void drpRole_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        try
+        {
+            string type = "";
+            if (drpType.SelectedIndex == 0)
+            {
+                type = "C";
+            }
+            if (drpType.SelectedIndex == 1)
+            {
+                type = "P";
+            }
+            if (drpType.SelectedIndex == 2)
+            {
+                type = "R";
+            }
+            LoadCategory(type);
+            LoadSubCategory();
+            LoadItems();
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    #endregion
+
+    #region Method
+    private void GetNextChallanNo()
+    {
+        ChallanBLL objBLL = new ChallanBLL();
+        int orgID = Convert.ToInt32(Session["ORGANIZATION_ID"]);
+        Int16 brnhID = Convert.ToInt16(drpProviderBranch.SelectedValue);
+        DataTable dtChallanNo = objBLL.GetNextChallanNo(5, orgID, brnhID);
+
+
+        if (dtChallanNo != null && dtChallanNo.Rows.Count > 0)
+        {
+            txtChallanNo.Text = dtChallanNo.Rows[0]["challan_no"].ToString();
+            hdBookId.Value = dtChallanNo.Rows[0]["challan_book_id"].ToString();
+            hdPageNo.Value = dtChallanNo.Rows[0]["page_no"].ToString();
+        }
+        else
+        {
+            txtChallanNo.Text = "";
+            hdBookId.Value = "";
+            hdPageNo.Value = "";
+        }
+    }
+    private void LoadItems()
+    {
+        int categoryId = 0;
+        AddItemBLL objItemBLL = new AddItemBLL();
+        DataTable dt = null;
+        try
+        {
+          //  AddItemBLL objItem = new AddItemBLL();
+
+            SetItemDAO objItemDAO = new SetItemDAO();
+
+            if (drpCategory.SelectedValue == "ALL" && drpSubCategory.SelectedValue == "-99")
+                objItemDAO.CategoryID = 0;
+            else if (drpCategory.SelectedValue != "ALL" && drpSubCategory.SelectedValue == "-99")
+                objItemDAO.CategoryID = Convert.ToInt32(drpCategory.SelectedValue);
+            else if (drpCategory.SelectedValue != "ALL" && drpSubCategory.SelectedValue != "-99")
+                objItemDAO.CategoryID = Convert.ToInt32(drpSubCategory.SelectedValue);
+
+
+            if (drpType.SelectedIndex == 0)
+            {
+                dt = objItemBLL.getFinishGoodsProductByCategoryId(categoryId);
+
+                drpItem.DataSource = dt;
+                drpItem.DataTextField = dt.Columns["item_name"].ToString();
+                drpItem.DataValueField = dt.Columns["Item_id"].ToString();
+                drpItem.DataBind();
+
+                ListItem li = new ListItem("---Select---", "-99");
+                drpItem.Items.Insert(0, li);
+            }
+            if (drpType.SelectedIndex == 1)
+            {
+                dt = objItemBLL.getFinishGoodsByCategoryId(categoryId);
+
+                drpItem.DataSource = dt;
+                drpItem.DataTextField = dt.Columns["item_name"].ToString();
+                drpItem.DataValueField = dt.Columns["Item_id"].ToString();
+                drpItem.DataBind();
+
+                ListItem li = new ListItem("---Select---", "-99");
+                drpItem.Items.Insert(0, li);
+            }
+            if (drpType.SelectedIndex == 2)
+            {
+                dt = objItemBLL.getIngredientsByCategoryId(categoryId);
+
+                drpItem.DataSource = dt;
+                drpItem.DataTextField = dt.Columns["item_name"].ToString();
+                drpItem.DataValueField = dt.Columns["Item_id"].ToString();
+                drpItem.DataBind();
+
+                ListItem li = new ListItem("---Select---", "-99");
+                drpItem.Items.Insert(0, li);
+            }
+            //else
+            //{
+            //    dt = objItemBLL.GetAllItemByCategoryOrSubCat(objItemDAO);
+
+            //    drpItem.DataSource = dt;
+            //    drpItem.DataTextField = dt.Columns["ITEM_NAME"].ToString();
+            //    drpItem.DataValueField = dt.Columns["ITEM_ID"].ToString();
+            //    drpItem.DataBind();
+
+            //    ListItem li = new ListItem("-- Select --", "-99");
+            //    drpItem.Items.Insert(0, li);
+            //}
+           // drpItem.Focus();
+            Session["ITEM_INFO"] = dt;
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+
+
+    }
+    private void LoadSubCategory()
+    {
+        try
+        {
+            drpSubCategory.DataSource = null;
+            drpSubCategory.Items.Clear();
+            drpSubCategory.Enabled = true;
+
+            if (drpCategory.SelectedValue != "" && drpCategory.SelectedValue != "-99")
+            {
+                UtilityK.fillSubCategoryByCatDropDownList(drpCategory, drpSubCategory);
+                if (drpSubCategory.Items.Count == 0)
+                {
+                    drpSubCategory.Enabled = false;
+                    drpItem.Focus();
+                }
+                else
+                    drpSubCategory.Focus();
+            }
+
+
+
+            ListItem li = new ListItem("-- Select --", "-99");
+            drpSubCategory.Items.Insert(0, li);
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    private void GetAvailStock()
+    {
+        SaleBLL objBLL = new SaleBLL();
+
+        DateTime saleDate = Utility.GetStandardDateFrom_ddMMyyyy(txtChallanIssueDate.Text.Trim());
+        DataTable dtAvailStock = new DataTable();
+        Int32 itemID = 0;
+
+        if (drpItem.SelectedValue != "-99")
+        {
+            itemID = Convert.ToInt32(drpItem.SelectedValue);
+            dtAvailStock = objBLL.GetAvailableStock(Convert.ToInt16(drpItem.SelectedValue), saleDate);
+            if (dtAvailStock != null && dtAvailStock.Rows.Count > 0)
+            {
+                lblUnit.Text = dtAvailStock.Rows[0]["unit_code"].ToString();
+                lblUnitID.Text = dtAvailStock.Rows[0]["unit_id"].ToString();
+                lblItemType.Text = dtAvailStock.Rows[0]["item_type"].ToString();
+
+                if (dtAvailStock.Rows[0]["item_type"].ToString() == "I")
+                    lblAvailQuantity.Text = dtAvailStock.Rows[0]["availStock"].ToString();
+                else
+                    lblAvailQuantity.Text = "0";
+
+                if (dtAvailStock.Rows[0]["parent_id"] != null && Convert.ToInt16(dtAvailStock.Rows[0]["parent_id"]) > 0)
+                {
+                    drpCategory.SelectedValue = dtAvailStock.Rows[0]["parent_id"].ToString();
+                    LoadSubCategory();
+                    drpSubCategory.SelectedValue = dtAvailStock.Rows[0]["category_id"].ToString();
+                }
+                else
+                {
+                    drpCategory.SelectedValue = dtAvailStock.Rows[0]["category_id"].ToString();
+                    drpSubCategory.Items.Clear();
+                    ListItem list = new ListItem("-- Select --", "-99");
+                    drpSubCategory.Items.Insert(0, list);
+                    drpSubCategory.Enabled = false;
+                }
+            }
+        }
+        else
+        {
+            lblUnit.Text = ".";
+            lblUnitID.Text = "";
+            lblItemType.Text = "";
+            lblAvailQuantity.Text = "0";
+           // chkExempted.Checked = false;
+           // chkRebatable.Checked = false;
+
+           // chkZeroRate.Checked = false;
+           // chkInexplicitExport.Checked = false;
+        }
+    }
+    private void fillDetailData()
+    {
+       
+        ArrayList detailArray = (ArrayList)Session["DETAIL_INFO"];
+        if (detailArray == null)
+        {
+            detailArray = new ArrayList();
+        }
+        Int16 row = Convert.ToInt16(detailArray.Count + 1);
+        try
+        {
+            ProductTransferDetail objDetail = new ProductTransferDetail();
+            objDetail.RowNo = row;
+            if (drpType.SelectedIndex == 0)
+            {
+                objDetail.Type = 'G';
+            }
+            else
+            {
+                objDetail.Type = 'S';
+            }
+            objDetail.Category = drpCategory.SelectedItem.ToString();
+            objDetail.SubCategory = drpSubCategory.SelectedItem.ToString();
+            objDetail.Item = drpItem.SelectedItem.ToString();
+            objDetail.ItemId = Convert.ToInt32(drpItem.SelectedValue);
+            objDetail.Property1 = Convert.ToInt32(lblProp1.Text);
+            objDetail.Property2 = Convert.ToInt32(lblProp2.Text);
+            objDetail.Property3 = Convert.ToInt32(lblProp3.Text);
+            objDetail.Property4 = Convert.ToInt32(lblProp4.Text);
+            objDetail.Property5 = Convert.ToInt32(lblProp5.Text);
+            objDetail.Quantity = Convert.ToInt32(txtQuantity.Text.Trim());
+            if (objDetail.Quantity > Convert.ToInt32(lblAvailQuantity.Text))
+            {
+                msgBox.AddMessage("Stock is not available.Current Stock is: " + lblAvailQuantity.Text, MsgBoxs.enmMessageType.Attention);
+                return;
+            }
+            for (int i = 0; i < detailArray.Count; i++)
+            {
+                if (objDetail.ItemId == ((ProductTransferDetail)detailArray[i]).ItemId)
+                {
+                    Int32 avaiQuantity = Convert.ToInt32(lblAvailQuantity.Text);
+                    if (((ProductTransferDetail)detailArray[i]).Quantity + objDetail.Quantity > avaiQuantity)
+                    {
+                        msgBox.AddMessage("Stock is not available. Current Stock is: " + lblAvailQuantity.Text, MsgBoxs.enmMessageType.Attention);
+                        return;
+                    }
+                    else
+                    {
+                        ((ProductTransferDetail)detailArray[i]).Quantity = ((ProductTransferDetail)detailArray[i]).Quantity + objDetail.Quantity;
+                        Session["DETAIL_INFO"] = detailArray;
+                        return;
+                    }
+                    
+                }
+            }
+                
+            objDetail.Unit = lblUnit.Text;
+            objDetail.UnitID = Convert.ToInt16(lblUnitID.Text.Trim());
+            objDetail.UserID = Convert.ToInt16(Session["EMPLOYEE_ID"]);
+            objDetail.Remark = txtRemark.Text;
+            detailArray.Add(objDetail);
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+        Session["DETAIL_INFO"] = detailArray;
+    }
+    private ProductTransferMaster fillMasterData(ProductTransferMaster objMaster)
+    {
+       // ProductTransferMaster objMaster = new ProductTransferMaster();
+        try
+        {
+            objMaster.OrgName = orgName.Text;
+            objMaster.OrgAddress = orgAddress.Text;
+            objMaster.OrgBIN = orgBIN.Text;
+            objMaster.ProviderName = drpProviderBranch.SelectedItem.ToString();
+            objMaster.ProviderAddress = txtProviderAddress.Text;
+            objMaster.ProviderBIN = txtProviderBIN.Text;
+           
+            
+            objMaster.IssueTime = txtChallanIssueTime.Text;
+            objMaster.ReceipentName = drpReceipentBranch.SelectedItem.ToString();
+            objMaster.ReceipentAddress = txtReceipentAddress.Text;
+            objMaster.ReceipentBIN = txtReceipentBIN.Text;
+
+
+            objMaster.ChallanNo = txtChallanNo.Text.Trim();
+            objMaster.IssueDate = DateTime.Parse(txtChallanIssueDate.Text);
+            objMaster.ProviderBranchID = Convert.ToInt16(drpProviderBranch.SelectedValue);
+           
+            objMaster.OrganizationID = Convert.ToInt16(Session["ORGANIZATION_ID"]);
+            objMaster.UserID = Convert.ToInt16(Session["EMPLOYEE_ID"]);
+            objMaster.AuditID = Convert.ToInt16(Session["EMPLOYEE_ID"]);
+            if(drpType.SelectedIndex == 0)
+                objMaster.MaterialType = 'C';
+            if (drpType.SelectedIndex == 1)
+                objMaster.MaterialType = 'F';
+            if (drpType.SelectedIndex == 2)
+                objMaster.MaterialType = 'R';
+           // objMaster.MaterialType = Convert.ToChar(lblProductType.Text);
+            objMaster.TransferStatus = 'I';
+           
+
+            if (btnAddParty.Text == "New")
+            {
+                objMaster.IsNewParty = false;
+                objMaster.ReceipentBranchID = Convert.ToInt16(drpReceipentBranch.SelectedValue);
+            }
+            else
+            {
+                objMaster.IsNewParty = true;
+                //objMaster.NewBranchName = txtPartyName.Text;
+                objMaster.NewBranchAddress = txtReceipentAddress.Text;
+                objMaster.NewBranchBIN = txtReceipentBIN.Text;
+            }
+            objMaster.TransferYear = Convert.ToInt16(DateTime.Now.ToString("yyyy"));
+            objMaster.ChallanBookId = Convert.ToInt16(hdBookId.Value);
+            objMaster.ChallanPageNo = Convert.ToInt16(hdPageNo.Value);
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+        Session["MASTER_DATA"] = objMaster;
+        return objMaster;
+    }
+    private void loadGridView()
+    {
+        ArrayList detailArray = (ArrayList)Session["DETAIL_INFO"];
+        gvItem.DataSource = detailArray;
+        gvItem.DataBind();
+    }
+    private void getAllProperty()
+    {
+        try
+        {
+            ProductTransferBLL objPTBLL = new ProductTransferBLL();
+            Int32 itemId = Convert.ToInt32(drpItem.SelectedValue);
+            DataTable dt = objPTBLL.fillProperty(itemId);
+            if (dt != null)
+            {
+                lblProp1.Text = dt.Rows[0]["property1"].ToString();
+                lblProp2.Text = dt.Rows[0]["property2"].ToString();
+                lblProp3.Text = dt.Rows[0]["property3"].ToString();
+                lblProp4.Text = dt.Rows[0]["property4"].ToString();
+                lblProp5.Text = dt.Rows[0]["property5"].ToString();
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    private void clearDetail()
+    {
+        UtilityK.fillItemCategoryDropDownList(drpCategory);
+        ListItem li = new ListItem("-- Select --", "-99");
+        drpCategory.Items.Insert(0, li);
+        drpSubCategory.Items.Clear();
+        ListItem lic = new ListItem("--- Select ---","-99");
+        drpSubCategory.Items.Insert(0,lic);
+
+        drpItem.SelectedValue = "-99";
+        lblAvailQuantity.Text = "";
+        lblUnit.Text = "";
+        txtQuantity.Text = "";
+        txtRemark.Text = "";
+        lblHSCode.Text = "";
+    }
+    private void fillProviderBranch()
+    {
+        //ProductTransferBLL objBLL = new ProductTransferBLL();
+        //try
+        //{
+        //    DataTable dt = objBLL.fillOrgBranch();
+        //    if (dt != null)
+        //    {
+        //        drpProviderBranch.DataSource = dt;
+        //        drpProviderBranch.DataTextField = dt.Columns["branch_unit_name"].ToString();
+        //        drpProviderBranch.DataValueField = dt.Columns["org_branch_reg_id"].ToString();
+        //        drpProviderBranch.DataBind();
+        //    }
+            
+        //    ListItem li = new ListItem("---Select---","-99");
+        //    drpProviderBranch.Items.Insert(0,li);
+        //    Session["PBRANCH_INFO"] = dt;
+        //}
+        //catch (Exception ex)
+        //{
+        //    ReallySimpleLog.WriteLog(ex);
+        //}
+        
+    }
+    private void fillReceipentBranch()
+    {
+        //ProductTransferBLL objBLL = new ProductTransferBLL();
+        //try
+        //{
+        //    DataTable dt = objBLL.fillOrgBranch();
+        //    if (dt != null)
+        //    {
+        //        drpReceipentBranch.DataSource = dt;
+        //        drpReceipentBranch.DataTextField = dt.Columns["branch_unit_name"].ToString();
+        //        drpReceipentBranch.DataValueField = dt.Columns["org_branch_reg_id"].ToString();
+        //        drpReceipentBranch.DataBind();
+        //    }
+        //    ListItem li = new ListItem("---Select---", "-99");
+        //    drpReceipentBranch.Items.Insert(0, li);
+        //    Session["RBRANCH_INFO"] = dt;
+        //}
+        //catch (Exception ex)
+        //{
+        //    ReallySimpleLog.WriteLog(ex);
+        //}
+        
+    }
+    private void getProductInfo()
+    {
+        //string product = MQMM.ParseText(productName.Text.Trim());
+        //SaleBLL bll = new SaleBLL();
+        //DataTable selectedProduct = bll.getProductInfo(product);
+
+        //if (selectedProduct.Rows != null)
+        //{
+        //    drpItem.SelectedValue = selectedProduct.Rows[0]["item_id"].ToString();
+
+
+        //    fillCatSubCat();
+
+        //    if (drpItem.SelectedValue != "-99")
+        //    {
+        //        string[] strItem = drpItem.SelectedItem.Text.Split('-');
+        //        if (strItem != null && strItem.Count() > 0)
+        //            lblHSCode.Text = strItem[strItem.Count() - 1];
+        //    }
+
+        //}
+        //else
+        //{
+        //    drpItem.SelectedValue = "-99";
+        //}
+    }
+    private void getAvailableStock()
+    {
+        SaleBLL objBLL = new SaleBLL();
+        try
+        {
+            Int16 itemId = Convert.ToInt16(drpItem.SelectedValue);
+            DateTime saleDate = DateTime.Parse(txtChallanIssueDate.Text.Trim());
+            DataTable dt = objBLL.getAvailStockforTransferProduct(itemId, saleDate);
+
+            if (dt.Rows != null)
+            {
+
+                //lblUnit.Text = dt.Rows[0]["unit_code"].ToString();
+                //lblUnitID.Text = dt.Rows[0]["unit_id"].ToString();
+                //lblProductType.Text = dt.Rows[0]["item_type"].ToString();
+                //chkExempted.Checked = Convert.ToBoolean((Convert.ToInt16(dtAvailStock.Rows[0]["is_exempted"])));
+                //chkRebatable.Checked = Convert.ToBoolean((Convert.ToInt16(dtAvailStock.Rows[0]["is_rebatable"])));
+
+                if (dt.Rows[0]["item_type"].ToString() == "I")
+                    lblAvailQuantity.Text = dt.Rows[0]["availStock"].ToString();
+                else
+                    lblAvailQuantity.Text = "0";
+                lblAvailQuantity.Text = dt.Rows[0]["availStock"].ToString();
+
+
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    private void fillCatSubCat()
+    {
+        AddItemBLL objItemBLL = new AddItemBLL();
+        Int32 itemID = 0;
+        if (drpItem.SelectedValue != "-99")
+        {
+            itemID = Convert.ToInt32(drpItem.SelectedValue);
+            DataTable dt = objItemBLL.getAllFieldByItemId(itemID);
+
+            lblUnit.Text = dt.Rows[0]["unit_code"].ToString();
+            lblUnitID.Text = dt.Rows[0]["unit_id"].ToString();
+            lblProductType.Text = dt.Rows[0]["item_type"].ToString();
+
+            drpCategory.DataSource = dt;
+            drpCategory.DataTextField = dt.Columns["category_name"].ToString();
+            drpCategory.DataValueField = dt.Columns["category_id"].ToString();
+            drpCategory.DataBind();
+
+            drpSubCategory.DataSource = dt;
+            drpSubCategory.DataTextField = dt.Columns["sub_category_name"].ToString();
+            drpSubCategory.DataValueField = dt.Columns["sub_category_id"].ToString();
+            drpSubCategory.DataBind();
+
+        }
+        else
+        {
+            drpCategory.SelectedValue = "-99";
+            drpSubCategory.SelectedValue = "-99";
+        }
+    }
+    private void LoadCategory(string type)
+    {
+        List<Category> list = new List<Category>();
+        AddItemBLL objItemBLL = new AddItemBLL();
+        list = objItemBLL.getCategory(type);
+        if (list != null)
+        {
+            drpCategory.DataSource = list;
+            drpCategory.DataTextField = "CatName";
+            drpCategory.DataValueField = "CatID";
+            drpCategory.DataBind();
+           // ListItem li = new ListItem("--- Select ---", "-99");
+           // drpCategory.Items.Insert(0, li);
+        }
+    }
+
+    private void GetProviderBranchInformation()
+    {
+        drpProviderBranch.Items.Clear();
+        ProductTransferBLL objBLL = new ProductTransferBLL();
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            int userLevel = Convert.ToInt32(Session["USER_LEVEL"].ToString());
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int organID = Convert.ToInt32(Session["ORGANIZATION_ID"].ToString());
+            if (organID > 0)
+            {
+
+            }
+            else
+            {
+                organID = 0;
+            }
+
+            drpProviderBranch.Enabled = true;
+            DataTable ds = objBLL.getAllBranchByOrgID(organID);
+            if (ds != null && ds.Rows.Count > 0)
+            {
+                drpProviderBranch.DataSource = ds;
+                drpProviderBranch.DataTextField = ds.Columns["branch_name"].ToString();
+                drpProviderBranch.DataValueField = ds.Columns["branch_id"].ToString();
+                drpProviderBranch.DataBind();
+
+            }
+
+            ListItem li = new ListItem("Head Office", "0");
+            drpProviderBranch.Items.Insert(0, li);
+            Session["PBRANCH_INFO"] = ds;
+
+
+        }
+
+
+    }
+
+    private void GetReceipentBranchInformation()
+    {
+        drpReceipentBranch.Items.Clear();
+        ProductTransferBLL objBLL = new ProductTransferBLL();
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            int userLevel = Convert.ToInt32(Session["USER_LEVEL"].ToString());
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int organID = Convert.ToInt32(Session["ORGANIZATION_ID"].ToString());
+            if (organID > 0)
+            {
+
+            }
+            else
+            {
+                organID = 0;
+            }
+
+            drpReceipentBranch.Enabled = true;
+            DataTable ds = objBLL.getAllBranchByOrgID(organID);
+            if (ds != null && ds.Rows.Count > 0)
+            {
+                drpReceipentBranch.DataSource = ds;
+                drpReceipentBranch.DataTextField = ds.Columns["branch_name"].ToString();
+                drpReceipentBranch.DataValueField = ds.Columns["branch_id"].ToString();
+                drpReceipentBranch.DataBind();
+            }
+
+            ListItem li = new ListItem("Head Office", "0");
+            drpReceipentBranch.Items.Insert(0, li);
+
+            Session["RBRANCH_INFO"] = ds;
+
+        }
+
+
+    }
+    private void clearMaster()
+    {
+        drpProviderBranch.SelectedValue = "0";
+        drpReceipentBranch.SelectedValue = "0";
+        txtProviderAddress.Text = "";
+        txtProviderBIN.Text = "";
+        txtReceipentAddress.Text = "";
+        txtReceipentBIN.Text = "";
+        txtChallanIssueDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+        Session["DETAIL_INFO"] = new ArrayList();
+        loadGridView();
+    }
+    private bool validation()
+    {
+        
+        if (drpReceipentBranch.SelectedValue == "0")
+        {
+            msgBox.AddMessage("গ্রহীতা শাখার নাম সিলেক্ট করুন", MsgBoxs.enmMessageType.Attention);
+            return false;
+        }
+        return true;
+    }
+    private void showReport()
+    {
+        try
+        {
+            ProductTransferMaster objMaster = new ProductTransferMaster();
+            string[] eng = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49" };
+            string[] bng = { "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "১০", "১১", "১২", "১৩", "১৪", "১৫", "১৬", "১৭", "১৮", "১৯", "২০", "২১", "২২", "২৩", "২৪", "২৫", "২৬", "২৭", "২৮", "২৯", "৩০", "৩১", "৩২", "৩৩", "৩৪", "৩৫", "৩৬", "৩৭", "৩৮", "৩৯", "৪০", "৪১", "৪২", "৪৩", "৪৪", "৪৫", "৪৬", "৪৭", "৪৮", "৪৯", "৫০" };
+            if (btnShowReport.Text == "Show Report")
+            {
+                // objMaster = fillMasterData(objMaster);
+                objMaster = (ProductTransferMaster)Session["MASTER_DATA"];
+                lblOrgName.Text = objMaster.OrgName;
+                lblOrgBIN.Text = objMaster.OrgBIN;
+                lblPNameAddress.Text = objMaster.ProviderName + "," + objMaster.ProviderAddress;
+                //lblReceipentName.Text = objMaster.ReceipentName;//commented on 06-August-2019
+                lblReceipentAddress.Text = objMaster.ReceipentAddress;
+                lblChallanNo.Text = objMaster.ChallanNo;
+                lblIssueDate.Text = objMaster.IssueDate.ToString();
+                lblIssueTime.Text = objMaster.IssueTime;
+
+                ArrayList detailArray = (ArrayList)Session["DETAIL_INFO"];
+                ProductTransferDetail onjDetail;
+                string displayHTML = "";
+                string row;
+
+                //06-Aug-2019 start
+                decimal vatRate = 0;
+                decimal valueWithoutVat = 0;
+                decimal VatAmount = 0;
+                decimal unitPrice = 0;
+                //06-Aug-2019 end
+
+
+                for (int i = 0; i < detailArray.Count; i++)
+                {
+                    string strRow = i.ToString();
+                    onjDetail = (ProductTransferDetail)detailArray[i];
+                    row = strRow.Replace(eng[i], bng[i]);
+
+                    //06-Aug-2019 start
+                    DataTable ItemVatRateNValue = objBLL.GetVatRateNValue(Convert.ToInt32(onjDetail.ItemId));
+                    vatRate = Convert.ToDecimal(ItemVatRateNValue.Rows[0]["vat_rate"]);
+                    unitPrice = Convert.ToDecimal(ItemVatRateNValue.Rows[0]["purchase_unit_price"]);
+                    VatAmount = (onjDetail.Quantity * vatRate)/100;
+                    valueWithoutVat = onjDetail.Quantity * unitPrice;
+                    //valueWithoutVat= onjDetail.Quantity*
+
+                    //06-Aug-2019 end
+
+                    displayHTML += "<tr>";
+                    displayHTML += "<td style='border:1px solid gray'>" + row + "</td>";
+                    displayHTML += "<td style='border:1px solid gray'>" + onjDetail.Item + "</td>";
+                    displayHTML += "<td style='border:1px solid gray'>" + onjDetail.Quantity + "</td>";
+
+                    displayHTML += "<td style='border:1px solid gray'>" + valueWithoutVat + "</td>";
+                    displayHTML += "<td style='border:1px solid gray'>" + VatAmount + "</td>";
+
+                    displayHTML += "<td style='border:1px solid gray'>" + onjDetail.Remark + "</td>";
+                    displayHTML += "</tr>";
+                    tblProductTransferChallan.Text = displayHTML;
+                }
+
+                //lblDutyOfficer.Text = Session["EMPLOYEE_NAME"].ToString();//commented on 06-Aug-2019
+                ptPrint.Visible = true;
+                btnShowReport.Text = "Hide Report";
+                btnPrint.Visible = true;
+            }
+        }
+        catch(Exception ex)
+        {
+            throw ex;
+        }
+        
+    }
+
+
+    private void GetBranchInProviderformation()
+    {
+        drpProviderBranch.Items.Clear();
+        //ChallanBLL objBLL = new ChallanBLL();
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            int userLevel = Convert.ToInt32(Session["USER_LEVEL"].ToString());
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int organID = Convert.ToInt32(Session["ORGANIZATION_ID"].ToString());
+            if (organID > 0)
+            {
+
+            }
+            else
+            {
+                organID = 0;
+            }
+
+            if (userLevel == 3)
+            {
+                drpProviderBranch.Enabled = false;
+                if (BranchID == 0)
+                {
+                    drpProviderBranch.Items.Clear();
+                     ListItem li = new ListItem("Head Office", "0");
+                      drpProviderBranch.Items.Insert(0, li);
+                }
+
+                else
+                {
+                    DataTable ds = objBLL.GetBranchInformation(organID, BranchID);
+                    if (ds != null && ds.Rows.Count > 0)
+                    {
+                        drpProviderBranch.Items.Clear();
+                        drpProviderBranch.DataSource = ds;
+                        drpProviderBranch.DataTextField = ds.Columns["branch_unit_name"].ToString();
+                        drpProviderBranch.DataValueField = ds.Columns["org_branch_reg_id"].ToString();
+                        drpProviderBranch.DataBind();
+                    }
+
+                }
+                GetBranchProviderAddress();
+            }
+
+            if (userLevel == 2 || userLevel == 1)
+            {
+                drpProviderBranch.Enabled = true;
+                DataTable ds = objBLL.GetBranchInformationFormanager(organID);
+                if (ds != null && ds.Rows.Count > 0)
+                {
+                    drpProviderBranch.DataSource = ds;
+                    drpProviderBranch.DataTextField = ds.Columns["branch_unit_name"].ToString();
+                    drpProviderBranch.DataValueField = ds.Columns["org_branch_reg_id"].ToString();
+                    drpProviderBranch.DataBind();
+                }
+                GetBranchProviderAddress();
+                // ListItem li = new ListItem("Head Office", "0");
+                // drpProviderBranch.Items.Insert(0, li);
+                //ListItem li1 = new ListItem("ALL", "-99");
+                // drpBranchName.Items.Insert(0, li1);
+
+            }
+
+        }
+
+
+    }
+
+    private void GetBranchProviderAddress()
+    {
+        #region Present Address
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            OrgRegistrationInfoDAO orgRegDAO = new OrgRegistrationInfoDAO();
+
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int drpBranchID = Convert.ToInt32(drpProviderBranch.SelectedItem.Value.ToString());
+
+            DataTable dtPre = orgRegDAO.GetORGorBranch(drpBranchID);
+
+            if (dtPre != null && dtPre.Rows.Count > 0)
+            {
+
+                string result = dtPre.Rows[0]["IS_branch_registration"].ToString();
+
+
+
+                if (result == "False")
+                {
+
+                    DataTable dtOrgReg = orgRegDAO.GetBranchAddORGRegistration(drpBranchID);
+                    if (dtOrgReg.Rows.Count > 0)
+                    {
+                        string holding = dtOrgReg.Rows[0]["holding"].ToString();
+                        string roadno = dtOrgReg.Rows[0]["road_no"].ToString();
+                        string districtname = dtOrgReg.Rows[0]["district_name"].ToString();
+
+                        txtProviderAddress.Text = "  " + holding + "," + roadno + "," + districtname + ".";
+                    }
+                    else
+                    {
+                        txtProviderAddress.Text = string.Empty;
+                    }
+
+                }
+
+                if (result == "True")
+                {
+
+                    DataTable dtBranchReg = orgRegDAO.GetBranchAddBrachRegistration(drpBranchID);
+
+                    if (dtBranchReg.Rows.Count > 0)
+                    {
+                        string holding = dtBranchReg.Rows[0]["holding"].ToString();
+                        string roadno = dtBranchReg.Rows[0]["road_no"].ToString();
+                        string districtname = dtBranchReg.Rows[0]["district_name"].ToString();
+                        txtProviderAddress.Text = "  " + holding + "," + roadno + "," + districtname + ".";
+                    }
+
+                    else
+                    {
+                        txtProviderAddress.Text = string.Empty;
+                    }
+                }
+
+
+
+
+            }
+            else
+            {
+                txtProviderAddress.Text = string.Empty;
+            }
+
+        }
+
+
+
+        #endregion
+    }
+
+    private void GetBranchProviderBIN()
+    {
+
+        ChallanBLL objBLL = new ChallanBLL();
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+
+            int userLevel = Convert.ToInt32(Session["USER_LEVEL"].ToString());
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int drpBranchID = Convert.ToInt32(drpProviderBranch.SelectedItem.Value.ToString());
+
+            if (userLevel == 1 || userLevel == 2 || userLevel == 3)
+            {
+
+                if (BranchID == 0)
+                {
+
+                }
+
+                else
+                {
+                    DataTable ds = objBLL.GetBranchBIN(drpBranchID);
+
+
+                    if (ds != null && ds.Rows.Count > 0)
+                    {
+                        txtProviderBIN.Text = ds.Rows[0]["branch_unit_bin"].ToString();
+                    }
+                    else
+                    {
+                        txtProviderBIN.Text = string.Empty;
+                    }
+
+                }
+            }
+
+
+
+        }
+
+
+    }
+
+
+
+    private void GetBranchRcvrInformation()
+    {
+        drpReceipentBranch.Items.Clear();
+        ChallanBLL objBLL = new ChallanBLL();
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            int userLevel = Convert.ToInt32(Session["USER_LEVEL"].ToString());
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int organID = Convert.ToInt32(Session["ORGANIZATION_ID"].ToString());
+            if (organID > 0)
+            {
+
+            }
+            else
+            {
+                organID = 0;
+            }
+
+            if (userLevel == 3)
+            {
+                drpReceipentBranch.Enabled = true;
+                //if (BranchID == 0)
+                //{
+                //    drpReceipentBranch.Items.Clear();
+                //    ListItem li = new ListItem("Head Office", "0");
+                //   drpReceipentBranch.Items.Insert(0, li);
+                //}
+
+               //else
+               // {
+                    DataTable ds = objBLL.GetBranchInformationForRcvr(organID, BranchID);
+                    if (ds != null && ds.Rows.Count > 0)
+                    {
+                        drpReceipentBranch.Items.Clear();
+                        drpReceipentBranch.DataSource = ds;
+                        drpReceipentBranch.DataTextField = ds.Columns["branch_unit_name"].ToString();
+                        drpReceipentBranch.DataValueField = ds.Columns["org_branch_reg_id"].ToString();
+                        drpReceipentBranch.DataBind();
+                    }
+
+                ///}
+                GetBranchRcvrAddress();
+            }
+
+            if (userLevel == 2 || userLevel == 1)
+            {
+                drpReceipentBranch.Enabled = true;
+                DataTable ds = objBLL.GetBranchInformationFormanager(organID);
+                if (ds != null && ds.Rows.Count > 0)
+                {
+                    drpReceipentBranch.Items.Clear();
+                    drpReceipentBranch.DataSource = ds;
+                    drpReceipentBranch.DataTextField = ds.Columns["branch_unit_name"].ToString();
+                    drpReceipentBranch.DataValueField = ds.Columns["org_branch_reg_id"].ToString();
+                    drpReceipentBranch.DataBind();
+                }
+
+                //ListItem li = new ListItem("Head Office", "0");
+                // drpReceipentBranch.Items.Insert(0, li);
+                //ListItem li1 = new ListItem("ALL", "-99");
+                // drpBranchName.Items.Insert(0, li1);
+
+            }
+
+        }
+
+
+    }
+
+    private void GetBranchRcvrAddress()
+    {
+        #region Present Address
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+            OrgRegistrationInfoDAO orgRegDAO = new OrgRegistrationInfoDAO();
+
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int drpBranchID = Convert.ToInt32(drpReceipentBranch.SelectedItem.Value.ToString());
+
+            DataTable dtPre = orgRegDAO.GetORGorBranch(drpBranchID);
+
+            if (dtPre != null && dtPre.Rows.Count > 0)
+            {
+
+                string result = dtPre.Rows[0]["IS_branch_registration"].ToString();
+
+
+
+                if (result == "False")
+                {
+
+                    DataTable dtOrgReg = orgRegDAO.GetBranchAddORGRegistration(drpBranchID);
+                    if (dtOrgReg.Rows.Count > 0)
+                    {
+                        string holding = dtOrgReg.Rows[0]["holding"].ToString();
+                        string roadno = dtOrgReg.Rows[0]["road_no"].ToString();
+                        string districtname = dtOrgReg.Rows[0]["district_name"].ToString();
+
+                        txtReceipentAddress.Text = "  " + holding + "," + roadno + "," + districtname + ".";
+                    }
+                    else
+                    {
+                        txtReceipentAddress.Text = string.Empty;
+                    }
+
+                }
+
+                if (result == "True")
+                {
+
+                    DataTable dtBranchReg = orgRegDAO.GetBranchAddBrachRegistration(drpBranchID);
+
+                    if (dtBranchReg.Rows.Count > 0)
+                    {
+                        string holding = dtBranchReg.Rows[0]["holding"].ToString();
+                        string roadno = dtBranchReg.Rows[0]["road_no"].ToString();
+                        string districtname = dtBranchReg.Rows[0]["district_name"].ToString();
+                        txtReceipentAddress.Text = "  " + holding + "," + roadno + "," + districtname + ".";
+                    }
+
+                    else
+                    {
+                        txtReceipentAddress.Text = string.Empty;
+                    }
+                }
+
+
+
+
+            }
+            else
+            {
+                txtReceipentAddress.Text = string.Empty;
+            }
+
+        }
+
+
+
+        #endregion
+    }
+
+    private void GetBranchRcvrBIN()
+    {
+
+        ChallanBLL objBLL = new ChallanBLL();
+
+        if (Session["ORGBRANCHID"] != null)
+        {
+
+            int userLevel = Convert.ToInt32(Session["USER_LEVEL"].ToString());
+            int BranchID = Convert.ToInt32(Session["ORGBRANCHID"].ToString());
+            int drpBranchID = Convert.ToInt32(drpReceipentBranch.SelectedItem.Value.ToString());
+
+            if (userLevel == 1 || userLevel == 2 || userLevel == 3)
+            {
+
+                if (BranchID == 0)
+                {
+
+                }
+
+                else
+                {
+                    DataTable ds = objBLL.GetBranchBIN(drpBranchID);
+
+
+                    if (ds != null && ds.Rows.Count > 0)
+                    {
+                        txtReceipentBIN.Text = ds.Rows[0]["branch_unit_bin"].ToString();
+                    }
+                    else
+                    {
+                        txtReceipentBIN.Text = string.Empty;
+
+                    }
+
+                }
+            }
+
+
+
+        }
+
+
+    }
+    #endregion
+}

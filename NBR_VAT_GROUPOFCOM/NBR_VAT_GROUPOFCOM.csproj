@@ -1,0 +1,3651 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NBR_VAT_GROUPOFCOM</RootNamespace>
+    <AssemblyName>NBR_VAT_GROUPOFCOM</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <ApplicationInsightsResourceId />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit">
+      <HintPath>C:\Users\Asib\Desktop\vat.time-zone.biz\vat.time-zone.biz\bin\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="App_global.asax">
+      <HintPath>C:\Users\Asib\Desktop\vat.time-zone.biz\vat.time-zone.biz\bin\App_global.asax.dll</HintPath>
+    </Reference>
+    <Reference Include="BCrypt.Net-Next">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\BCrypt.Net-Next.dll</HintPath>
+    </Reference>
+    <Reference Include="blowery.Web.HttpCompress">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\blowery.Web.HttpCompress.dll</HintPath>
+    </Reference>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\Asib\Desktop\tempbin\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="CheckBoxListExCtrl">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\CheckBoxListExCtrl.dll</HintPath>
+    </Reference>
+    <Reference Include="CKEditor.NET">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\CKEditor.NET.dll</HintPath>
+    </Reference>
+    <Reference Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.ReportSource, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="CrystalDecisions.Shared, Version=13.0.3500.0, Culture=neutral, PublicKeyToken=692fbea5521e1304, processorArchitecture=MSIL" />
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ionic.Zip">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\Ionic.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\itextsharp.dll</HintPath>
+    </Reference>
+    <Reference Include="jQueryDatePicker">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\jQueryDatePicker.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4420.1017\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Security, Version=4.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Npgsql.2.2.7\lib\net45\Mono.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Users\Asib\Desktop\tempbin\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=2.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Npgsql.2.2.7\lib\net45\Npgsql.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Npgsql.EntityFramework, Version=2.2.7.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.EntityFramework.2.2.7\lib\net45\Npgsql.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPOI">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="NReco.PdfGenerator">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
+    <Reference Include="office, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+      <HintPath>C:\Users\Asib\Desktop\tempbin\office.dll</HintPath>
+    </Reference>
+    <Reference Include="PdfiumViewer">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\PdfiumViewer.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Web.DataVisualization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Helpers.Crypto">
+      <HintPath>C:\Users\Asib\Desktop\tempbin\System.Web.Helpers.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitignore" />
+    <Content Include="About.aspx" />
+    <Content Include="Access.aspx" />
+    <Content Include="Admin.aspx" />
+    <Content Include="Admin_Dashboard1.aspx" />
+    <Content Include="Admin_DashboardsSIMS.aspx" />
+    <Content Include="app\controllers\NBRVatReport.js" />
+    <Content Include="assets\images\avatar-2.png.png" />
+    <Content Include="assets\images\avatars\avatar-2.png" />
+    <Content Include="assets\images\bg-themes\1.png" />
+    <Content Include="assets\images\bg-themes\2.png" />
+    <Content Include="assets\images\bg-themes\3.png" />
+    <Content Include="assets\images\bg-themes\4.png" />
+    <Content Include="assets\images\bg-themes\5.png" />
+    <Content Include="assets\images\bg-themes\6.png" />
+    <Content Include="assets\images\bg-themes\7.png" />
+    <Content Include="assets\images\bg-themes\8.png" />
+    <Content Include="assets\images\logo-icon.png" />
+    <Content Include="bin\CrystalDecisions.CrystalReports.Engine.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.ClientDoc.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.CommLayer.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.CommonControls.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.Controllers.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.DataDefModel.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.Prompting.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll" />
+    <Content Include="bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll" />
+    <Content Include="bin\CrystalDecisions.ReportSource.dll" />
+    <Content Include="bin\CrystalDecisions.Shared.dll" />
+    <Content Include="bin\NBR_VAT_GROUPOFCOM.dll" />
+    <Content Include="bin\NBR_VAT_GROUPOFCOM.pdb" />
+    <Content Include="bin\office.dll" />
+    <Content Include="bin\pdfium.dll" />
+    <Content Include="bin\stdole.dll" />
+    <Content Include="Default.aspx" />
+    <Content Include="Images\accept.png" />
+    <Content Include="Images\access.PNG" />
+    <Content Include="Images\account.png" />
+    <Content Include="Images\area.png" />
+    <Content Include="Images\arrow_next.gif" />
+    <Content Include="Images\att.png" />
+    <Content Include="Images\attention.png" />
+    <Content Include="Images\bandroll-receive.png" />
+    <Content Include="Images\bandroll-use.png" />
+    <Content Include="Images\bandroll-use1.png" />
+    <Content Include="Images\bandroll.png" />
+    <Content Include="Images\bandroll0.png" />
+    <Content Include="Images\bank-branch.png" />
+    <Content Include="Images\bank.png" />
+    <Content Include="Images\bank1.png" />
+    <Content Include="Images\bdlogo.png" />
+    <Content Include="Images\bg.png" />
+    <Content Include="Images\bg_err_msg.png" />
+    <Content Include="Images\bg_err_msg1.png" />
+    <Content Include="Images\bg_login.png" />
+    <Content Include="Images\bg_login1.png" />
+    <Content Include="Images\bg_login2.png" />
+    <Content Include="Images\bg_login3-1.png" />
+    <Content Include="Images\bg_login3.png" />
+    <Content Include="Images\bg_tbl_input_sub.png" />
+    <Content Include="Images\Bill_Of_Entry.png" />
+    <Content Include="Images\blt_deem.png" />
+    <Content Include="Images\blt_highlight.png" />
+    <Content Include="Images\blt_highlight_blue.png" />
+    <Content Include="Images\cash-memo.png" />
+    <Content Include="Images\Challan_Purchase.png" />
+    <Content Include="Images\Challan_Sale.png" />
+    <Content Include="Images\chart\.gitignore" />
+    <Content Include="Images\circle.png" />
+    <Content Include="Images\commissionarate.png" />
+    <Content Include="Images\company.png" />
+    <Content Include="Images\cp.png" />
+    <Content Include="Images\Credit_Note.png" />
+    <Content Include="Images\cross.png" />
+    <Content Include="Images\Debit_Note.png" />
+    <Content Include="Images\Department.png" />
+    <Content Include="Images\detail.png" />
+    <Content Include="Images\dispose.png" />
+    <Content Include="Images\district.png" />
+    <Content Include="Images\division.png" />
+    <Content Include="Images\Duplicate.png" />
+    <Content Include="Images\edit.png" />
+    <Content Include="Images\err.png" />
+    <Content Include="Images\exit.png" />
+    <Content Include="Images\finished-goods.png" />
+    <Content Include="Images\Globe.png" />
+    <Content Include="Images\Globe48x48.png" />
+    <Content Include="Images\gradient.png" />
+    <Content Include="Images\images\company_01.png" />
+    <Content Include="Images\images\company_02.png" />
+    <Content Include="Images\images\company_04.png" />
+    <Content Include="Images\images\company_05.png" />
+    <Content Include="Images\images\Treasury_Deposit_01.png" />
+    <Content Include="Images\images\Treasury_Deposit_02.png" />
+    <Content Include="Images\images\Treasury_Deposit_04.png" />
+    <Content Include="Images\images\Treasury_Deposit_05.png" />
+    <Content Include="Images\inf.png" />
+    <Content Include="Images\information.png" />
+    <Content Include="Images\item-property.png" />
+    <Content Include="Images\lock.png" />
+    <Content Include="Images\login.PNG" />
+    <Content Include="Images\logo-icon.png" />
+    <Content Include="Images\nbr-vat-log.png" />
+    <Content Include="Images\nbr-vat-log1.png" />
+    <Content Include="Images\nbr-vat-logo.jpg" />
+    <Content Include="Images\nbr-vat-logo.png" />
+    <Content Include="Images\noaccess.png" />
+    <Content Include="Images\noimage.png" />
+    <Content Include="Images\Ok.gif" />
+    <Content Include="Images\org.jpg" />
+    <Content Include="Images\party.png" />
+    <Content Include="Images\pass-icon.png" />
+    <Content Include="Images\price-retailer.png" />
+    <Content Include="Images\priced-traders.png" />
+    <Content Include="Images\Purchase_Return.png" />
+    <Content Include="Images\raw-material.png" />
+    <Content Include="Images\raw-material0.png" />
+    <Content Include="Images\raw-material1.png" />
+    <Content Include="Images\rpt-cash-memo.png" />
+    <Content Include="Images\rpt-challan.png" />
+    <Content Include="Images\rpt-credit-note.png" />
+    <Content Include="Images\rpt-current-account.png" />
+    <Content Include="Images\rpt-debit-note.png" />
+    <Content Include="Images\rpt-dispose.png" />
+    <Content Include="Images\rpt-price-declaration.png" />
+    <Content Include="Images\rpt-purchase-account.png" />
+    <Content Include="Images\rpt-purchase-summary.png" />
+    <Content Include="Images\rpt-sale-account.png" />
+    <Content Include="Images\rpt-sale-summary.png" />
+    <Content Include="Images\rpt-stock.png" />
+    <Content Include="Images\rpt-vat-return.png" />
+    <Content Include="Images\Sale_Return.png" />
+    <Content Include="Images\Sale_Return1.png" />
+    <Content Include="Images\Sale_Return2.png" />
+    <Content Include="Images\set-item.png" />
+    <Content Include="Images\stock.png" />
+    <Content Include="Images\suc.png" />
+    <Content Include="Images\tax.png" />
+    <Content Include="Images\tax0.png" />
+    <Content Include="Images\trans.png" />
+    <Content Include="Images\Trash.gif" />
+    <Content Include="Images\Treasury_Deposit.png" />
+    <Content Include="Images\turnover.png" />
+    <Content Include="Images\UM\bank_branch.jpg" />
+    <Content Include="Images\UM\billofentry.jpg" />
+    <Content Include="Images\UM\ds_vp.jpg" />
+    <Content Include="Images\UM\localpurchase.jpg" />
+    <Content Include="Images\UM\login.jpg" />
+    <Content Include="Images\UM\org_setup.jpg" />
+    <Content Include="Images\UM\raw_material_req.jpg" />
+    <Content Include="Images\UM\salechallan.jpg" />
+    <Content Include="Images\UM\user.jpg" />
+    <Content Include="Images\unionward.png" />
+    <Content Include="Images\unit-converter.png" />
+    <Content Include="Images\unit.png" />
+    <Content Include="Images\unit0.png" />
+    <Content Include="Images\untitled.png" />
+    <Content Include="Images\upazila.png" />
+    <Content Include="Images\user-icon.png" />
+    <Content Include="Images\Users.png" />
+    <Content Include="Images\user_business.png" />
+    <Content Include="Images\vat-division.png" />
+    <Content Include="Images\VATPromTogo.png" />
+    <Content Include="Images\waiting.gif" />
+    <Content Include="Images\world.png" />
+    <Content Include="KGCDashboard.aspx" />
+    <Content Include="Admin_Dashboard_Detal.aspx" />
+    <Content Include="Admin_Dashboard_old.aspx" />
+    <Content Include="APIPurchase.aspx" />
+    <Content Include="app\CollectionController.js" />
+    <Content Include="app\controllers\ActionProcessController.js" />
+    <Content Include="app\controllers\CollectionController.js" />
+    <Content Include="app\controllers\CommonController.js" />
+    <Content Include="app\controllers\CookieManager.js" />
+    <Content Include="app\controllers\IndentController.js" />
+    <Content Include="app\controllers\IndentSecondaryController.js" />
+    <Content Include="app\controllers\InvoiceController.js" />
+    <Content Include="app\controllers\InvoiceNewController.js" />
+    <Content Include="app\controllers\KGCHRMController.js" />
+    <Content Include="app\controllers\LeaveManagementController.js" />
+    <Content Include="app\controllers\LoanController.js" />
+    <Content Include="app\controllers\LoginController.js" />
+    <Content Include="app\controllers\MenuController.js" />
+    <Content Include="app\controllers\NotificationController.js" />
+    <Content Include="app\controllers\PriceController.js" />
+    <Content Include="app\controllers\ProductController.js" />
+    <Content Include="app\controllers\PurchaseController.js" />
+    <Content Include="app\controllers\ReportController.js" />
+    <Content Include="app\controllers\ReportsController.js" />
+    <Content Include="app\controllers\SalesOrderController.js" />
+    <Content Include="app\controllers\SecondaryController.js" />
+    <Content Include="app\controllers\SecondaryDeliveryController.js" />
+    <Content Include="app\controllers\SideMenuController.js" />
+    <Content Include="app\controllers\simsService.js" />
+    <Content Include="app\controllers\UnitTypeController.js" />
+    <Content Include="app\controllers\VisitManagementController.js" />
+    <Content Include="app\InvoiceNewController.js" />
+    <Content Include="app\modules\application.js" />
+    <Content Include="app\modules\fileUploader.js" />
+    <Content Include="app\modules\modal.js" />
+    <Content Include="app\modules\ui-bootstrap-tpls-3.0.6.min.js" />
+    <Content Include="app\query\PriceList Map.sql" />
+    <Content Include="app\query\ProductList Query with price.sql" />
+    <Content Include="app\query\ProductList Query.sql" />
+    <Content Include="app\query\Sales Query.sql" />
+    <Content Include="app\query\Stock search.sql" />
+    <Content Include="app\script\angular-animate.min.js" />
+    <Content Include="app\script\angular.min.js" />
+    <Content Include="app\script\sgenService.js" />
+    <Content Include="app\script\toastr.min.js" />
+    <Content Include="app\SecondaryController.js" />
+    <Content Include="app\services\commonService.js" />
+    <Content Include="app\services\kgchrmService.js" />
+    <Content Include="app\services\simsService.js" />
+    <Content Include="assets\css\app.css" />
+    <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\css\dark-theme.css" />
+    <Content Include="assets\css\header-colors.css" />
+    <Content Include="assets\css\icons.css" />
+    <Content Include="assets\css\pace.min.css" />
+    <Content Include="assets\css\semi-dark.css" />
+    <Content Include="assets\flags\1x1\ad.svg" />
+    <Content Include="assets\flags\1x1\ae.svg" />
+    <Content Include="assets\flags\1x1\af.svg" />
+    <Content Include="assets\flags\1x1\ag.svg" />
+    <Content Include="assets\flags\1x1\ai.svg" />
+    <Content Include="assets\flags\1x1\al.svg" />
+    <Content Include="assets\flags\1x1\am.svg" />
+    <Content Include="assets\flags\1x1\ao.svg" />
+    <Content Include="assets\flags\1x1\aq.svg" />
+    <Content Include="assets\flags\1x1\ar.svg" />
+    <Content Include="assets\flags\1x1\as.svg" />
+    <Content Include="assets\flags\1x1\at.svg" />
+    <Content Include="assets\flags\1x1\au.svg" />
+    <Content Include="assets\flags\1x1\aw.svg" />
+    <Content Include="assets\flags\1x1\ax.svg" />
+    <Content Include="assets\flags\1x1\az.svg" />
+    <Content Include="assets\flags\1x1\ba.svg" />
+    <Content Include="assets\flags\1x1\bb.svg" />
+    <Content Include="assets\flags\1x1\bd.svg" />
+    <Content Include="assets\flags\1x1\be.svg" />
+    <Content Include="assets\flags\1x1\bf.svg" />
+    <Content Include="assets\flags\1x1\bg.svg" />
+    <Content Include="assets\flags\1x1\bh.svg" />
+    <Content Include="assets\flags\1x1\bi.svg" />
+    <Content Include="assets\flags\1x1\bj.svg" />
+    <Content Include="assets\flags\1x1\bl.svg" />
+    <Content Include="assets\flags\1x1\bm.svg" />
+    <Content Include="assets\flags\1x1\bn.svg" />
+    <Content Include="assets\flags\1x1\bo.svg" />
+    <Content Include="assets\flags\1x1\bq.svg" />
+    <Content Include="assets\flags\1x1\br.svg" />
+    <Content Include="assets\flags\1x1\bs.svg" />
+    <Content Include="assets\flags\1x1\bt.svg" />
+    <Content Include="assets\flags\1x1\bv.svg" />
+    <Content Include="assets\flags\1x1\bw.svg" />
+    <Content Include="assets\flags\1x1\by.svg" />
+    <Content Include="assets\flags\1x1\bz.svg" />
+    <Content Include="assets\flags\1x1\ca.svg" />
+    <Content Include="assets\flags\1x1\cc.svg" />
+    <Content Include="assets\flags\1x1\cd.svg" />
+    <Content Include="assets\flags\1x1\cf.svg" />
+    <Content Include="assets\flags\1x1\cg.svg" />
+    <Content Include="assets\flags\1x1\ch.svg" />
+    <Content Include="assets\flags\1x1\ci.svg" />
+    <Content Include="assets\flags\1x1\ck.svg" />
+    <Content Include="assets\flags\1x1\cl.svg" />
+    <Content Include="assets\flags\1x1\cm.svg" />
+    <Content Include="assets\flags\1x1\cn.svg" />
+    <Content Include="assets\flags\1x1\co.svg" />
+    <Content Include="assets\flags\1x1\cr.svg" />
+    <Content Include="assets\flags\1x1\cu.svg" />
+    <Content Include="assets\flags\1x1\cv.svg" />
+    <Content Include="assets\flags\1x1\cw.svg" />
+    <Content Include="assets\flags\1x1\cx.svg" />
+    <Content Include="assets\flags\1x1\cy.svg" />
+    <Content Include="assets\flags\1x1\cz.svg" />
+    <Content Include="assets\flags\1x1\de.svg" />
+    <Content Include="assets\flags\1x1\dj.svg" />
+    <Content Include="assets\flags\1x1\dk.svg" />
+    <Content Include="assets\flags\1x1\dm.svg" />
+    <Content Include="assets\flags\1x1\do.svg" />
+    <Content Include="assets\flags\1x1\dz.svg" />
+    <Content Include="assets\flags\1x1\ec.svg" />
+    <Content Include="assets\flags\1x1\ee.svg" />
+    <Content Include="assets\flags\1x1\eg.svg" />
+    <Content Include="assets\flags\1x1\eh.svg" />
+    <Content Include="assets\flags\1x1\er.svg" />
+    <Content Include="assets\flags\1x1\es-ct.svg" />
+    <Content Include="assets\flags\1x1\es.svg" />
+    <Content Include="assets\flags\1x1\et.svg" />
+    <Content Include="assets\flags\1x1\eu.svg" />
+    <Content Include="assets\flags\1x1\fi.svg" />
+    <Content Include="assets\flags\1x1\fj.svg" />
+    <Content Include="assets\flags\1x1\fk.svg" />
+    <Content Include="assets\flags\1x1\fm.svg" />
+    <Content Include="assets\flags\1x1\fo.svg" />
+    <Content Include="assets\flags\1x1\fr.svg" />
+    <Content Include="assets\flags\1x1\ga.svg" />
+    <Content Include="assets\flags\1x1\gb-eng.svg" />
+    <Content Include="assets\flags\1x1\gb-nir.svg" />
+    <Content Include="assets\flags\1x1\gb-sct.svg" />
+    <Content Include="assets\flags\1x1\gb-wls.svg" />
+    <Content Include="assets\flags\1x1\gb.svg" />
+    <Content Include="assets\flags\1x1\gd.svg" />
+    <Content Include="assets\flags\1x1\ge.svg" />
+    <Content Include="assets\flags\1x1\gf.svg" />
+    <Content Include="assets\flags\1x1\gg.svg" />
+    <Content Include="assets\flags\1x1\gh.svg" />
+    <Content Include="assets\flags\1x1\gi.svg" />
+    <Content Include="assets\flags\1x1\gl.svg" />
+    <Content Include="assets\flags\1x1\gm.svg" />
+    <Content Include="assets\flags\1x1\gn.svg" />
+    <Content Include="assets\flags\1x1\gp.svg" />
+    <Content Include="assets\flags\1x1\gq.svg" />
+    <Content Include="assets\flags\1x1\gr.svg" />
+    <Content Include="assets\flags\1x1\gs.svg" />
+    <Content Include="assets\flags\1x1\gt.svg" />
+    <Content Include="assets\flags\1x1\gu.svg" />
+    <Content Include="assets\flags\1x1\gw.svg" />
+    <Content Include="assets\flags\1x1\gy.svg" />
+    <Content Include="assets\flags\1x1\hk.svg" />
+    <Content Include="assets\flags\1x1\hm.svg" />
+    <Content Include="assets\flags\1x1\hn.svg" />
+    <Content Include="assets\flags\1x1\hr.svg" />
+    <Content Include="assets\flags\1x1\ht.svg" />
+    <Content Include="assets\flags\1x1\hu.svg" />
+    <Content Include="assets\flags\1x1\id.svg" />
+    <Content Include="assets\flags\1x1\ie.svg" />
+    <Content Include="assets\flags\1x1\il.svg" />
+    <Content Include="assets\flags\1x1\im.svg" />
+    <Content Include="assets\flags\1x1\in.svg" />
+    <Content Include="assets\flags\1x1\io.svg" />
+    <Content Include="assets\flags\1x1\iq.svg" />
+    <Content Include="assets\flags\1x1\ir.svg" />
+    <Content Include="assets\flags\1x1\is.svg" />
+    <Content Include="assets\flags\1x1\it.svg" />
+    <Content Include="assets\flags\1x1\je.svg" />
+    <Content Include="assets\flags\1x1\jm.svg" />
+    <Content Include="assets\flags\1x1\jo.svg" />
+    <Content Include="assets\flags\1x1\jp.svg" />
+    <Content Include="assets\flags\1x1\ke.svg" />
+    <Content Include="assets\flags\1x1\kg.svg" />
+    <Content Include="assets\flags\1x1\kh.svg" />
+    <Content Include="assets\flags\1x1\ki.svg" />
+    <Content Include="assets\flags\1x1\km.svg" />
+    <Content Include="assets\flags\1x1\kn.svg" />
+    <Content Include="assets\flags\1x1\kp.svg" />
+    <Content Include="assets\flags\1x1\kr.svg" />
+    <Content Include="assets\flags\1x1\kw.svg" />
+    <Content Include="assets\flags\1x1\ky.svg" />
+    <Content Include="assets\flags\1x1\kz.svg" />
+    <Content Include="assets\flags\1x1\la.svg" />
+    <Content Include="assets\flags\1x1\lb.svg" />
+    <Content Include="assets\flags\1x1\lc.svg" />
+    <Content Include="assets\flags\1x1\li.svg" />
+    <Content Include="assets\flags\1x1\lk.svg" />
+    <Content Include="assets\flags\1x1\lr.svg" />
+    <Content Include="assets\flags\1x1\ls.svg" />
+    <Content Include="assets\flags\1x1\lt.svg" />
+    <Content Include="assets\flags\1x1\lu.svg" />
+    <Content Include="assets\flags\1x1\lv.svg" />
+    <Content Include="assets\flags\1x1\ly.svg" />
+    <Content Include="assets\flags\1x1\ma.svg" />
+    <Content Include="assets\flags\1x1\mc.svg" />
+    <Content Include="assets\flags\1x1\md.svg" />
+    <Content Include="assets\flags\1x1\me.svg" />
+    <Content Include="assets\flags\1x1\mf.svg" />
+    <Content Include="assets\flags\1x1\mg.svg" />
+    <Content Include="assets\flags\1x1\mh.svg" />
+    <Content Include="assets\flags\1x1\mk.svg" />
+    <Content Include="assets\flags\1x1\ml.svg" />
+    <Content Include="assets\flags\1x1\mm.svg" />
+    <Content Include="assets\flags\1x1\mn.svg" />
+    <Content Include="assets\flags\1x1\mo.svg" />
+    <Content Include="assets\flags\1x1\mp.svg" />
+    <Content Include="assets\flags\1x1\mq.svg" />
+    <Content Include="assets\flags\1x1\mr.svg" />
+    <Content Include="assets\flags\1x1\ms.svg" />
+    <Content Include="assets\flags\1x1\mt.svg" />
+    <Content Include="assets\flags\1x1\mu.svg" />
+    <Content Include="assets\flags\1x1\mv.svg" />
+    <Content Include="assets\flags\1x1\mw.svg" />
+    <Content Include="assets\flags\1x1\mx.svg" />
+    <Content Include="assets\flags\1x1\my.svg" />
+    <Content Include="assets\flags\1x1\mz.svg" />
+    <Content Include="assets\flags\1x1\na.svg" />
+    <Content Include="assets\flags\1x1\nc.svg" />
+    <Content Include="assets\flags\1x1\ne.svg" />
+    <Content Include="assets\flags\1x1\nf.svg" />
+    <Content Include="assets\flags\1x1\ng.svg" />
+    <Content Include="assets\flags\1x1\ni.svg" />
+    <Content Include="assets\flags\1x1\nl.svg" />
+    <Content Include="assets\flags\1x1\no.svg" />
+    <Content Include="assets\flags\1x1\np.svg" />
+    <Content Include="assets\flags\1x1\nr.svg" />
+    <Content Include="assets\flags\1x1\nu.svg" />
+    <Content Include="assets\flags\1x1\nz.svg" />
+    <Content Include="assets\flags\1x1\om.svg" />
+    <Content Include="assets\flags\1x1\pa.svg" />
+    <Content Include="assets\flags\1x1\pe.svg" />
+    <Content Include="assets\flags\1x1\pf.svg" />
+    <Content Include="assets\flags\1x1\pg.svg" />
+    <Content Include="assets\flags\1x1\ph.svg" />
+    <Content Include="assets\flags\1x1\pk.svg" />
+    <Content Include="assets\flags\1x1\pl.svg" />
+    <Content Include="assets\flags\1x1\pm.svg" />
+    <Content Include="assets\flags\1x1\pn.svg" />
+    <Content Include="assets\flags\1x1\pr.svg" />
+    <Content Include="assets\flags\1x1\ps.svg" />
+    <Content Include="assets\flags\1x1\pt.svg" />
+    <Content Include="assets\flags\1x1\pw.svg" />
+    <Content Include="assets\flags\1x1\py.svg" />
+    <Content Include="assets\flags\1x1\qa.svg" />
+    <Content Include="assets\flags\1x1\re.svg" />
+    <Content Include="assets\flags\1x1\ro.svg" />
+    <Content Include="assets\flags\1x1\rs.svg" />
+    <Content Include="assets\flags\1x1\ru.svg" />
+    <Content Include="assets\flags\1x1\rw.svg" />
+    <Content Include="assets\flags\1x1\sa.svg" />
+    <Content Include="assets\flags\1x1\sb.svg" />
+    <Content Include="assets\flags\1x1\sc.svg" />
+    <Content Include="assets\flags\1x1\sd.svg" />
+    <Content Include="assets\flags\1x1\se.svg" />
+    <Content Include="assets\flags\1x1\sg.svg" />
+    <Content Include="assets\flags\1x1\sh.svg" />
+    <Content Include="assets\flags\1x1\si.svg" />
+    <Content Include="assets\flags\1x1\sj.svg" />
+    <Content Include="assets\flags\1x1\sk.svg" />
+    <Content Include="assets\flags\1x1\sl.svg" />
+    <Content Include="assets\flags\1x1\sm.svg" />
+    <Content Include="assets\flags\1x1\sn.svg" />
+    <Content Include="assets\flags\1x1\so.svg" />
+    <Content Include="assets\flags\1x1\sr.svg" />
+    <Content Include="assets\flags\1x1\ss.svg" />
+    <Content Include="assets\flags\1x1\st.svg" />
+    <Content Include="assets\flags\1x1\sv.svg" />
+    <Content Include="assets\flags\1x1\sx.svg" />
+    <Content Include="assets\flags\1x1\sy.svg" />
+    <Content Include="assets\flags\1x1\sz.svg" />
+    <Content Include="assets\flags\1x1\tc.svg" />
+    <Content Include="assets\flags\1x1\td.svg" />
+    <Content Include="assets\flags\1x1\tf.svg" />
+    <Content Include="assets\flags\1x1\tg.svg" />
+    <Content Include="assets\flags\1x1\th.svg" />
+    <Content Include="assets\flags\1x1\tj.svg" />
+    <Content Include="assets\flags\1x1\tk.svg" />
+    <Content Include="assets\flags\1x1\tl.svg" />
+    <Content Include="assets\flags\1x1\tm.svg" />
+    <Content Include="assets\flags\1x1\tn.svg" />
+    <Content Include="assets\flags\1x1\to.svg" />
+    <Content Include="assets\flags\1x1\tr.svg" />
+    <Content Include="assets\flags\1x1\tt.svg" />
+    <Content Include="assets\flags\1x1\tv.svg" />
+    <Content Include="assets\flags\1x1\tw.svg" />
+    <Content Include="assets\flags\1x1\tz.svg" />
+    <Content Include="assets\flags\1x1\ua.svg" />
+    <Content Include="assets\flags\1x1\ug.svg" />
+    <Content Include="assets\flags\1x1\um.svg" />
+    <Content Include="assets\flags\1x1\un.svg" />
+    <Content Include="assets\flags\1x1\us.svg" />
+    <Content Include="assets\flags\1x1\uy.svg" />
+    <Content Include="assets\flags\1x1\uz.svg" />
+    <Content Include="assets\flags\1x1\va.svg" />
+    <Content Include="assets\flags\1x1\vc.svg" />
+    <Content Include="assets\flags\1x1\ve.svg" />
+    <Content Include="assets\flags\1x1\vg.svg" />
+    <Content Include="assets\flags\1x1\vi.svg" />
+    <Content Include="assets\flags\1x1\vn.svg" />
+    <Content Include="assets\flags\1x1\vu.svg" />
+    <Content Include="assets\flags\1x1\wf.svg" />
+    <Content Include="assets\flags\1x1\ws.svg" />
+    <Content Include="assets\flags\1x1\ye.svg" />
+    <Content Include="assets\flags\1x1\yt.svg" />
+    <Content Include="assets\flags\1x1\za.svg" />
+    <Content Include="assets\flags\1x1\zm.svg" />
+    <Content Include="assets\flags\1x1\zw.svg" />
+    <Content Include="assets\flags\4x3\ad.svg" />
+    <Content Include="assets\flags\4x3\ae.svg" />
+    <Content Include="assets\flags\4x3\af.svg" />
+    <Content Include="assets\flags\4x3\ag.svg" />
+    <Content Include="assets\flags\4x3\ai.svg" />
+    <Content Include="assets\flags\4x3\al.svg" />
+    <Content Include="assets\flags\4x3\am.svg" />
+    <Content Include="assets\flags\4x3\ao.svg" />
+    <Content Include="assets\flags\4x3\aq.svg" />
+    <Content Include="assets\flags\4x3\ar.svg" />
+    <Content Include="assets\flags\4x3\as.svg" />
+    <Content Include="assets\flags\4x3\at.svg" />
+    <Content Include="assets\flags\4x3\au.svg" />
+    <Content Include="assets\flags\4x3\aw.svg" />
+    <Content Include="assets\flags\4x3\ax.svg" />
+    <Content Include="assets\flags\4x3\az.svg" />
+    <Content Include="assets\flags\4x3\ba.svg" />
+    <Content Include="assets\flags\4x3\bb.svg" />
+    <Content Include="assets\flags\4x3\bd.svg" />
+    <Content Include="assets\flags\4x3\be.svg" />
+    <Content Include="assets\flags\4x3\bf.svg" />
+    <Content Include="assets\flags\4x3\bg.svg" />
+    <Content Include="assets\flags\4x3\bh.svg" />
+    <Content Include="assets\flags\4x3\bi.svg" />
+    <Content Include="assets\flags\4x3\bj.svg" />
+    <Content Include="assets\flags\4x3\bl.svg" />
+    <Content Include="assets\flags\4x3\bm.svg" />
+    <Content Include="assets\flags\4x3\bn.svg" />
+    <Content Include="assets\flags\4x3\bo.svg" />
+    <Content Include="assets\flags\4x3\bq.svg" />
+    <Content Include="assets\flags\4x3\br.svg" />
+    <Content Include="assets\flags\4x3\bs.svg" />
+    <Content Include="assets\flags\4x3\bt.svg" />
+    <Content Include="assets\flags\4x3\bv.svg" />
+    <Content Include="assets\flags\4x3\bw.svg" />
+    <Content Include="assets\flags\4x3\by.svg" />
+    <Content Include="assets\flags\4x3\bz.svg" />
+    <Content Include="assets\flags\4x3\ca.svg" />
+    <Content Include="assets\flags\4x3\cc.svg" />
+    <Content Include="assets\flags\4x3\cd.svg" />
+    <Content Include="assets\flags\4x3\cf.svg" />
+    <Content Include="assets\flags\4x3\cg.svg" />
+    <Content Include="assets\flags\4x3\ch.svg" />
+    <Content Include="assets\flags\4x3\ci.svg" />
+    <Content Include="assets\flags\4x3\ck.svg" />
+    <Content Include="assets\flags\4x3\cl.svg" />
+    <Content Include="assets\flags\4x3\cm.svg" />
+    <Content Include="assets\flags\4x3\cn.svg" />
+    <Content Include="assets\flags\4x3\co.svg" />
+    <Content Include="assets\flags\4x3\cr.svg" />
+    <Content Include="assets\flags\4x3\cu.svg" />
+    <Content Include="assets\flags\4x3\cv.svg" />
+    <Content Include="assets\flags\4x3\cw.svg" />
+    <Content Include="assets\flags\4x3\cx.svg" />
+    <Content Include="assets\flags\4x3\cy.svg" />
+    <Content Include="assets\flags\4x3\cz.svg" />
+    <Content Include="assets\flags\4x3\de.svg" />
+    <Content Include="assets\flags\4x3\dj.svg" />
+    <Content Include="assets\flags\4x3\dk.svg" />
+    <Content Include="assets\flags\4x3\dm.svg" />
+    <Content Include="assets\flags\4x3\do.svg" />
+    <Content Include="assets\flags\4x3\dz.svg" />
+    <Content Include="assets\flags\4x3\ec.svg" />
+    <Content Include="assets\flags\4x3\ee.svg" />
+    <Content Include="assets\flags\4x3\eg.svg" />
+    <Content Include="assets\flags\4x3\eh.svg" />
+    <Content Include="assets\flags\4x3\er.svg" />
+    <Content Include="assets\flags\4x3\es-ct.svg" />
+    <Content Include="assets\flags\4x3\es.svg" />
+    <Content Include="assets\flags\4x3\et.svg" />
+    <Content Include="assets\flags\4x3\eu.svg" />
+    <Content Include="assets\flags\4x3\fi.svg" />
+    <Content Include="assets\flags\4x3\fj.svg" />
+    <Content Include="assets\flags\4x3\fk.svg" />
+    <Content Include="assets\flags\4x3\fm.svg" />
+    <Content Include="assets\flags\4x3\fo.svg" />
+    <Content Include="assets\flags\4x3\fr.svg" />
+    <Content Include="assets\flags\4x3\ga.svg" />
+    <Content Include="assets\flags\4x3\gb-eng.svg" />
+    <Content Include="assets\flags\4x3\gb-nir.svg" />
+    <Content Include="assets\flags\4x3\gb-sct.svg" />
+    <Content Include="assets\flags\4x3\gb-wls.svg" />
+    <Content Include="assets\flags\4x3\gb.svg" />
+    <Content Include="assets\flags\4x3\gd.svg" />
+    <Content Include="assets\flags\4x3\ge.svg" />
+    <Content Include="assets\flags\4x3\gf.svg" />
+    <Content Include="assets\flags\4x3\gg.svg" />
+    <Content Include="assets\flags\4x3\gh.svg" />
+    <Content Include="assets\flags\4x3\gi.svg" />
+    <Content Include="assets\flags\4x3\gl.svg" />
+    <Content Include="assets\flags\4x3\gm.svg" />
+    <Content Include="assets\flags\4x3\gn.svg" />
+    <Content Include="assets\flags\4x3\gp.svg" />
+    <Content Include="assets\flags\4x3\gq.svg" />
+    <Content Include="assets\flags\4x3\gr.svg" />
+    <Content Include="assets\flags\4x3\gs.svg" />
+    <Content Include="assets\flags\4x3\gt.svg" />
+    <Content Include="assets\flags\4x3\gu.svg" />
+    <Content Include="assets\flags\4x3\gw.svg" />
+    <Content Include="assets\flags\4x3\gy.svg" />
+    <Content Include="assets\flags\4x3\hk.svg" />
+    <Content Include="assets\flags\4x3\hm.svg" />
+    <Content Include="assets\flags\4x3\hn.svg" />
+    <Content Include="assets\flags\4x3\hr.svg" />
+    <Content Include="assets\flags\4x3\ht.svg" />
+    <Content Include="assets\flags\4x3\hu.svg" />
+    <Content Include="assets\flags\4x3\id.svg" />
+    <Content Include="assets\flags\4x3\ie.svg" />
+    <Content Include="assets\flags\4x3\il.svg" />
+    <Content Include="assets\flags\4x3\im.svg" />
+    <Content Include="assets\flags\4x3\in.svg" />
+    <Content Include="assets\flags\4x3\io.svg" />
+    <Content Include="assets\flags\4x3\iq.svg" />
+    <Content Include="assets\flags\4x3\ir.svg" />
+    <Content Include="assets\flags\4x3\is.svg" />
+    <Content Include="assets\flags\4x3\it.svg" />
+    <Content Include="assets\flags\4x3\je.svg" />
+    <Content Include="assets\flags\4x3\jm.svg" />
+    <Content Include="assets\flags\4x3\jo.svg" />
+    <Content Include="assets\flags\4x3\jp.svg" />
+    <Content Include="assets\flags\4x3\ke.svg" />
+    <Content Include="assets\flags\4x3\kg.svg" />
+    <Content Include="assets\flags\4x3\kh.svg" />
+    <Content Include="assets\flags\4x3\ki.svg" />
+    <Content Include="assets\flags\4x3\km.svg" />
+    <Content Include="assets\flags\4x3\kn.svg" />
+    <Content Include="assets\flags\4x3\kp.svg" />
+    <Content Include="assets\flags\4x3\kr.svg" />
+    <Content Include="assets\flags\4x3\kw.svg" />
+    <Content Include="assets\flags\4x3\ky.svg" />
+    <Content Include="assets\flags\4x3\kz.svg" />
+    <Content Include="assets\flags\4x3\la.svg" />
+    <Content Include="assets\flags\4x3\lb.svg" />
+    <Content Include="assets\flags\4x3\lc.svg" />
+    <Content Include="assets\flags\4x3\li.svg" />
+    <Content Include="assets\flags\4x3\lk.svg" />
+    <Content Include="assets\flags\4x3\lr.svg" />
+    <Content Include="assets\flags\4x3\ls.svg" />
+    <Content Include="assets\flags\4x3\lt.svg" />
+    <Content Include="assets\flags\4x3\lu.svg" />
+    <Content Include="assets\flags\4x3\lv.svg" />
+    <Content Include="assets\flags\4x3\ly.svg" />
+    <Content Include="assets\flags\4x3\ma.svg" />
+    <Content Include="assets\flags\4x3\mc.svg" />
+    <Content Include="assets\flags\4x3\md.svg" />
+    <Content Include="assets\flags\4x3\me.svg" />
+    <Content Include="assets\flags\4x3\mf.svg" />
+    <Content Include="assets\flags\4x3\mg.svg" />
+    <Content Include="assets\flags\4x3\mh.svg" />
+    <Content Include="assets\flags\4x3\mk.svg" />
+    <Content Include="assets\flags\4x3\ml.svg" />
+    <Content Include="assets\flags\4x3\mm.svg" />
+    <Content Include="assets\flags\4x3\mn.svg" />
+    <Content Include="assets\flags\4x3\mo.svg" />
+    <Content Include="assets\flags\4x3\mp.svg" />
+    <Content Include="assets\flags\4x3\mq.svg" />
+    <Content Include="assets\flags\4x3\mr.svg" />
+    <Content Include="assets\flags\4x3\ms.svg" />
+    <Content Include="assets\flags\4x3\mt.svg" />
+    <Content Include="assets\flags\4x3\mu.svg" />
+    <Content Include="assets\flags\4x3\mv.svg" />
+    <Content Include="assets\flags\4x3\mw.svg" />
+    <Content Include="assets\flags\4x3\mx.svg" />
+    <Content Include="assets\flags\4x3\my.svg" />
+    <Content Include="assets\flags\4x3\mz.svg" />
+    <Content Include="assets\flags\4x3\na.svg" />
+    <Content Include="assets\flags\4x3\nc.svg" />
+    <Content Include="assets\flags\4x3\ne.svg" />
+    <Content Include="assets\flags\4x3\nf.svg" />
+    <Content Include="assets\flags\4x3\ng.svg" />
+    <Content Include="assets\flags\4x3\ni.svg" />
+    <Content Include="assets\flags\4x3\nl.svg" />
+    <Content Include="assets\flags\4x3\no.svg" />
+    <Content Include="assets\flags\4x3\np.svg" />
+    <Content Include="assets\flags\4x3\nr.svg" />
+    <Content Include="assets\flags\4x3\nu.svg" />
+    <Content Include="assets\flags\4x3\nz.svg" />
+    <Content Include="assets\flags\4x3\om.svg" />
+    <Content Include="assets\flags\4x3\pa.svg" />
+    <Content Include="assets\flags\4x3\pe.svg" />
+    <Content Include="assets\flags\4x3\pf.svg" />
+    <Content Include="assets\flags\4x3\pg.svg" />
+    <Content Include="assets\flags\4x3\ph.svg" />
+    <Content Include="assets\flags\4x3\pk.svg" />
+    <Content Include="assets\flags\4x3\pl.svg" />
+    <Content Include="assets\flags\4x3\pm.svg" />
+    <Content Include="assets\flags\4x3\pn.svg" />
+    <Content Include="assets\flags\4x3\pr.svg" />
+    <Content Include="assets\flags\4x3\ps.svg" />
+    <Content Include="assets\flags\4x3\pt.svg" />
+    <Content Include="assets\flags\4x3\pw.svg" />
+    <Content Include="assets\flags\4x3\py.svg" />
+    <Content Include="assets\flags\4x3\qa.svg" />
+    <Content Include="assets\flags\4x3\re.svg" />
+    <Content Include="assets\flags\4x3\ro.svg" />
+    <Content Include="assets\flags\4x3\rs.svg" />
+    <Content Include="assets\flags\4x3\ru.svg" />
+    <Content Include="assets\flags\4x3\rw.svg" />
+    <Content Include="assets\flags\4x3\sa.svg" />
+    <Content Include="assets\flags\4x3\sb.svg" />
+    <Content Include="assets\flags\4x3\sc.svg" />
+    <Content Include="assets\flags\4x3\sd.svg" />
+    <Content Include="assets\flags\4x3\se.svg" />
+    <Content Include="assets\flags\4x3\sg.svg" />
+    <Content Include="assets\flags\4x3\sh.svg" />
+    <Content Include="assets\flags\4x3\si.svg" />
+    <Content Include="assets\flags\4x3\sj.svg" />
+    <Content Include="assets\flags\4x3\sk.svg" />
+    <Content Include="assets\flags\4x3\sl.svg" />
+    <Content Include="assets\flags\4x3\sm.svg" />
+    <Content Include="assets\flags\4x3\sn.svg" />
+    <Content Include="assets\flags\4x3\so.svg" />
+    <Content Include="assets\flags\4x3\sr.svg" />
+    <Content Include="assets\flags\4x3\ss.svg" />
+    <Content Include="assets\flags\4x3\st.svg" />
+    <Content Include="assets\flags\4x3\sv.svg" />
+    <Content Include="assets\flags\4x3\sx.svg" />
+    <Content Include="assets\flags\4x3\sy.svg" />
+    <Content Include="assets\flags\4x3\sz.svg" />
+    <Content Include="assets\flags\4x3\tc.svg" />
+    <Content Include="assets\flags\4x3\td.svg" />
+    <Content Include="assets\flags\4x3\tf.svg" />
+    <Content Include="assets\flags\4x3\tg.svg" />
+    <Content Include="assets\flags\4x3\th.svg" />
+    <Content Include="assets\flags\4x3\tj.svg" />
+    <Content Include="assets\flags\4x3\tk.svg" />
+    <Content Include="assets\flags\4x3\tl.svg" />
+    <Content Include="assets\flags\4x3\tm.svg" />
+    <Content Include="assets\flags\4x3\tn.svg" />
+    <Content Include="assets\flags\4x3\to.svg" />
+    <Content Include="assets\flags\4x3\tr.svg" />
+    <Content Include="assets\flags\4x3\tt.svg" />
+    <Content Include="assets\flags\4x3\tv.svg" />
+    <Content Include="assets\flags\4x3\tw.svg" />
+    <Content Include="assets\flags\4x3\tz.svg" />
+    <Content Include="assets\flags\4x3\ua.svg" />
+    <Content Include="assets\flags\4x3\ug.svg" />
+    <Content Include="assets\flags\4x3\um.svg" />
+    <Content Include="assets\flags\4x3\un.svg" />
+    <Content Include="assets\flags\4x3\us.svg" />
+    <Content Include="assets\flags\4x3\uy.svg" />
+    <Content Include="assets\flags\4x3\uz.svg" />
+    <Content Include="assets\flags\4x3\va.svg" />
+    <Content Include="assets\flags\4x3\vc.svg" />
+    <Content Include="assets\flags\4x3\ve.svg" />
+    <Content Include="assets\flags\4x3\vg.svg" />
+    <Content Include="assets\flags\4x3\vi.svg" />
+    <Content Include="assets\flags\4x3\vn.svg" />
+    <Content Include="assets\flags\4x3\vu.svg" />
+    <Content Include="assets\flags\4x3\wf.svg" />
+    <Content Include="assets\flags\4x3\ws.svg" />
+    <Content Include="assets\flags\4x3\ye.svg" />
+    <Content Include="assets\flags\4x3\yt.svg" />
+    <Content Include="assets\flags\4x3\za.svg" />
+    <Content Include="assets\flags\4x3\zm.svg" />
+    <Content Include="assets\flags\4x3\zw.svg" />
+    <Content Include="assets\fonts\boxicons.svg" />
+    <Content Include="assets\fonts\LineIcons.svg" />
+    <Content Include="assets\images\avatars\avatar-1.png" />
+    <Content Include="assets\images\avatars\avatar-10.png" />
+    <Content Include="assets\images\avatars\avatar-11.png" />
+    <Content Include="assets\images\avatars\avatar-12.png" />
+    <Content Include="assets\images\avatars\avatar-13.png" />
+    <Content Include="assets\images\avatars\avatar-14.png" />
+    <Content Include="assets\images\avatars\avatar-15.png" />
+    <Content Include="assets\images\avatars\avatar-16.png" />
+    <Content Include="assets\images\avatars\avatar-17.png" />
+    <Content Include="assets\images\avatars\avatar-18.png" />
+    <Content Include="assets\images\avatars\avatar-19.png" />
+    <Content Include="assets\images\avatars\avatar-20.png" />
+    <Content Include="assets\images\avatars\avatar-21.png" />
+    <Content Include="assets\images\avatars\avatar-22.png" />
+    <Content Include="assets\images\avatars\avatar-23.png" />
+    <Content Include="assets\images\avatars\avatar-24.png" />
+    <Content Include="assets\images\avatars\avatar-25.png" />
+    <Content Include="assets\images\avatars\avatar-3.png" />
+    <Content Include="assets\images\avatars\avatar-4.png" />
+    <Content Include="assets\images\avatars\avatar-5.png" />
+    <Content Include="assets\images\avatars\avatar-6.png" />
+    <Content Include="assets\images\avatars\avatar-7.png" />
+    <Content Include="assets\images\avatars\avatar-8.png" />
+    <Content Include="assets\images\avatars\avatar-9.png" />
+    <Content Include="assets\images\errors-images\404-error.png" />
+    <Content Include="assets\images\errors-images\505-error.png" />
+    <Content Include="assets\images\favicon-32x32.png" />
+    <Content Include="assets\images\gallery\01.png" />
+    <Content Include="assets\images\gallery\02.png" />
+    <Content Include="assets\images\gallery\03.png" />
+    <Content Include="assets\images\gallery\04.png" />
+    <Content Include="assets\images\gallery\05.png" />
+    <Content Include="assets\images\gallery\06.png" />
+    <Content Include="assets\images\gallery\07.png" />
+    <Content Include="assets\images\gallery\08.png" />
+    <Content Include="assets\images\gallery\09.png" />
+    <Content Include="assets\images\gallery\10.png" />
+    <Content Include="assets\images\gallery\11.png" />
+    <Content Include="assets\images\gallery\12.png" />
+    <Content Include="assets\images\gallery\13.png" />
+    <Content Include="assets\images\gallery\14.png" />
+    <Content Include="assets\images\gallery\15.png" />
+    <Content Include="assets\images\gallery\16.png" />
+    <Content Include="assets\images\gallery\17.png" />
+    <Content Include="assets\images\gallery\18.png" />
+    <Content Include="assets\images\gallery\19.png" />
+    <Content Include="assets\images\gallery\20.png" />
+    <Content Include="assets\images\gallery\21.png" />
+    <Content Include="assets\images\gallery\22.png" />
+    <Content Include="assets\images\gallery\23.png" />
+    <Content Include="assets\images\gallery\24.png" />
+    <Content Include="assets\images\gallery\25.png" />
+    <Content Include="assets\images\gallery\26.png" />
+    <Content Include="assets\images\gallery\27.png" />
+    <Content Include="assets\images\gallery\28.png" />
+    <Content Include="assets\images\gallery\29.png" />
+    <Content Include="assets\images\gallery\30.png" />
+    <Content Include="assets\images\gallery\31.png" />
+    <Content Include="assets\images\gallery\32.png" />
+    <Content Include="assets\images\gallery\33.png" />
+    <Content Include="assets\images\gallery\34.png" />
+    <Content Include="assets\images\icons\chair.png" />
+    <Content Include="assets\images\icons\chair.svg" />
+    <Content Include="assets\images\icons\forgot-2.png" />
+    <Content Include="assets\images\icons\headphones.png" />
+    <Content Include="assets\images\icons\idea.png" />
+    <Content Include="assets\images\icons\search.svg" />
+    <Content Include="assets\images\icons\shoes.png" />
+    <Content Include="assets\images\icons\tshirt.png" />
+    <Content Include="assets\images\icons\user-interface.png" />
+    <Content Include="assets\images\icons\user.png" />
+    <Content Include="assets\images\icons\watch.png" />
+    <Content Include="assets\images\login-images\bg-forgot-password.jpg" />
+    <Content Include="assets\images\login-images\bg-lock-screen.jpg" />
+    <Content Include="assets\images\login-images\bg-login-img.jpg" />
+    <Content Include="assets\images\login-images\forgot-password-frent-img.jpg" />
+    <Content Include="assets\images\logo-img.png" />
+    <Content Include="assets\images\products\01.png" />
+    <Content Include="assets\images\products\02.png" />
+    <Content Include="assets\images\products\03.png" />
+    <Content Include="assets\images\products\04.png" />
+    <Content Include="assets\images\products\05.png" />
+    <Content Include="assets\images\products\06.png" />
+    <Content Include="assets\images\products\07.png" />
+    <Content Include="assets\images\products\08.png" />
+    <Content Include="assets\images\products\09.png" />
+    <Content Include="assets\images\products\10.png" />
+    <Content Include="assets\images\products\11.png" />
+    <Content Include="assets\images\products\12.png" />
+    <Content Include="assets\images\products\13.png" />
+    <Content Include="assets\images\products\14.png" />
+    <Content Include="assets\images\products\15.png" />
+    <Content Include="assets\images\products\16.png" />
+    <Content Include="assets\images\products\17.png" />
+    <Content Include="assets\images\products\18.png" />
+    <Content Include="assets\images\products\19.png" />
+    <Content Include="assets\js\app.js" />
+    <Content Include="assets\js\bootstrap.bundle.min.js" />
+    <Content Include="assets\js\dashboard-alternate.js" />
+    <Content Include="assets\js\dashboard-analytics.js" />
+    <Content Include="assets\js\dashboard-digital-marketing.js" />
+    <Content Include="assets\js\dashboard-eCommerce.js" />
+    <Content Include="assets\js\dashboard-human-resources.js" />
+    <Content Include="assets\js\dashboard-sales.js" />
+    <Content Include="assets\js\index.js" />
+    <Content Include="assets\js\jquery.min.js" />
+    <Content Include="assets\js\pace.min.js" />
+    <Content Include="assets\js\widgets.js" />
+    <Content Include="assets\plugins\apexcharts-bundle\css\apexcharts.css" />
+    <Content Include="assets\plugins\apexcharts-bundle\js\apex-custom.js" />
+    <Content Include="assets\plugins\apexcharts-bundle\js\apexcharts.js" />
+    <Content Include="assets\plugins\apexcharts-bundle\js\apexcharts.min.js" />
+    <Content Include="assets\plugins\bootstrap-material-datetimepicker\css\bootstrap-material-datetimepicker.min.css" />
+    <Content Include="assets\plugins\bootstrap-material-datetimepicker\js\bootstrap-material-datetimepicker.min.js" />
+    <Content Include="assets\plugins\bootstrap-material-datetimepicker\js\moment.min.js" />
+    <Content Include="assets\plugins\chartjs\js\Chart.extension.js" />
+    <Content Include="assets\plugins\chartjs\js\Chart.min.js" />
+    <Content Include="assets\plugins\chartjs\js\chartjs-custom.js" />
+    <Content Include="assets\plugins\datatable\css\dataTables.bootstrap5.min.css" />
+    <Content Include="assets\plugins\datatable\js\dataTables.bootstrap5.min.js" />
+    <Content Include="assets\plugins\datatable\js\jquery.dataTables.min.js" />
+    <Content Include="assets\plugins\datetimepicker\css\classic.css" />
+    <Content Include="assets\plugins\datetimepicker\css\classic.date.css" />
+    <Content Include="assets\plugins\datetimepicker\css\classic.time.css" />
+    <Content Include="assets\plugins\datetimepicker\js\legacy.js" />
+    <Content Include="assets\plugins\datetimepicker\js\picker.date.js" />
+    <Content Include="assets\plugins\datetimepicker\js\picker.js" />
+    <Content Include="assets\plugins\datetimepicker\js\picker.time.js" />
+    <Content Include="assets\plugins\fancy-file-uploader\cors\jquery.postmessage-transport.js" />
+    <Content Include="assets\plugins\fancy-file-uploader\cors\jquery.xdr-transport.js" />
+    <Content Include="assets\plugins\fancy-file-uploader\fancy_fileupload.css" />
+    <Content Include="assets\plugins\fancy-file-uploader\fancy_microphone.png" />
+    <Content Include="assets\plugins\fancy-file-uploader\fancy_okay.png" />
+    <Content Include="assets\plugins\fancy-file-uploader\fancy_remove.png" />
+    <Content Include="assets\plugins\fancy-file-uploader\fancy_upload.png" />
+    <Content Include="assets\plugins\fancy-file-uploader\fancy_webcam.png" />
+    <Content Include="assets\plugins\fancy-file-uploader\jquery.fancy-fileupload.js" />
+    <Content Include="assets\plugins\fancy-file-uploader\jquery.fileupload.js" />
+    <Content Include="assets\plugins\fancy-file-uploader\jquery.iframe-transport.js" />
+    <Content Include="assets\plugins\fancy-file-uploader\jquery.ui.widget.js" />
+    <Content Include="assets\plugins\fullcalendar\css\main.css" />
+    <Content Include="assets\plugins\fullcalendar\css\main.min.css" />
+    <Content Include="assets\plugins\fullcalendar\js\main.js" />
+    <Content Include="assets\plugins\fullcalendar\js\main.min.js" />
+    <Content Include="assets\plugins\gmaps\map-custom-script.js" />
+    <Content Include="assets\plugins\highcharts\css\dark-unica.css" />
+    <Content Include="assets\plugins\highcharts\css\grid-light.css" />
+    <Content Include="assets\plugins\highcharts\css\highcharts-white.css" />
+    <Content Include="assets\plugins\highcharts\css\highcharts.css" />
+    <Content Include="assets\plugins\highcharts\css\sand-signika.css" />
+    <Content Include="assets\plugins\highcharts\js\accessibility.js" />
+    <Content Include="assets\plugins\highcharts\js\cylinder.js" />
+    <Content Include="assets\plugins\highcharts\js\export-data.js" />
+    <Content Include="assets\plugins\highcharts\js\exporting.js" />
+    <Content Include="assets\plugins\highcharts\js\funnel3d.js" />
+    <Content Include="assets\plugins\highcharts\js\highcharts-3d.js" />
+    <Content Include="assets\plugins\highcharts\js\highcharts-custom.script.js" />
+    <Content Include="assets\plugins\highcharts\js\highcharts-more.js" />
+    <Content Include="assets\plugins\highcharts\js\highcharts.js" />
+    <Content Include="assets\plugins\highcharts\js\solid-gauge.js" />
+    <Content Include="assets\plugins\highcharts\js\variable-pie.js" />
+    <Content Include="assets\plugins\input-tags\css\tagsinput.css" />
+    <Content Include="assets\plugins\input-tags\js\tagsinput.js" />
+    <Content Include="assets\plugins\jquery-knob\excanvas.js" />
+    <Content Include="assets\plugins\jquery-knob\jquery.knob.js" />
+    <Content Include="assets\plugins\jquery.easy-pie-chart\easy-pie-chart.init.js" />
+    <Content Include="assets\plugins\jquery.easy-pie-chart\easypiechart.min.js" />
+    <Content Include="assets\plugins\jquery.easy-pie-chart\jquery.easypiechart.min.js" />
+    <Content Include="assets\plugins\metismenu\css\metisMenu.min.css" />
+    <Content Include="assets\plugins\metismenu\js\metisMenu.min.js" />
+    <Content Include="assets\plugins\notifications\css\lobibox.css" />
+    <Content Include="assets\plugins\notifications\css\lobibox.min.css" />
+    <Content Include="assets\plugins\notifications\img\1.jpg" />
+    <Content Include="assets\plugins\notifications\img\2.jpg" />
+    <Content Include="assets\plugins\notifications\img\3.jpg" />
+    <Content Include="assets\plugins\notifications\img\4.jpg" />
+    <Content Include="assets\plugins\notifications\img\5.jpg" />
+    <Content Include="assets\plugins\notifications\img\6.jpg" />
+    <Content Include="assets\plugins\notifications\js\lobibox.js" />
+    <Content Include="assets\plugins\notifications\js\lobibox.min.js" />
+    <Content Include="assets\plugins\notifications\js\messageboxes.js" />
+    <Content Include="assets\plugins\notifications\js\messageboxes.min.js" />
+    <Content Include="assets\plugins\notifications\js\notification-custom-script.js" />
+    <Content Include="assets\plugins\notifications\js\notifications.js" />
+    <Content Include="assets\plugins\notifications\js\notifications.min.js" />
+    <Content Include="assets\plugins\notifications\sounds\sound1.ogg" />
+    <Content Include="assets\plugins\notifications\sounds\sound2.ogg" />
+    <Content Include="assets\plugins\notifications\sounds\sound3.ogg" />
+    <Content Include="assets\plugins\notifications\sounds\sound4.ogg" />
+    <Content Include="assets\plugins\notifications\sounds\sound5.ogg" />
+    <Content Include="assets\plugins\notifications\sounds\sound6.ogg" />
+    <Content Include="assets\plugins\perfect-scrollbar\css\perfect-scrollbar.css" />
+    <Content Include="assets\plugins\perfect-scrollbar\js\perfect-scrollbar.js" />
+    <Content Include="assets\plugins\select2\css\select2-bootstrap4.css" />
+    <Content Include="assets\plugins\select2\css\select2.min.css" />
+    <Content Include="assets\plugins\select2\js\select2.min.js" />
+    <Content Include="assets\plugins\simplebar\css\simplebar.css" />
+    <Content Include="assets\plugins\simplebar\js\simplebar.min.js" />
+    <Content Include="assets\plugins\smart-wizard\css\smart_wizard_all.min.css" />
+    <Content Include="assets\plugins\smart-wizard\js\jquery.smartWizard.min.js" />
+    <Content Include="assets\plugins\sparkline-charts\apex-sparkline-charts.js" />
+    <Content Include="assets\plugins\sparkline-charts\jquery.sparkline.min.js" />
+    <Content Include="assets\plugins\sparkline-charts\sparkline-chart-script.js" />
+    <Content Include="assets\plugins\vectormap\jquery-jvectormap-2.0.2.css" />
+    <Content Include="assets\plugins\vectormap\jquery-jvectormap-2.0.2.min.js" />
+    <Content Include="assets\plugins\vectormap\jquery-jvectormap-au-mill.js" />
+    <Content Include="assets\plugins\vectormap\jquery-jvectormap-in-mill.js" />
+    <Content Include="assets\plugins\vectormap\jquery-jvectormap-uk-mill-en.js" />
+    <Content Include="assets\plugins\vectormap\jquery-jvectormap-us-aea-en.js" />
+    <Content Include="assets\plugins\vectormap\jquery-jvectormap-world-mill-en.js" />
+    <Content Include="assets\plugins\vectormap\jvectormap.custom.js" />
+    <Content Include="bin\AjaxControlToolkit.dll" />
+    <Content Include="bin\AjaxControlToolkit.pdb" />
+    <Content Include="bin\App_Code.dll" />
+    <Content Include="bin\App_global.asax.dll" />
+    <Content Include="bin\BCrypt.Net-Next.dll" />
+    <Content Include="bin\blowery.Web.HttpCompress.dll" />
+    <Content Include="bin\BouncyCastle.Crypto.dll" />
+    <Content Include="bin\CheckBoxListExCtrl.dll" />
+    <Content Include="bin\CKEditor.NET.dll" />
+    <Content Include="bin\Ionic.Zip.dll" />
+    <Content Include="bin\itextsharp.dll" />
+    <Content Include="bin\jQueryDatePicker.dll" />
+    <Content Include="bin\jQueryDatePicker.pdb" />
+    <Content Include="bin\Mono.Security.dll" />
+    <Content Include="bin\Newtonsoft.Json.dll" />
+    <Content Include="bin\Npgsql.dll" />
+    <Content Include="bin\Npgsql.pdb" />
+    <Content Include="bin\NPOI.dll" />
+    <Content Include="bin\NPOI.OOXML.dll" />
+    <Content Include="bin\NPOI.OpenXml4Net.dll" />
+    <Content Include="bin\NPOI.OpenXmlFormats.dll" />
+    <Content Include="bin\NReco.PdfGenerator.dll" />
+    <Content Include="bin\PdfiumViewer.dll" />
+    <Content Include="bin\System.Web.Helpers.Crypto.dll" />
+    <Content Include="bin\System.Web.Helpers.Crypto.pdb" />
+    <Content Include="Branch.aspx" />
+    <Content Include="bss_branch_control.aspx" />
+    <Content Include="Bss_unt.aspx" />
+    <Content Include="Bss_unts.aspx" />
+    <Content Include="BusinessUnitUpdate.aspx" />
+    <Content Include="CnhgPss.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="GoodsNservice.aspx" />
+    <Content Include="Images\logo.png" />
+    <Content Include="Item.aspx" />
+    <Content Include="Login.aspx" />
+    <Content Include="Logins.aspx" />
+    <Content Include="Logout.aspx" />
+    <Content Include="NoAccess.aspx" />
+    <Content Include="OrgSetup.aspx" />
+    <Content Include="Others.aspx" />
+    <Content Include="Price_Declaration.aspx" />
+    <Content Include="Production.aspx" />
+    <Content Include="Purchase.aspx" />
+    <Content Include="Reports.aspx" />
+    <Content Include="Reports\AboveTwoLacRep_6.10.aspx" />
+    <Content Include="Reports\AboveTwoLacRep_6.10s.aspx" />
+    <Content Include="Reports\AtActualComparison.aspx" />
+    <Content Include="Reports\BandrollManagement.aspx" />
+    <Content Include="Reports\BandrollRegister.aspx" />
+    <Content Include="Reports\Dispose_Inputs_Form26s.aspx" />
+    <Content Include="Reports\BandrollRegisters.aspx" />
+    <Content Include="Reports\Cashmemo.aspx" />
+    <Content Include="Reports\CategoryWisePreodicReport.aspx" />
+    <Content Include="Reports\Challan.aspx" />
+    <Content Include="Reports\Challan_Form11.aspx" />
+    <Content Include="Reports\Challan_Form11s.aspx" />
+    <Content Include="Reports\Challan_Form11sCheck.aspx" />
+    <Content Include="Reports\ContractualProductionIssueReport.aspx" />
+    <Content Include="Reports\ContractualProductionReceiveReport.aspx" />
+    <Content Include="Reports\CreditNoteReport.aspx" />
+    <Content Include="Reports\CreditNote_Summary.aspx" />
+    <Content Include="Reports\Credit_Note_Form12.aspx" />
+    <Content Include="Reports\Credit_Note_Form12_N.aspx" />
+    <Content Include="Reports\Credit_Note_Form12_Ns.aspx" />
+    <Content Include="Reports\Current_Account_Form18.aspx" />
+    <Content Include="Reports\Current_Account_Form18_N.aspx" />
+    <Content Include="Reports\DailySaleReport.aspx" />
+    <Content Include="Reports\DailySaleReports.aspx" />
+    <Content Include="Reports\DebitNoteReport.aspx" />
+    <Content Include="Reports\Debit_Note_Form12Ka.aspx" />
+    <Content Include="Reports\Debit_Note_Form12Ka_N.aspx" />
+    <Content Include="Reports\Destroy_Inputs_Form27.aspx" />
+    <Content Include="Reports\Dispose.aspx" />
+    <Content Include="Reports\Dispose_Inputs_Form26.aspx" />
+    <Content Include="Reports\FinishGoodProductionReport.aspx" />
+    <Content Include="Reports\FinishGoodProductionReports.aspx" />
+    <Content Include="Reports\Finish_Good_Production_Details.aspx" />
+    <Content Include="Reports\GoodsTransferSummeryChak_Ka.aspx" />
+    <Content Include="Reports\Musha6.1.aspx" />
+    <Content Include="Reports\Mushak4.4.aspx" />
+    <Content Include="Reports\Mushak6.2.aspx" />
+    <Content Include="Reports\Mushok12_7.aspx" />
+    <Content Include="Reports\Mushok12_8.aspx" />
+    <Content Include="Reports\Mushok16_2.aspx" />
+    <Content Include="Reports\Mushok17_1.aspx" />
+    <Content Include="Reports\Mushok18_3.aspx" />
+    <Content Include="Reports\Mushok2_4.aspx" />
+    <Content Include="Reports\Mushok2_6.aspx" />
+    <Content Include="Reports\Mushok2_7.aspx" />
+    <Content Include="Reports\Mushok4_3.aspx" />
+    <Content Include="Reports\Mushok4_3Report.aspx" />
+    <Content Include="Reports\Mushok6_5.aspx" />
+    <Content Include="Reports\Mushok9_2.aspx" />
+    <Content Include="Reports\Mushok9_3.aspx" />
+    <Content Include="Reports\Mushok9_4.aspx" />
+    <Content Include="Reports\Mushok_1.aspx" />
+    <Content Include="Reports\Mushok_1_rpt.aspx" />
+    <Content Include="Reports\Mushok_1_rpt_KHA.aspx" />
+    <Content Include="Reports\Musuk_6_2_1.aspx" />
+    <Content Include="Reports\Musuk_6_2_1_.aspx" />
+    <Content Include="Reports\Musuk_6_2_1_s.aspx" />
+    <Content Include="Reports\OwnProductionIssueReport.aspx" />
+    <Content Include="Reports\OwnProductionReceiveReport.aspx" />
+    <Content Include="Reports\PeriodicStockReport.aspx" />
+    <Content Include="Reports\PeriodicStockReportsNew.aspx" />
+    <Content Include="Reports\PeriodicStockReports.aspx" />
+    <Content Include="Reports\Periodic_Purchase_Report_BI.aspx" />
+    <Content Include="Reports\Periodic_Purchase_Report_BIs.aspx" />
+    <Content Include="Reports\PriceDeclaration_Form1Ga.aspx" />
+    <Content Include="Reports\PriceDeclaration_Form1Kha.aspx" />
+    <Content Include="Reports\Price_Declaration_Form1.aspx" />
+    <Content Include="Reports\PurchaseAccountingBook_6.1.aspx" />
+    <Content Include="Reports\PurchaseAccountSixOneMushak.aspx" />
+    <Content Include="Reports\PurchaseDayItemChallanGrpRep.aspx" />
+    <Content Include="Reports\PurchaseDaywiseSummaryReport.aspx" />
+    <Content Include="Reports\PurchaseRegister.aspx" />
+    <Content Include="Reports\PurchaseReport.aspx" />
+    <Content Include="Reports\PurchaseReports.aspx" />
+    <Content Include="Reports\PurchaseSummaryReport.aspx" />
+    <Content Include="Reports\PurchaseTypeWiseSummaryReport.aspx" />
+    <Content Include="Reports\Purchase_Account_Book_Form16.aspx" />
+    <Content Include="Reports\Purchase_Account_Book_Form16_N.aspx" />
+    <Content Include="Reports\purchase_leisure_book.aspx" />
+    <Content Include="Reports\QuantityWiseSaleReport.aspx" />
+    <Content Include="Reports\QuantityWiseSaleReports.aspx" />
+    <Content Include="Reports\RawMaterialConsumptionReport.aspx" />
+    <Content Include="Reports\RawMaterialConsumptionReports.aspx" />
+    <Content Include="Reports\Raw_Material_Consumption_Rpt.aspx" />
+    <Content Include="Reports\ReconciliationReport.aspx" />
+    <Content Include="Reports\ReportViewer.aspx" />
+    <Content Include="Reports\Report_VAT_Return_9_1.aspx" />
+    <Content Include="Reports\rptMushok17KA.aspx" />
+    <Content Include="Reports\rptMushok1Gha.aspx" />
+    <Content Include="Reports\rptMushok1GHAA.aspx" />
+    <Content Include="Reports\rptMushok5Ka.aspx" />
+    <Content Include="Reports\SaleAccountBookSIXTwo.aspx" />
+    <Content Include="Reports\SaleAccountingBook_6.2.aspx" />
+    <Content Include="Reports\SaleChallan17.aspx" />
+    <Content Include="Reports\SaleDayItemChallanGrpRep.aspx" />
+    <Content Include="Reports\SaleDayWiseSummaryReport.aspx" />
+    <Content Include="Reports\SaleRegister.aspx" />
+    <Content Include="Reports\SaleReport.aspx" />
+    <Content Include="Reports\SaleReportsNew.aspx" />
+    <Content Include="Reports\SaleReports.aspx" />
+    <Content Include="Reports\SalesPurchaseComparativeReport.aspx" />
+    <Content Include="Reports\SalesPurchaseComparativeReports.aspx" />
+    <Content Include="Reports\SalesTransactionSummeryChak_Kha.aspx" />
+    <Content Include="Reports\SaleSummaryMonthwise.aspx" />
+    <Content Include="Reports\SaleSummaryMonthwises.aspx" />
+    <Content Include="Reports\SaleSummaryReport.aspx" />
+    <Content Include="Reports\Sales_Account_Book_Form17.aspx" />
+    <Content Include="Reports\Sales_Account_Book_Form17_N.aspx" />
+    <Content Include="Reports\sales_leisure_book.aspx" />
+    <Content Include="Reports\SaleTypeWiseSummaryReport.aspx" />
+    <Content Include="Reports\SIMSVATReturnMushok19.aspx" />
+    <Content Include="Reports\SourceTaxDeductedCertificate_6.6.aspx" />
+    <Content Include="Reports\SourceTaxDeductedCertificate_Receive_6.6.aspx" />
+    <Content Include="Reports\SourceTaxDedutForm.aspx" />
+    <Content Include="Reports\Stock_Declaration_rpt.aspx" />
+    <Content Include="Reports\SubForms\Challan_Form11.aspx" />
+    <Content Include="Reports\SubForms\Details_Note_27.aspx" />
+    <Content Include="Reports\SubForms\Details_Note_27s.aspx" />
+    <Content Include="Reports\SubForms\Details_Note_33.aspx" />
+    <Content Include="Reports\SubForms\Details_Note_33s.aspx" />
+    <Content Include="Reports\SubForms\Reports_SubForms_SubForm_K_Note_2s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_CH.aspx" />
+    <Content Include="Reports\SubForms\SubForm_CHA.aspx" />
+    <Content Include="Reports\SubForms\SubForm_CHAs.aspx" />
+    <Content Include="Reports\SubForms\SubForm_CHs.aspx" />
+    <Content Include="Reports\SubForms\SubForm_G.aspx" />
+    <Content Include="Reports\SubForms\SubForm_GHA.aspx" />
+    <Content Include="Reports\SubForms\SubForm_Gha_Note_18.aspx" />
+    <Content Include="Reports\SubForms\SubForm_Gha_Note_18s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_GHA_Note_24.aspx" />
+    <Content Include="Reports\SubForms\SubForm_GHA_Note_24s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_Gha_Note_6.aspx" />
+    <Content Include="Reports\SubForms\SubForm_Gha_Note_6s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_G_Note_6.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k19.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k19s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k20.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k20s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_KH.aspx" />
+    <Content Include="Reports\SubForms\SubForm_Kha_Note_8.aspx" />
+    <Content Include="Reports\SubForms\SubForm_Kha_Note_8s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_Ks.aspx" />
+    <Content Include="Reports\SubForms\SubForm_KSIMS.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_5.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_5s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note12.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k_Note12s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note13.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k_Note13s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_1.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_10.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_10s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_11.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_11s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k_Note_14.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k_Note_14s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_k_Note_14s1.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_15.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_15s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_16.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_16s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_17.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_17s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_1s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_2.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_2s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_3.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_3s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_5.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_7.aspx" />
+    <Content Include="Reports\SubForms\SubForm_K_Note_7s.aspx" />
+    <Content Include="Reports\SubForms\Subform_Note_26.aspx" />
+    <Content Include="Reports\SubForms\Subform_Note_26s.aspx" />
+    <Content Include="Reports\SubForms\Subform_Note_31.aspx" />
+    <Content Include="Reports\SubForms\Subform_Note_31s.aspx" />
+    <Content Include="Reports\SubForms\SubForm_UMO.aspx" />
+    <Content Include="Reports\SubForms\SubForm_UMO_Note_29.aspx" />
+    <Content Include="Reports\SubForms\SubForm_UMO_Note_29s.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note53.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note53s.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note54.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note55.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note56.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note57.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note57s.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note58.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note58s.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note59.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note59s.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note60.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note60s.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note61.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_CHA_Note61s.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_K_Note_21.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_K_Note_21s.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_K_Note_22.aspx" />
+    <Content Include="Reports\SubForms\Sub_Form_K_Note_22s.aspx" />
+    <Content Include="Reports\Summary_Of_Value_Addition.aspx" />
+    <Content Include="Reports\Summary_Of_Value_Additions.aspx" />
+    <Content Include="Reports\TestTable.aspx" />
+    <Content Include="Reports\TransferIssueReport6.5.aspx" />
+    <Content Include="Reports\TransferIssueReport6.5s.aspx" />
+    <Content Include="Reports\TransferReceiveReport6.5.aspx" />
+    <Content Include="Reports\TransferReceiveReport6.5s.aspx" />
+    <Content Include="Reports\treasuryChallan_form.aspx" />
+    <Content Include="Reports\treasuryChallan_forms.aspx" />
+    <Content Include="Reports\Treasury_Challan_Detail_Report.aspx" />
+    <Content Include="Reports\TurnoverTaxReturn_9.2.aspx" />
+    <Content Include="Reports\ValueAdditionPctwiseReport4_3.aspx" />
+    <Content Include="Reports\ValueAdditionPctwiseReport4_3s.aspx" />
+    <Content Include="Reports\Vat6.3Report.aspx" />
+    <Content Include="Reports\VatDeductedSource.aspx" />
+    <Content Include="Reports\VATMonthlySummaryReport.aspx" />
+    <Content Include="Reports\VatRegistration2.1.aspx" />
+    <Content Include="Reports\VatRegistration2_2.aspx" />
+    <Content Include="Reports\VATReturnMushok19.aspx" />
+    <Content Include="Reports\VATReturnMushok19sR.aspx" />
+    <Content Include="Reports\VatReturn_9.1.aspx" />
+    <Content Include="Reports\VAT_19.xml" />
+    <Content Include="Reports\VAT_Return_9.1.aspx" />
+    <Content Include="Reports\VAT_Return_Form19.aspx" />
+    <Content Include="Reports\VAT_Return_Form19_N.aspx" />
+    <Content Include="Reports\VAT_Return_Form19_Ns.aspx" />
+    <Content Include="Reports\VDSIssue.aspx" />
+    <Content Include="Reports\XMLgenerate.aspx" />
+    <Content Include="Sale.aspx" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-resource.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Scripts\bootstrap\bootstrap.js" />
+    <Content Include="Scripts\bootstrap\bootstrap.min.js" />
+    <Content Include="Scripts\bootstrap\npm.js" />
+    <Content Include="Scripts\date.js" />
+    <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.4.4.js" />
+    <Content Include="Scripts\jquery-1.4.4.min.js" />
+    <Content Include="Scripts\jquery-3.1.1.min.js" />
+    <Content Include="Scripts\jquery-ui-1.12.1.js" />
+    <Content Include="Scripts\jquery.sumoselect.min.js" />
+    <Content Include="Scripts\jquery.tablePagination.0.1.js" />
+    <Content Include="Scripts\jquery.tablesorter.js" />
+    <Content Include="Scripts\main.js" />
+    <Content Include="Scripts\scrollsaver.min.js" />
+    <Content Include="Scripts\select2.css" />
+    <Content Include="Scripts\select2.full.js" />
+    <Content Include="Scripts\select2.full.min.js" />
+    <Content Include="Scripts\select2.js" />
+    <Content Include="Scripts\select2.min.css" />
+    <Content Include="Scripts\select2.min.js" />
+    <Content Include="Scripts\Select2CSS\select2.css" />
+    <Content Include="Scripts\Select2CSS\select2.min.css" />
+    <Content Include="Scripts\Select2JS\select2.full.js" />
+    <Content Include="Scripts\Select2JS\select2.full.min.js" />
+    <Content Include="Scripts\Select2JS\select2.js" />
+    <Content Include="Scripts\Select2JS\select2.min.js" />
+    <Content Include="Scripts\sweetalert2.all.min.js" />
+    <Content Include="Scripts\sweetalert2\sweetalert2.all.js" />
+    <Content Include="Scripts\sweetalert2\sweetalert2.all.min.js" />
+    <Content Include="Scripts\sweetalert2\sweetalert2.css" />
+    <Content Include="Scripts\sweetalert2\sweetalert2.js" />
+    <Content Include="Scripts\sweetalert2\sweetalert2.min.css" />
+    <Content Include="Scripts\sweetalert2\sweetalert2.min.js" />
+    <Content Include="Styles\bootstrap\bootstrap-theme.css" />
+    <Content Include="Styles\bootstrap\bootstrap-theme.min.css" />
+    <Content Include="Styles\bootstrap\bootstrap.css" />
+    <Content Include="Styles\Box_Border.css" />
+    <Content Include="Styles\Dashboard.css" />
+    <Content Include="Styles\fontawesome\font-awesome.css" />
+    <Content Include="Styles\fonts\fontawesome-webfont.svg" />
+    <Content Include="Styles\jquery-ui.css" />
+    <Content Include="Styles\Login.css" />
+    <Content Include="Styles\Main.css" />
+    <Content Include="Styles\Panel_Custom.css" />
+    <Content Include="Styles\SIMS_Custom.css" />
+    <Content Include="Styles\str.css" />
+    <Content Include="Styles\panel.css" />
+    <Content Include="Styles\print.css" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="Styles\test.css" />
+    <Content Include="TestDropDownAjax.aspx" />
+    <Content Include="Testing.aspx" />
+    <Content Include="TestPage.aspx" />
+    <Content Include="TestR_D.aspx" />
+    <Content Include="Test_HTML.aspx" />
+    <Content Include="UI\Admin\Activation.aspx" />
+    <Content Include="UI\Admin\Add_ClosingVATSD.aspx" />
+    <Content Include="UI\Admin\Add_Country.aspx" />
+    <Content Include="UI\Admin\Add_Department.aspx" />
+    <Content Include="UI\Admin\Add_Designation.aspx" />
+    <Content Include="UI\Admin\Add_Division.aspx" />
+    <Content Include="UI\Admin\Add_Org_Bank_Account.aspx" />
+    <Content Include="UI\Admin\Add_Org_Bank_Accounts.aspx" />
+    <Content Include="UI\Admin\Add_Org_Item_Turnover.aspx" />
+    <Content Include="UI\Admin\AdvanceTaxReturnforImport_4.1.aspx" />
+    <Content Include="UI\Admin\ApproverSetup.aspx" />
+    <Content Include="UI\Admin\ApproverSetups.aspx" />
+    <Content Include="UI\Admin\BackUP.aspx" />
+    <Content Include="UI\Admin\Backup_new.aspx" />
+    <Content Include="UI\Admin\Bandrollrequisition_receive.aspx" />
+    <Content Include="UI\Admin\Bandrollrequisition_receives.aspx" />
+    <Content Include="UI\Admin\Band_roll_requisition_form.aspx" />
+    <Content Include="UI\Admin\Band_roll_requisition_forms.aspx" />
+    <Content Include="UI\Admin\Bank_Branch_Setup.aspx" />
+    <Content Include="UI\Admin\Bank_Branch_Setups.aspx" />
+    <Content Include="UI\Admin\Bank_Setup.aspx" />
+    <Content Include="UI\Admin\Bank_Setups.aspx" />
+    <Content Include="UI\Admin\BaseDataSetup.aspx" />
+    <Content Include="UI\Admin\BookingInformation.aspx" />
+    <Content Include="UI\Admin\ChallanSetup.aspx" />
+    <Content Include="UI\Admin\ClosingVatSd.aspx" />
+    <Content Include="UI\Admin\Commissionerate.aspx" />
+    <Content Include="UI\Admin\Commissionerates.aspx" />
+    <Content Include="UI\Admin\Company_Registration.aspx" />
+    <Content Include="UI\Admin\ContractualProduction_6.4.aspx" />
+    <Content Include="UI\Admin\ContractualProduction_6.4s.aspx" />
+    <Content Include="UI\Admin\ContractualProduction_Receive_6.4.aspx" />
+    <Content Include="UI\Admin\ContractualProduction_Receive_6.4s.aspx" />
+    <Content Include="UI\Admin\CreditNote_6.7.aspx" />
+    <Content Include="UI\Admin\CreditNote_6.7s.aspx" />
+    <Content Include="UI\Admin\CreditNote_Extension.aspx" />
+    <Content Include="UI\Admin\CreditNote_ExtensionDeduct.aspx" />
+    <Content Include="UI\Admin\DebitNote_6.8.aspx" />
+    <Content Include="UI\Admin\DebitNote_6.8s.aspx" />
+    <Content Include="UI\Admin\DebitNote_Extension.aspx" />
+    <Content Include="UI\Admin\DebitNote_ExtensionIncrease.aspx" />
+    <Content Include="UI\Admin\DepartmentSetup.aspx" />
+    <Content Include="UI\Admin\DesignationSetup.aspx" />
+    <Content Include="UI\Admin\GiftVATAdjustment.aspx" />
+    <Content Include="UI\Admin\Import_AIT_Refund_4.1.aspx" />
+    <Content Include="UI\Admin\MasterDataSetup.aspx" />
+    <Content Include="UI\Admin\OrganizationManagementSetup.aspx" />
+    <Content Include="UI\Admin\OrganizationSetup.aspx" />
+    <Content Include="UI\Admin\Own_Production_6.4.aspx" />
+    <Content Include="UI\Admin\Own_Production_6.4s.aspx" />
+    <Content Include="UI\Admin\Own_Production_Receive6.4.aspx" />
+    <Content Include="UI\Admin\Own_Production_Receive6.4s.aspx" />
+    <Content Include="UI\Admin\PartyBalanceSetup.aspx" />
+    <Content Include="UI\Admin\Party_Balance_Setup.aspx" />
+    <Content Include="UI\Admin\Payment_Method_Permission_SetUp.aspx" />
+    <Content Include="UI\Admin\Payment_Method_Permission_SetUps.aspx" />
+    <Content Include="UI\Admin\ProductsTransfer_6.5.aspx" />
+    <Content Include="UI\Admin\ProductsTransfer_6.5s.aspx" />
+    <Content Include="UI\Admin\ProductsTransfer_receive_6.5.aspx" />
+    <Content Include="UI\Admin\ProductsTransfer_receive_6.5s.aspx" />
+    <Content Include="UI\Admin\RebateAdjustment.aspx" />
+    <Content Include="UI\Admin\RebateAdjustmentPurchase.aspx" />
+    <Content Include="UI\Admin\Rebate_Monitoring.aspx" />
+    <Content Include="UI\Admin\Rebate_Monitorings.aspx" />
+    <Content Include="UI\Admin\ReportPrintPermission.aspx" />
+    <Content Include="UI\Admin\SetBaseData.aspx" />
+    <Content Include="UI\Admin\SetBaseDataMaster.aspx" />
+    <Content Include="UI\Admin\SetChallanNo.aspx" />
+    <Content Include="UI\Admin\SetCustomer.aspx" />
+    <Content Include="UI\Admin\SetDistrict.aspx" />
+    <Content Include="UI\Admin\SetUnionWard.aspx" />
+    <Content Include="UI\Admin\SetUpazila.aspx" />
+    <Content Include="UI\Admin\SupplDutyAdjApp_7.1.aspx" />
+    <Content Include="UI\Admin\SupplDutyAdjApp_7.1s.aspx" />
+    <Content Include="UI\Admin\TreasuryChallan_6.aspx" />
+    <Content Include="UI\Admin\TreasuryChallan_6s.aspx" />
+    <Content Include="UI\Admin\TreasuryChallan_6s1.aspx" />
+    <Content Include="UI\Admin\TurnoverVatChallan_6.9.aspx" />
+    <Content Include="UI\Admin\TurnoverVatChallan_6.9_Print.aspx" />
+    <Content Include="UI\Admin\VatBranchRegistration_2.2.aspx" />
+    <Content Include="UI\Admin\VatRegistration_2.1.aspx" />
+    <Content Include="UI\Admin\VatRegistration_2.1old.aspx" />
+    <Content Include="UI\Admin\VATSDAdjustment18.6.aspx" />
+    <Content Include="UI\Admin\Vat_Area.aspx" />
+    <Content Include="UI\Admin\Vat_Areas.aspx" />
+    <Content Include="UI\Admin\Vat_Circle.aspx" />
+    <Content Include="UI\Admin\Vat_Circle_New.aspx" />
+    <Content Include="UI\Admin\Vat_Circle_News.aspx" />
+    <Content Include="UI\Admin\Vat_Commissionerate.aspx" />
+    <Content Include="UI\Admin\Vat_Division.aspx" />
+    <Content Include="UI\Admin\Vat_Division_New.aspx" />
+    <Content Include="UI\Admin\Vat_Division_News.aspx" />
+    <Content Include="UI\Admin\VDSIssue.aspx" />
+    <Content Include="UI\Admin\VDS_Monitoring.aspx" />
+    <Content Include="UI\Admin\VDS_Monitorings.aspx" />
+    <Content Include="UI\Admin\WasteManagement.aspx" />
+    <Content Include="UI\Admin\WasteManagements.aspx" />
+    <Content Include="UI\Admin\woTemplate.aspx" />
+    <Content Include="UI\Audit\AccountingBookAudit.aspx" />
+    <Content Include="UI\Audit\AllChallanAudit.aspx" />
+    <Content Include="UI\Audit\AuditTrailLog.aspx" />
+    <Content Include="UI\Audit\AuditTrailLogReport.aspx" />
+    <Content Include="UI\Audit\IngredientsPurchaseInformation.aspx" />
+    <Content Include="UI\Audit\IngredientsPurchaseInformations.aspx" />
+    <Content Include="UI\Audit\OnlineChalanVerification.aspx" />
+    <Content Include="UI\Audit\PriceDeclarationInformation.aspx" />
+    <Content Include="UI\Audit\PriceDeclarationInformations.aspx" />
+    <Content Include="UI\Audit\ProductionNSalesStatement.aspx" />
+    <Content Include="UI\Audit\ProductionNSalesStatements.aspx" />
+    <Content Include="UI\Audit\RebateStatement.aspx" />
+    <Content Include="UI\Audit\RebateStatements.aspx" />
+    <Content Include="UI\Audit\RevenueStatement.aspx" />
+    <Content Include="UI\Audit\VDSStatement.aspx" />
+    <Content Include="UI\Audit\VDSStatements.aspx" />
+    <Content Include="UI\Challan.aspx" />
+    <Content Include="UI\Item\GiftItemSetUp.aspx" />
+    <Content Include="UI\Item\GiftItemSetups.aspx" />
+    <Content Include="UI\Item\GoodsRequisitionToVendor.aspx" />
+    <Content Include="UI\Item\ImportExcelOpeningBalance.aspx" />
+    <Content Include="UI\Item\importItemFromExcel.aspx" />
+    <Content Include="UI\Item\ImportPricrDeclarationFromExcel.aspx" />
+    <Content Include="UI\Item\ImportTaxRateExcel.aspx" />
+    <Content Include="UI\Item\ItemOpeningInfo.aspx" />
+    <Content Include="UI\Item\ItemPriceDeclaration_1GA.aspx" />
+    <Content Include="UI\Item\ItemPriceDeclaration_1GHA.aspx" />
+    <Content Include="UI\Item\ItemPriceDeclaration_1KA.aspx" />
+    <Content Include="UI\Item\ItemPriceDeclaration_1KHA.aspx" />
+    <Content Include="UI\Item\ItemSetSetup.aspx" />
+    <Content Include="UI\Item\ItemSetSetups.aspx" />
+    <Content Include="UI\Item\Item_Price_Declarertion.aspx" />
+    <Content Include="UI\Item\Item_Tax_Values.aspx" />
+    <Content Include="UI\Item\Item_Tax_Values_New.aspx" />
+    <Content Include="UI\Item\Item_Tax_Values_NewUpdate.aspx" />
+    <Content Include="UI\Item\Item_Tax_Values_Setup.aspx" />
+    <Content Include="UI\Item\Itm_OpeningInfo.aspx" />
+    <Content Include="UI\Item\OtherPrincipalAndValueAdditionSetup.aspx" />
+    <Content Include="UI\Item\OtherPrincipalAndValueAdditionSetups.aspx" />
+    <Content Include="UI\Item\PricedecComparison.aspx" />
+    <Content Include="UI\Item\PriceDeclarartionByTrader.aspx" />
+    <Content Include="UI\Item\PriceDeclaration.aspx" />
+    <Content Include="UI\Item\PriceDeclarationTD.aspx" />
+    <Content Include="UI\Item\PriceDeclaration_M1.aspx" />
+    <Content Include="UI\Item\SetItem.aspx" />
+    <Content Include="UI\Item\SetItemCategory.aspx" />
+    <Content Include="UI\Item\setItemOrder.aspx" />
+    <Content Include="UI\Item\SetItemOrders.aspx" />
+    <Content Include="UI\Item\SetItems.aspx" />
+    <Content Include="UI\Item\SetProperty.aspx" />
+    <Content Include="UI\Item\SetPropertyNew.aspx" />
+    <Content Include="UI\Item\SetRawMaterial.aspx" />
+    <Content Include="UI\Item\SetUintConversion.aspx" />
+    <Content Include="UI\Item\SetUnit.aspx" />
+    <Content Include="UI\Item\UnitConversion.aspx" />
+    <Content Include="UI\Item\wsPriceDeclaration.asmx" />
+    <Content Include="UI\Others\Add_Trans_Party.aspx" />
+    <Content Include="UI\Others\Bill_of_Entry.aspx" />
+    <Content Include="UI\Others\DADO.aspx" />
+    <Content Include="UI\Others\Damaged.aspx" />
+    <Content Include="UI\Others\Dispose.aspx" />
+    <Content Include="UI\Others\Disposes.aspx" />
+    <Content Include="UI\Others\Dispose_Unused_Product.aspx" />
+    <Content Include="UI\Others\PartySetup.aspx" />
+    <Content Include="UI\Others\TreasuryDeposit.aspx" />
+    <Content Include="UI\Others\Treasury_Deposit.aspx" />
+    <Content Include="UI\Others\Treasury_Deposit_show.aspx" />
+    <Content Include="UI\Others\wfFAQ.aspx" />
+    <Content Include="UI\Production\Bandroll.aspx" />
+    <Content Include="UI\Production\BandrollReceive.aspx" />
+    <Content Include="UI\Production\BandrollUse.aspx" />
+    <Content Include="UI\Production\FinishedGoodsProduction.aspx" />
+    <Content Include="UI\Production\Finished_Goods_Production.aspx" />
+    <Content Include="UI\Production\FinishProductReceiveFromSelfProduction.aspx" />
+    <Content Include="UI\Production\RawMaterialConsumption.aspx" />
+    <Content Include="UI\Production\RawMaterialIssuedForProduction.aspx" />
+    <Content Include="UI\Production\RawMaterialIssueForProduction.aspx" />
+    <Content Include="UI\Production\RawMaterialRequisition.aspx" />
+    <Content Include="UI\Production\Raw_Material_Consumtion.aspx" />
+    <Content Include="UI\Purchase\Adjustment_Voucher_Purchase.aspx" />
+    <Content Include="UI\Purchase\BillOfEntry_6.3.aspx" />
+    <Content Include="UI\Purchase\BillOfEntry_6.3s.aspx" />
+    <Content Include="UI\Purchase\BillofEntry_Edit.aspx" />
+    <Content Include="UI\Purchase\Bill_Of_Entry.aspx" />
+    <Content Include="UI\Purchase\Challan_Purchase.aspx" />
+    <Content Include="UI\Purchase\ImportBillofEntryfromExcel.aspx" />
+    <Content Include="UI\Purchase\ImportExcelLocalPurchase.aspx" />
+    <Content Include="UI\Purchase\LocalPurchase.aspx" />
+    <Content Include="UI\Purchase\Prev_Purchase_Challan_11.aspx" />
+    <Content Include="UI\Purchase\PurchaseReturn.aspx" />
+    <Content Include="UI\Purchase\Purchase_Challan_11.aspx" />
+    <Content Include="UI\Purchase\Purchase_Challan_6.3.aspx" />
+    <Content Include="UI\Purchase\Purchase_Edit.aspx" />
+    <Content Include="UI\Sale\Adjustment_Voucher.aspx" />
+    <Content Include="UI\Sale\AllSaleChallan11View.aspx" />
+    <Content Include="UI\Sale\ApproveSaleChallan.aspx" />
+    <Content Include="UI\Sale\CashMemo.aspx" />
+    <Content Include="UI\Sale\Challan_Sale.aspx" />
+    <Content Include="UI\Sale\ConsumableItemSale.aspx" />
+    <Content Include="UI\Sale\ConsumableItemSales.aspx" />
+    <Content Include="UI\Sale\CustomCashMemo.aspx" />
+    <Content Include="UI\Sale\CustomCashMemoN.aspx" />
+    <Content Include="UI\Sale\ImportSalefromExcel.aspx" />
+    <Content Include="UI\Sale\InstallmentPaymentSchedule.aspx" />
+    <Content Include="UI\Sale\InvoiceCancel.aspx" />
+    <Content Include="UI\Sale\SaleChallan11CashMemo.aspx" />
+    <Content Include="UI\Sale\SaleChallan11Detail.aspx" />
+    <Content Include="UI\Sale\SaleChallan11Print.aspx" />
+    <Content Include="UI\Sale\SaleChallan_11.aspx" />
+    <Content Include="UI\Sale\SaleChallan_11s.aspx" />
+    <Content Include="UI\Sale\SaleChallan_11_Phrma_Report.aspx" />
+    <Content Include="UI\Sale\SaleChallan_11_Report.aspx" />
+    <Content Include="UI\Sale\SaleChallan_6.3.aspx" />
+    <Content Include="UI\Sale\SaleChallan_6.3_Print.aspx" />
+    <Content Include="UI\Sale\Sale_Edit.aspx" />
+    <Content Include="UI\Sale\Template.aspx" />
+    <Content Include="UI\TurnOver\TurnOverTax.aspx" />
+    <Content Include="UI\UserControls\admin.ascx" />
+    <Content Include="UI\UserControls\Item.ascx" />
+    <Content Include="UI\UserControls\MsgBox.ascx" />
+    <Content Include="UI\UserControls\MsgBoxs.ascx" />
+    <Content Include="UI\UserControls\ReportsNav.ascx" />
+    <Content Include="UI\UserSetup\AddNewUser.aspx" />
+    <Content Include="UI\UserSetup\Add_User.aspx" />
+    <Content Include="UI\UserSetup\AdminUserPermission.aspx" />
+    <Content Include="UI\UserSetup\UserPermissionSetup.aspx" />
+    <Content Include="UI\wsVatPromptApi.asmx" />
+    <Content Include="UserControls\admins.ascx" />
+    <Content Include="UserControls\admin.ascx" />
+    <Content Include="UserControls\DatePicker.ascx" />
+    <Content Include="UserControls\DatePicker1.ascx" />
+    <Content Include="UserControls\Items.ascx" />
+    <Content Include="UserControls\Item.ascx" />
+    <Content Include="UserControls\MsgBoxs.ascx" />
+    <Content Include="UserControls\MsgBox.ascx" />
+    <Content Include="UserControls\Others.ascx" />
+    <Content Include="UserControls\Others1.ascx" />
+    <Content Include="UserControls\Production.ascx" />
+    <Content Include="UserControls\Purchase.ascx" />
+    <Content Include="UserControls\ReportsNav.ascx" />
+    <Content Include="UserControls\Sale.ascx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Logins1.aspx" />
+    <Content Include="WebForm1.aspx" />
+    <Content Include="WebForm2.aspx" />
+    <Content Include="WebService.asmx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Admin_DashboardsSIMS.aspx.cs">
+      <DependentUpon>Admin_DashboardsSIMS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin_DashboardsSIMS.aspx.designer.cs">
+      <DependentUpon>Admin_DashboardsSIMS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="BLL\PrincipalInput.cs" />
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\NBRContext.cs" />
+    <Compile Include="Entity\Test.cs" />
+    <Compile Include="KGCDashboard.aspx.cs">
+      <DependentUpon>KGCDashboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="KGCDashboard.aspx.designer.cs">
+      <DependentUpon>KGCDashboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Api\MushakAPI.cs" />
+    <Compile Include="Api\SubForm_k_Note_14API.cs" />
+    <Compile Include="BLL\AccountingBookBLL.cs" />
+    <Compile Include="BLL\AccountingBookDAO.cs" />
+    <Compile Include="BLL\AccountingQuantity.cs" />
+    <Compile Include="BLL\AddItemBLL.cs" />
+    <Compile Include="BLL\AdditionalProperty.cs" />
+    <Compile Include="BLL\AddUserBLL.cs" />
+    <Compile Include="BLL\AddUserDAO.cs" />
+    <Compile Include="BLL\AdjustmentVoucherBLL.cs" />
+    <Compile Include="BLL\adjustSDDAO.cs" />
+    <Compile Include="BLL\AllConstraint.cs" />
+    <Compile Include="BLL\AlllAddressBLL.cs" />
+    <Compile Include="BLL\AlllAddressDao.cs" />
+    <Compile Include="BLL\APIController.cs" />
+    <Compile Include="BLL\Approver_Stage.cs" />
+    <Compile Include="BLL\APP_CODE_DETAIL_DAO.cs" />
+    <Compile Include="BLL\APP_CODE_MASTER_DAO.cs" />
+    <Compile Include="BLL\AuthorizePersonInfoDAO.cs" />
+    <Compile Include="BLL\AvobeTwoLacBLL.cs" />
+    <Compile Include="BLL\AvobeTwoLacDAO.cs" />
+    <Compile Include="BLL\BandrollIManagementDAO.cs" />
+    <Compile Include="BLL\BandrollIManagementMasterDAO.cs" />
+    <Compile Include="BLL\BandrollManagementBLL.cs" />
+    <Compile Include="BLL\bankInfo.cs" />
+    <Compile Include="BLL\BankInformationBLL.cs" />
+    <Compile Include="BLL\BankInformationDAO.cs" />
+    <Compile Include="BLL\BillOfEntryDetail.cs" />
+    <Compile Include="BLL\BillOfEntryMaster.cs" />
+    <Compile Include="BLL\BranchAdDAO.cs" />
+    <Compile Include="BLL\bss_branchBLL.cs" />
+    <Compile Include="BLL\Bss_Branch_ControlDAO.cs" />
+    <Compile Include="BLL\BulkSaleDAO.cs" />
+    <Compile Include="BLL\business_cls_codeDAO.cs" />
+    <Compile Include="BLL\capitalMachinaryInfoDAO.cs" />
+    <Compile Include="BLL\Category.cs" />
+    <Compile Include="BLL\CategoryBLL.cs" />
+    <Compile Include="BLL\CategoryN.cs" />
+    <Compile Include="BLL\ChallanBLL.cs" />
+    <Compile Include="BLL\ChallanNoDetailDAO.cs" />
+    <Compile Include="BLL\ChallanNoMasterDAO.cs" />
+    <Compile Include="BLL\Challan_Form_11.cs" />
+    <Compile Include="BLL\CodeBLL.cs" />
+    <Compile Include="BLL\CommonReports.cs" />
+    <Compile Include="BLL\CompanyBLL.cs" />
+    <Compile Include="BLL\CompanyDAO.cs" />
+    <Compile Include="BLL\CompanyInfo.cs" />
+    <Compile Include="BLL\ContructualProduction.cs" />
+    <Compile Include="BLL\ContructualProductionBLL.cs" />
+    <Compile Include="BLL\ContructualProductionIsCheck.cs" />
+    <Compile Include="BLL\ContructualProductionIssueDAO.cs" />
+    <Compile Include="BLL\ContructualProductionIssueMasterDAO.cs" />
+    <Compile Include="BLL\CraDebBLL.cs" />
+    <Compile Include="BLL\CreditNoteDAO.cs" />
+    <Compile Include="BLL\CreditNoteDetailDAO.cs" />
+    <Compile Include="BLL\CreditNoteMasterDAO.cs" />
+    <Compile Include="BLL\Credit_Note_Form_12.cs" />
+    <Compile Include="BLL\CSVXMLBLL.cs" />
+    <Compile Include="BLL\csXML.cs" />
+    <Compile Include="BLL\CurrentAccount18DS.cs" />
+    <Compile Include="BLL\CurrentAccountBLL.cs" />
+    <Compile Include="BLL\CustomerBLL.cs" />
+    <Compile Include="BLL\CustomerDAO.cs" />
+    <Compile Include="BLL\DadoBLL.cs" />
+    <Compile Include="BLL\DadoDAO.cs" />
+    <Compile Include="BLL\DadoMasterDAO.cs" />
+    <Compile Include="BLL\DataSet2.cs" />
+    <Compile Include="BLL\DBUtility.cs" />
+    <Compile Include="BLL\DebitNoteDAO.cs" />
+    <Compile Include="BLL\DebitNoteDetailDAO.cs" />
+    <Compile Include="BLL\DebitNoteMasterDAO.cs" />
+    <Compile Include="BLL\DisposalBLL.cs" />
+    <Compile Include="BLL\DisposeDAO.cs" />
+    <Compile Include="BLL\DisposeDataset.cs" />
+    <Compile Include="BLL\EconomicSpecificationAdDAO.cs" />
+    <Compile Include="BLL\ExcelUtility.cs" />
+    <Compile Include="BLL\FinishGoodProdutionData.cs" />
+    <Compile Include="BLL\FinishProductReceiveFromSelfProductionDAO.cs" />
+    <Compile Include="BLL\FinishProductReceiveMasterFromSelfProductionDAO.cs" />
+    <Compile Include="BLL\Form1Kha.cs" />
+    <Compile Include="BLL\GiftDiscountPlanDAON.cs" />
+    <Compile Include="BLL\GRVendorMasterDAO.cs" />
+    <Compile Include="BLL\HttpPostAttribute.cs" />
+    <Compile Include="BLL\Import_AIT_RefundBLL.cs" />
+    <Compile Include="BLL\Import_AIT_RefundDAO.cs" />
+    <Compile Include="BLL\InputOutputInfoDAO.cs" />
+    <Compile Include="BLL\InstalmentSchedule.cs" />
+    <Compile Include="BLL\InstalmentScheduleChk.cs" />
+    <Compile Include="BLL\InWord.cs" />
+    <Compile Include="BLL\Item.cs" />
+    <Compile Include="BLL\itemBandrollBLL.cs" />
+    <Compile Include="BLL\itemBandrollDAO.cs" />
+    <Compile Include="BLL\ItemBLL.cs" />
+    <Compile Include="BLL\ItemTaxCategoryBLL.cs" />
+    <Compile Include="BLL\ItemTaxValueBLL.cs" />
+    <Compile Include="BLL\ItemTaxValueDAO.cs" />
+    <Compile Include="BLL\IT_SUBF_ADJUST.cs" />
+    <Compile Include="BLL\IT_SUBF_CHALLAN.cs" />
+    <Compile Include="BLL\IT_SUBF_GOSERV.cs" />
+    <Compile Include="BLL\IT_SUBF_OTHER.cs" />
+    <Compile Include="BLL\I_MAIN_FORM.cs" />
+    <Compile Include="BLL\I_MSG_HDR.cs" />
+    <Compile Include="BLL\List.cs" />
+    <Compile Include="BLL\ListtoDataTableConverter.cs" />
+    <Compile Include="BLL\ModifiedDataPurchaseDetail.cs" />
+    <Compile Include="BLL\ModifiedDataSaleDetail.cs" />
+    <Compile Include="BLL\ModifiedDataSaleMaster.cs" />
+    <Compile Include="BLL\MonthClosingBalance.cs" />
+    <Compile Include="BLL\MQMM.cs" />
+    <Compile Include="BLL\NatureOfApplicationBLL.cs" />
+    <Compile Include="BLL\NatureOfApplicationDao.cs" />
+    <Compile Include="BLL\NBRAccountingBook.cs" />
+    <Compile Include="BLL\NBRIntregrationBLL.cs" />
+    <Compile Include="BLL\NBR_POS_DS.cs" />
+    <Compile Include="BLL\NoteVDS.cs" />
+    <Compile Include="BLL\OrganizaitonInfo.cs" />
+    <Compile Include="BLL\OrgBankAccountBLL.cs" />
+    <Compile Include="BLL\OrgBankAccountDAO.cs" />
+    <Compile Include="BLL\OrgBankAccountNewDAO.cs" />
+    <Compile Include="BLL\OrgBranchRegistrationInfoBLL.cs" />
+    <Compile Include="BLL\OrgBranchRegistrationInfoDAO.cs" />
+    <Compile Include="BLL\OrgGroupManagementDAO.cs" />
+    <Compile Include="BLL\OrgInfoDS.cs" />
+    <Compile Include="BLL\OrgRegAddressDAO.cs" />
+    <Compile Include="BLL\OrgRegistrationInfoBLL.cs" />
+    <Compile Include="BLL\OrgRegistrationInfoDAO.cs" />
+    <Compile Include="BLL\OrgSubsidiaryUnitsBLL.cs" />
+    <Compile Include="BLL\OriginalDataPurchaseDetail.cs" />
+    <Compile Include="BLL\OriginalDataPurchaseMaster.cs" />
+    <Compile Include="BLL\OriginalDataSaleDetail.cs" />
+    <Compile Include="BLL\OriginalDataSaleMaster.cs" />
+    <Compile Include="BLL\OtherPrincipalAndValueAdditionDAO.cs" />
+    <Compile Include="BLL\OwnerTypeBLL.cs" />
+    <Compile Include="BLL\OwnerTypeDAO.cs" />
+    <Compile Include="BLL\Owner_infoDAO.cs" />
+    <Compile Include="BLL\PaymentMethodPermissionDao.cs" />
+    <Compile Include="BLL\PeriodicReportBLL.cs" />
+    <Compile Include="BLL\PriceDeclaretionBLL.cs" />
+    <Compile Include="BLL\PriceDeclaretionDAO.cs" />
+    <Compile Include="BLL\PriceDeclaretionDAONonVlueAdditional.cs" />
+    <Compile Include="BLL\PriceDeclaretionDAOVlueAdditional.cs" />
+    <Compile Include="BLL\PriceDeclaretionOtherInputDAO.cs" />
+    <Compile Include="BLL\PriceDeclaretionRawDAO.cs" />
+    <Compile Include="BLL\PriceDeclaretionValueAdditionDAO.cs" />
+    <Compile Include="BLL\PriceRowItemDAO.cs" />
+    <Compile Include="BLL\PrintDialog.cs" />
+    <Compile Include="BLL\PrintHelper.cs" />
+    <Compile Include="BLL\ProductionLotNoQntDAO.cs" />
+    <Compile Include="BLL\ProductTransferBLL.cs" />
+    <Compile Include="BLL\ProductTransferDAO.cs" />
+    <Compile Include="BLL\ProductTransferDetail.cs" />
+    <Compile Include="BLL\ProductTransferMaster.cs" />
+    <Compile Include="BLL\PSAccountingBookDao.cs" />
+    <Compile Include="BLL\PurchaseAccountingBookDAO.cs" />
+    <Compile Include="BLL\PurchaseChallan.cs" />
+    <Compile Include="BLL\PurchaseDetailDAO.cs" />
+    <Compile Include="BLL\PurchaseEdit.cs" />
+    <Compile Include="BLL\PurchaseEditMaster.cs" />
+    <Compile Include="BLL\PurchaseMasterDAO.cs" />
+    <Compile Include="BLL\PurchaseReturnBLL.cs" />
+    <Compile Include="BLL\Quantity.cs" />
+    <Compile Include="BLL\RawMaterialConsumptionData.cs" />
+    <Compile Include="BLL\RawMaterialIssueForSelfProductionDAO.cs" />
+    <Compile Include="BLL\ReallySimpleLog.cs" />
+    <Compile Include="BLL\RebatMonitoringBLL.cs" />
+    <Compile Include="BLL\RebatMonitoringDAO.cs" />
+    <Compile Include="BLL\reportBLL.cs" />
+    <Compile Include="BLL\Reporting.cs" />
+    <Compile Include="BLL\RoomBookingBLL.cs" />
+    <Compile Include="BLL\RoomBookingDAO.cs" />
+    <Compile Include="BLL\RoomBookingDetail.cs" />
+    <Compile Include="BLL\RoomBookingMaster.cs" />
+    <Compile Include="BLL\SaleAccountingBookDAO.cs" />
+    <Compile Include="BLL\SaleAdditionalMasterDAON.cs" />
+    <Compile Include="BLL\SaleBLL.cs" />
+    <Compile Include="BLL\SaleCashMemo.cs" />
+    <Compile Include="BLL\SaleChallan.cs" />
+    <Compile Include="BLL\SaleDetailDAO.cs" />
+    <Compile Include="BLL\SaleDetailDAON.cs" />
+    <Compile Include="BLL\SaleEdit.cs" />
+    <Compile Include="BLL\SaleEditMaster.cs" />
+    <Compile Include="BLL\saleExportDAO.cs" />
+    <Compile Include="BLL\SaleGiftDetailDAON.cs" />
+    <Compile Include="BLL\SaleMasterDAO.cs" />
+    <Compile Include="BLL\SaleMasterDAON.cs" />
+    <Compile Include="BLL\SalesExcelDao.cs" />
+    <Compile Include="BLL\SelfProductionDAO.cs" />
+    <Compile Include="BLL\SequentialNumber.cs" />
+    <Compile Include="BLL\SetBankBLL.cs" />
+    <Compile Include="BLL\SetBankBranchBLL.cs" />
+    <Compile Include="BLL\SetBankBranchDAO.cs" />
+    <Compile Include="BLL\SetBankDAO.cs" />
+    <Compile Include="BLL\SetCategoryDAO.cs" />
+    <Compile Include="BLL\SetCountryBLL.cs" />
+    <Compile Include="BLL\SetCountryDAO.cs" />
+    <Compile Include="BLL\setCurrencyBLL.cs" />
+    <Compile Include="BLL\SetDistrictBLL.cs" />
+    <Compile Include="BLL\SetDistrictDAO.cs" />
+    <Compile Include="BLL\SetDivisionBLL.cs" />
+    <Compile Include="BLL\SetDivisionDAO.cs" />
+    <Compile Include="BLL\SetDivsionBLL.cs" />
+    <Compile Include="BLL\SetFiscalYearDAO.cs" />
+    <Compile Include="BLL\SetItemBLL.cs" />
+    <Compile Include="BLL\SetItemCategoryDAO.cs" />
+    <Compile Include="BLL\SetItemDAO.cs" />
+    <Compile Include="BLL\SetItemPropertyBLL.cs" />
+    <Compile Include="BLL\SetItemSetDAO.cs" />
+    <Compile Include="BLL\SetItemSetMasterDAO.cs" />
+    <Compile Include="BLL\SetPoliceStationBLL.cs" />
+    <Compile Include="BLL\setPoliceStationDAO.cs" />
+    <Compile Include="BLL\SetRawMaterialBLL.cs" />
+    <Compile Include="BLL\SetRawMaterialDetailDAO.cs" />
+    <Compile Include="BLL\SetRawMaterialMasterDAO.cs" />
+    <Compile Include="BLL\SetSubCategory.cs" />
+    <Compile Include="BLL\setUnionWardBLL.cs" />
+    <Compile Include="BLL\setUnionWardDAO.cs" />
+    <Compile Include="BLL\SetUnitDAO.cs" />
+    <Compile Include="BLL\setUpazilaBLL.cs" />
+    <Compile Include="BLL\setUpazilDAO.cs" />
+    <Compile Include="BLL\setUpazillaBLL.cs" />
+    <Compile Include="BLL\Set_DepartmentBLL.cs" />
+    <Compile Include="BLL\Set_DepartmentDao.cs" />
+    <Compile Include="BLL\Set_DesignationBLL.cs" />
+    <Compile Include="BLL\Set_DesignationDao.cs" />
+    <Compile Include="BLL\SET_ITEM_PROPERTY_DAO.cs" />
+    <Compile Include="BLL\SET_PROPERTY_DAO.cs" />
+    <Compile Include="BLL\SET_UNIT_CONVERSION_DAO.cs" />
+    <Compile Include="BLL\Set_VatSdClosingBLL.cs" />
+    <Compile Include="BLL\Set_VatSdClosingDao.cs" />
+    <Compile Include="BLL\SoapField.cs" />
+    <Compile Include="BLL\SoapRow.cs" />
+    <Compile Include="BLL\Stock_Declaration.cs" />
+    <Compile Include="BLL\subfrom.cs" />
+    <Compile Include="BLL\TaxValuesDAO.cs" />
+    <Compile Include="BLL\Temporary.cs" />
+    <Compile Include="BLL\TestExcelDAO.cs" />
+    <Compile Include="BLL\TransPartyBLL.cs" />
+    <Compile Include="BLL\TransPartyDAO.cs" />
+    <Compile Include="BLL\TransProductionMasterBLL.cs" />
+    <Compile Include="BLL\TransProductionMasterDAO.cs" />
+    <Compile Include="BLL\TransSaleDetailDAO.cs" />
+    <Compile Include="BLL\TransSaleMasterBLL.cs" />
+    <Compile Include="BLL\TransSaleMasterDAO.cs" />
+    <Compile Include="BLL\TreasuryChallanDetailRpt.cs" />
+    <Compile Include="BLL\TreeLoad.cs" />
+    <Compile Include="BLL\trnsBandrollRcvBLL.cs" />
+    <Compile Include="BLL\trnsBandrollRcvDetails.cs" />
+    <Compile Include="BLL\trnsBandrollRcvMaster.cs" />
+    <Compile Include="BLL\trnsBandrollUsageBLL.cs" />
+    <Compile Include="BLL\trnsBandrollUsageDetailsDAO.cs" />
+    <Compile Include="BLL\trnsBandrollUsageMasterDAO.cs" />
+    <Compile Include="BLL\trnsChallanTrackingDAO.cs" />
+    <Compile Include="BLL\trnsNoteDetaiDAO.cs" />
+    <Compile Include="BLL\trnsNoteMasterBLL.cs" />
+    <Compile Include="BLL\trnsNoteMasterDAO.cs" />
+    <Compile Include="BLL\trnsProductionDetailBLL.cs" />
+    <Compile Include="BLL\trnsProductionDetailDAO.cs" />
+    <Compile Include="BLL\trnsPurchaseDetailBLL.cs" />
+    <Compile Include="BLL\trnsPurchaseMasterBLL.cs" />
+    <Compile Include="BLL\trnsSaleMasterBLL.cs" />
+    <Compile Include="BLL\trnsSaleMasterDAO.cs" />
+    <Compile Include="BLL\trnsTreasuryChallanBLL.cs" />
+    <Compile Include="BLL\trnsTreasuryChallanDAO.cs" />
+    <Compile Include="BLL\trnsTreasuryChallanDAODetail.cs" />
+    <Compile Include="BLL\TurnoverBLL.cs" />
+    <Compile Include="BLL\TurnoverDAO.cs" />
+    <Compile Include="BLL\TurnoverDetail.cs" />
+    <Compile Include="BLL\TurnoverMaster.cs" />
+    <Compile Include="BLL\UnitBLL.cs" />
+    <Compile Include="BLL\UserAttemptDAO.cs" />
+    <Compile Include="BLL\UserBLL.cs" />
+    <Compile Include="BLL\UserLogDAO.cs" />
+    <Compile Include="BLL\UserPermissionBLL.cs" />
+    <Compile Include="BLL\UserPermissionDAO.cs" />
+    <Compile Include="BLL\UserTaskLogDAO.cs" />
+    <Compile Include="BLL\Util.cs" />
+    <Compile Include="BLL\Utilities.cs" />
+    <Compile Include="BLL\Utility.cs" />
+    <Compile Include="BLL\UtilityK.cs" />
+    <Compile Include="BLL\vatAreaBLL.cs" />
+    <Compile Include="BLL\vatAreaDAO.cs" />
+    <Compile Include="BLL\vatCircleBLL.cs" />
+    <Compile Include="BLL\vatCircleDAO.cs" />
+    <Compile Include="BLL\vatcommissionerateBLL.cs" />
+    <Compile Include="BLL\vatcommissionerateDAO.cs" />
+    <Compile Include="BLL\vatDivisiojnDAO.cs" />
+    <Compile Include="BLL\vatDivisionBLL.cs" />
+    <Compile Include="BLL\VATReturnBLL.cs" />
+    <Compile Include="BLL\VatReturnCSV.cs" />
+    <Compile Include="BLL\VatReturnDAO.cs" />
+    <Compile Include="BLL\VatReturnForm19.cs" />
+    <Compile Include="BLL\VAT_REPORT.cs" />
+    <Compile Include="BLL\VDS.cs" />
+    <Compile Include="BLL\WastemanagementDAO.cs" />
+    <Compile Include="BLL\WastemanagementMasterDAO.cs" />
+    <Compile Include="BLL\WebService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BLL\WOGoodsDAO.cs" />
+    <Compile Include="BLL\WOGoodsMaster.cs" />
+    <Compile Include="BLL\WorkOrderBLL.cs" />
+    <Compile Include="BLL\WorkOrderDAO.cs" />
+    <Compile Include="BLL\WorkOrderItemsDAO.cs" />
+    <Compile Include="BLL\wsPriceDeclaration.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="BLL\wsVatPromptApi.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Branch.aspx.cs">
+      <DependentUpon>Branch.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Branch.aspx.designer.cs">
+      <DependentUpon>Branch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Bss_unts.aspx.cs">
+      <DependentUpon>Bss_unts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Bss_unts.aspx.designer.cs">
+      <DependentUpon>Bss_unts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardVTR.Master.cs">
+      <DependentUpon>DashboardVTR.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DashboardVTR.Master.designer.cs">
+      <DependentUpon>DashboardVTR.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Dashboard.Master.cs">
+      <DependentUpon>Dashboard.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Dashboard.Master.designer.cs">
+      <DependentUpon>Dashboard.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="LoginMasterPage.Master.cs">
+      <DependentUpon>LoginMasterPage.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoginMasterPage.Master.designer.cs">
+      <DependentUpon>LoginMasterPage.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Logins.aspx.cs">
+      <DependentUpon>Logins.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logins.aspx.designer.cs">
+      <DependentUpon>Logins.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MessageBox.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ModelVW\BikroyChalanAboveLakh.cs" />
+    <Compile Include="ModelVW\MushakReturnVw.cs" />
+    <Compile Include="ModelVW\ProductVw.cs" />
+    <Compile Include="ModelVW\ReturnVw.cs" />
+    <Compile Include="ModelVW\SalesChalanAboveLakh.cs" />
+    <Compile Include="ModelVW\ServiceConfig.cs" />
+    <Compile Include="ModelVW\SubForm_k.cs" />
+    <Compile Include="ModelVW\SubForm_k_Note_14Vw.cs" />
+    <Compile Include="ModelVW\Subform_Note_31Vw.cs" />
+    <Compile Include="ModelVW\VatSixOne.cs" />
+    <Compile Include="ModelVW\VatSixOneObj.cs" />
+    <Compile Include="Model\ImageInfo.cs" />
+    <Compile Include="Model\ImageInfoCre.cs" />
+    <Compile Include="Model\ImageInfoSTD.cs" />
+    <Compile Include="Model\InvoiceVw.cs" />
+    <Compile Include="Model\RawMaterialIssueMasterForSelfProductionDAO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Logins1.aspx.cs">
+      <DependentUpon>Logins1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logins1.aspx.designer.cs">
+      <DependentUpon>Logins1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Report.Master.cs">
+      <DependentUpon>Report.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Report.Master.designer.cs">
+      <DependentUpon>Report.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\AboveTwoLacRep_6.10s.aspx.cs">
+      <DependentUpon>AboveTwoLacRep_6.10s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\AboveTwoLacRep_6.10s.aspx.designer.cs">
+      <DependentUpon>AboveTwoLacRep_6.10s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Dispose_Inputs_Form26s.aspx.cs">
+      <DependentUpon>Dispose_Inputs_Form26s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Dispose_Inputs_Form26s.aspx.designer.cs">
+      <DependentUpon>Dispose_Inputs_Form26s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BandrollRegisters.aspx.cs">
+      <DependentUpon>BandrollRegisters.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\BandrollRegisters.aspx.designer.cs">
+      <DependentUpon>BandrollRegisters.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Cashmemo.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Cashmemo.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Challan_Form11.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Challan_Form11.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Challan_Form11s.aspx.cs">
+      <DependentUpon>Challan_Form11s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Challan_Form11s.aspx.designer.cs">
+      <DependentUpon>Challan_Form11s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Challan_Form11sCheck.aspx.cs">
+      <DependentUpon>Challan_Form11sCheck.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Challan_Form11sCheck.aspx.designer.cs">
+      <DependentUpon>Challan_Form11sCheck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Country.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Country.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Country_Bangla.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Country_Bangla.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\CreditNoteReport.aspx.cs">
+      <DependentUpon>CreditNoteReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\CreditNoteReport.aspx.designer.cs">
+      <DependentUpon>CreditNoteReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\CreditNote_Summary.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CreditNote_Summary.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit_Note_Form12.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Credit_Note_Form12.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit_Note_Form12_Bangla.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Credit_Note_Form12_Bangla.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit_Note_Form12_Ns.aspx.cs">
+      <DependentUpon>Credit_Note_Form12_Ns.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Credit_Note_Form12_Ns.aspx.designer.cs">
+      <DependentUpon>Credit_Note_Form12_Ns.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Current_Account_Form18.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Current_Account_Form18.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\DailySaleReports.aspx.cs">
+      <DependentUpon>DailySaleReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\DailySaleReports.aspx.designer.cs">
+      <DependentUpon>DailySaleReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\DebitNoteReport.aspx.cs">
+      <DependentUpon>DebitNoteReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\DebitNoteReport.aspx.designer.cs">
+      <DependentUpon>DebitNoteReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Debit_Note_Form12Ka.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Debit_Note_Form12Ka.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Dispose.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Dispose.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Dispose_Inputs_Form26.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Dispose_Inputs_Form26.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\FinishGoodProductionReports.aspx.cs">
+      <DependentUpon>FinishGoodProductionReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\FinishGoodProductionReports.aspx.designer.cs">
+      <DependentUpon>FinishGoodProductionReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Finish_Good_Production_Details.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Finish_Good_Production_Details.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Musha6.1.aspx.cs">
+      <DependentUpon>Musha6.1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Musha6.1.aspx.designer.cs">
+      <DependentUpon>Musha6.1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Mushak4.4.aspx.cs">
+      <DependentUpon>Mushak4.4.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Mushak4.4.aspx.designer.cs">
+      <DependentUpon>Mushak4.4.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Mushak6.2.aspx.cs">
+      <DependentUpon>Mushak6.2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Mushak6.2.aspx.designer.cs">
+      <DependentUpon>Mushak6.2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Mushok4_3Report.aspx.cs">
+      <DependentUpon>Mushok4_3Report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Mushok4_3Report.aspx.designer.cs">
+      <DependentUpon>Mushok4_3Report.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Musuk_6_2_1.aspx.cs">
+      <DependentUpon>Musuk_6_2_1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Musuk_6_2_1.aspx.designer.cs">
+      <DependentUpon>Musuk_6_2_1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Musuk_6_2_1_s.aspx.cs">
+      <DependentUpon>Musuk_6_2_1_s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Musuk_6_2_1_s.aspx.designer.cs">
+      <DependentUpon>Musuk_6_2_1_s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PeriodicStockReportsNew.aspx.cs">
+      <DependentUpon>PeriodicStockReportsNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\PeriodicStockReportsNew.aspx.designer.cs">
+      <DependentUpon>PeriodicStockReportsNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PeriodicStockReports.aspx.cs">
+      <DependentUpon>PeriodicStockReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\PeriodicStockReports.aspx.designer.cs">
+      <DependentUpon>PeriodicStockReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Periodic_Purchase_Report_BIs.aspx.cs">
+      <DependentUpon>Periodic_Purchase_Report_BIs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Periodic_Purchase_Report_BIs.aspx.designer.cs">
+      <DependentUpon>Periodic_Purchase_Report_BIs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PriceDeclaration_Form1Ga.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PriceDeclaration_Form1Ga.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PriceDeclaration_Form1Kha.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PriceDeclaration_Form1Kha.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Price_Declaration_Form1.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Price_Declaration_Form1.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Price_Declaration_Form1_Bangla.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Price_Declaration_Form1_Bangla.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PurchaseAccountSixOneMushak.aspx.cs">
+      <DependentUpon>PurchaseAccountSixOneMushak.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\PurchaseAccountSixOneMushak.aspx.designer.cs">
+      <DependentUpon>PurchaseAccountSixOneMushak.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PurchaseDayChallanGrpRep.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PurchaseDayChallanGrpRep.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PurchaseDayItemGrpRep.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PurchaseDayItemGrpRep.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PurchaseDaywiseSummaryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PurchaseDaywiseSummaryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PurchaseReports.aspx.cs">
+      <DependentUpon>PurchaseReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\PurchaseReports.aspx.designer.cs">
+      <DependentUpon>PurchaseReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PurchaseSummaryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PurchaseSummaryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\PurchaseTypeWiseSummaryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PurchaseTypeWiseSummaryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Purchase_Account_Book_Form16.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Purchase_Account_Book_Form16.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Purchase_Account_Book_Form16_Bangla.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Purchase_Account_Book_Form16_Bangla.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\QuantityWiseSaleReports.aspx.cs">
+      <DependentUpon>QuantityWiseSaleReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\QuantityWiseSaleReports.aspx.designer.cs">
+      <DependentUpon>QuantityWiseSaleReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\RawMaterialConsumptionReports.aspx.cs">
+      <DependentUpon>RawMaterialConsumptionReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\RawMaterialConsumptionReports.aspx.designer.cs">
+      <DependentUpon>RawMaterialConsumptionReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Raw_Material_Consumption_Rpt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Raw_Material_Consumption_Rpt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleAccountBookSIXTwo.aspx.cs">
+      <DependentUpon>SaleAccountBookSIXTwo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleAccountBookSIXTwo.aspx.designer.cs">
+      <DependentUpon>SaleAccountBookSIXTwo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SaleChallan17.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaleChallan17.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleDayChallanGrpRep.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaleDayChallanGrpRep.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleDayItemGrpRep.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaleDayItemGrpRep.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleDayWiseSummaryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaleDayWiseSummaryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleReportsNew.aspx.cs">
+      <DependentUpon>SaleReportsNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleReportsNew.aspx.designer.cs">
+      <DependentUpon>SaleReportsNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SaleReports.aspx.cs">
+      <DependentUpon>SaleReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleReports.aspx.designer.cs">
+      <DependentUpon>SaleReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SalesPurchaseComparativeReports.aspx.cs">
+      <DependentUpon>SalesPurchaseComparativeReports.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SalesPurchaseComparativeReports.aspx.designer.cs">
+      <DependentUpon>SalesPurchaseComparativeReports.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SaleSummaryMonthwises.aspx.cs">
+      <DependentUpon>SaleSummaryMonthwises.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleSummaryMonthwises.aspx.designer.cs">
+      <DependentUpon>SaleSummaryMonthwises.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SaleSummaryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaleSummaryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\Sales_Account_Book_Form17.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sales_Account_Book_Form17.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SaleTypeWiseSummaryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SaleTypeWiseSummaryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SIMSVATReturnMushok19.aspx.cs">
+      <DependentUpon>SIMSVATReturnMushok19.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SIMSVATReturnMushok19.aspx.designer.cs">
+      <DependentUpon>SIMSVATReturnMushok19.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SourceTaxDedutForm.aspx.cs">
+      <DependentUpon>SourceTaxDedutForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SourceTaxDedutForm.aspx.designer.cs">
+      <DependentUpon>SourceTaxDedutForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Stock_Declaration_rpt.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Stock_Declaration_rpt.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Details_Note_27s.aspx.cs">
+      <DependentUpon>Details_Note_27s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Details_Note_27s.aspx.designer.cs">
+      <DependentUpon>Details_Note_27s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Details_Note_33s.aspx.cs">
+      <DependentUpon>Details_Note_33s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Details_Note_33s.aspx.designer.cs">
+      <DependentUpon>Details_Note_33s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Reports_SubForms_SubForm_K_Note_2s.aspx.cs">
+      <DependentUpon>Reports_SubForms_SubForm_K_Note_2s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Reports_SubForms_SubForm_K_Note_2s.aspx.designer.cs">
+      <DependentUpon>Reports_SubForms_SubForm_K_Note_2s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_CHAs.aspx.cs">
+      <DependentUpon>SubForm_CHAs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_CHAs.aspx.designer.cs">
+      <DependentUpon>SubForm_CHAs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_CHs.aspx.cs">
+      <DependentUpon>SubForm_CHs.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_CHs.aspx.designer.cs">
+      <DependentUpon>SubForm_CHs.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_Gha_Note_18s.aspx.cs">
+      <DependentUpon>SubForm_Gha_Note_18s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_Gha_Note_18s.aspx.designer.cs">
+      <DependentUpon>SubForm_Gha_Note_18s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_GHA_Note_24s.aspx.cs">
+      <DependentUpon>SubForm_GHA_Note_24s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_GHA_Note_24s.aspx.designer.cs">
+      <DependentUpon>SubForm_GHA_Note_24s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_Gha_Note_6s.aspx.cs">
+      <DependentUpon>SubForm_Gha_Note_6s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_Gha_Note_6s.aspx.designer.cs">
+      <DependentUpon>SubForm_Gha_Note_6s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k19s.aspx.cs">
+      <DependentUpon>SubForm_k19s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k19s.aspx.designer.cs">
+      <DependentUpon>SubForm_k19s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k20s.aspx.cs">
+      <DependentUpon>SubForm_k20s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k20s.aspx.designer.cs">
+      <DependentUpon>SubForm_k20s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_Kha_Note_8s.aspx.cs">
+      <DependentUpon>SubForm_Kha_Note_8s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_Kha_Note_8s.aspx.designer.cs">
+      <DependentUpon>SubForm_Kha_Note_8s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_Ks.aspx.cs">
+      <DependentUpon>SubForm_Ks.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_Ks.aspx.designer.cs">
+      <DependentUpon>SubForm_Ks.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_KSIMS.aspx.cs">
+      <DependentUpon>SubForm_KSIMS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_KSIMS.aspx.designer.cs">
+      <DependentUpon>SubForm_KSIMS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_5s.aspx.cs">
+      <DependentUpon>SubForm_K_5s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_5s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_5s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k_Note12s.aspx.cs">
+      <DependentUpon>SubForm_k_Note12s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k_Note12s.aspx.designer.cs">
+      <DependentUpon>SubForm_k_Note12s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k_Note13s.aspx.cs">
+      <DependentUpon>SubForm_k_Note13s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k_Note13s.aspx.designer.cs">
+      <DependentUpon>SubForm_k_Note13s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_10s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_10s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_10s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_10s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_11s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_11s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_11s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_11s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k_Note_14s.aspx.cs">
+      <DependentUpon>SubForm_k_Note_14s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k_Note_14s.aspx.designer.cs">
+      <DependentUpon>SubForm_k_Note_14s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k_Note_14s1.aspx.cs">
+      <DependentUpon>SubForm_k_Note_14s1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_k_Note_14s1.aspx.designer.cs">
+      <DependentUpon>SubForm_k_Note_14s1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_15s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_15s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_15s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_15s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_16s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_16s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_16s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_16s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_17s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_17s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_17s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_17s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_1s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_1s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_1s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_1s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_2s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_2s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_2s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_2s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_3s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_3s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_3s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_3s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_7s.aspx.cs">
+      <DependentUpon>SubForm_K_Note_7s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_K_Note_7s.aspx.designer.cs">
+      <DependentUpon>SubForm_K_Note_7s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Subform_Note_26s.aspx.cs">
+      <DependentUpon>Subform_Note_26s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Subform_Note_26s.aspx.designer.cs">
+      <DependentUpon>Subform_Note_26s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Subform_Note_31s.aspx.cs">
+      <DependentUpon>Subform_Note_31s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Subform_Note_31s.aspx.designer.cs">
+      <DependentUpon>Subform_Note_31s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_UMO_Note_29s.aspx.cs">
+      <DependentUpon>SubForm_UMO_Note_29s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\SubForm_UMO_Note_29s.aspx.designer.cs">
+      <DependentUpon>SubForm_UMO_Note_29s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note53s.aspx.cs">
+      <DependentUpon>Sub_Form_CHA_Note53s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note53s.aspx.designer.cs">
+      <DependentUpon>Sub_Form_CHA_Note53s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note57s.aspx.cs">
+      <DependentUpon>Sub_Form_CHA_Note57s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note57s.aspx.designer.cs">
+      <DependentUpon>Sub_Form_CHA_Note57s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note58s.aspx.cs">
+      <DependentUpon>Sub_Form_CHA_Note58s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note58s.aspx.designer.cs">
+      <DependentUpon>Sub_Form_CHA_Note58s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note59s.aspx.cs">
+      <DependentUpon>Sub_Form_CHA_Note59s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note59s.aspx.designer.cs">
+      <DependentUpon>Sub_Form_CHA_Note59s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note60s.aspx.cs">
+      <DependentUpon>Sub_Form_CHA_Note60s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note60s.aspx.designer.cs">
+      <DependentUpon>Sub_Form_CHA_Note60s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note61s.aspx.cs">
+      <DependentUpon>Sub_Form_CHA_Note61s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_CHA_Note61s.aspx.designer.cs">
+      <DependentUpon>Sub_Form_CHA_Note61s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_K_Note_21s.aspx.cs">
+      <DependentUpon>Sub_Form_K_Note_21s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_K_Note_21s.aspx.designer.cs">
+      <DependentUpon>Sub_Form_K_Note_21s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_K_Note_22s.aspx.cs">
+      <DependentUpon>Sub_Form_K_Note_22s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubForms\Sub_Form_K_Note_22s.aspx.designer.cs">
+      <DependentUpon>Sub_Form_K_Note_22s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Summary_Of_Value_Additions.aspx.cs">
+      <DependentUpon>Summary_Of_Value_Additions.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Summary_Of_Value_Additions.aspx.designer.cs">
+      <DependentUpon>Summary_Of_Value_Additions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\test.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>test.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\TransferIssueReport6.5s.aspx.cs">
+      <DependentUpon>TransferIssueReport6.5s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\TransferIssueReport6.5s.aspx.designer.cs">
+      <DependentUpon>TransferIssueReport6.5s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\TransferReceiveReport6.5s.aspx.cs">
+      <DependentUpon>TransferReceiveReport6.5s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\TransferReceiveReport6.5s.aspx.designer.cs">
+      <DependentUpon>TransferReceiveReport6.5s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\treasuryChallan_forms.aspx.cs">
+      <DependentUpon>treasuryChallan_forms.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\treasuryChallan_forms.aspx.designer.cs">
+      <DependentUpon>treasuryChallan_forms.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Treasury_Challan_Detail_Report.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Treasury_Challan_Detail_Report.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\ValueAdditionPctwiseReport4_3s.aspx.cs">
+      <DependentUpon>ValueAdditionPctwiseReport4_3s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ValueAdditionPctwiseReport4_3s.aspx.designer.cs">
+      <DependentUpon>ValueAdditionPctwiseReport4_3s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Vat6.3Report.aspx.cs">
+      <DependentUpon>Vat6.3Report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Vat6.3Report.aspx.designer.cs">
+      <DependentUpon>Vat6.3Report.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\VATMonthlySummaryReport.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VATMonthlySummaryReport.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\VATReturnMushok19sR.aspx.cs">
+      <DependentUpon>VATReturnMushok19sR.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\VATReturnMushok19sR.aspx.designer.cs">
+      <DependentUpon>VATReturnMushok19sR.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\VAT_Return_Form19.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VAT_Return_Form19.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\VAT_Return_Form19_Ns.aspx.cs">
+      <DependentUpon>VAT_Return_Form19_Ns.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\VAT_Return_Form19_Ns.aspx.designer.cs">
+      <DependentUpon>VAT_Return_Form19_Ns.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\VAT_Return_Sub_Enclose_Form19.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VAT_Return_Sub_Enclose_Form19.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\VAT_Return_Sub_Office_Form19.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>VAT_Return_Sub_Office_Form19.rpt</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Reports\VDSIssue.aspx.cs">
+      <DependentUpon>VDSIssue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\VDSIssue.aspx.designer.cs">
+      <DependentUpon>VDSIssue.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Site1.Master.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site1.Master.designer.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Testing.aspx.cs">
+      <DependentUpon>Testing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Testing.aspx.designer.cs">
+      <DependentUpon>Testing.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Add_Org_Bank_Accounts.aspx.cs">
+      <DependentUpon>Add_Org_Bank_Accounts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Add_Org_Bank_Accounts.aspx.designer.cs">
+      <DependentUpon>Add_Org_Bank_Accounts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\ApproverSetups.aspx.cs">
+      <DependentUpon>ApproverSetups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\ApproverSetups.aspx.designer.cs">
+      <DependentUpon>ApproverSetups.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Bandrollrequisition_receives.aspx.cs">
+      <DependentUpon>Bandrollrequisition_receives.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Bandrollrequisition_receives.aspx.designer.cs">
+      <DependentUpon>Bandrollrequisition_receives.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Band_roll_requisition_forms.aspx.cs">
+      <DependentUpon>Band_roll_requisition_forms.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Band_roll_requisition_forms.aspx.designer.cs">
+      <DependentUpon>Band_roll_requisition_forms.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Bank_Branch_Setups.aspx.cs">
+      <DependentUpon>Bank_Branch_Setups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Bank_Branch_Setups.aspx.designer.cs">
+      <DependentUpon>Bank_Branch_Setups.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Bank_Setups.aspx.cs">
+      <DependentUpon>Bank_Setups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Bank_Setups.aspx.designer.cs">
+      <DependentUpon>Bank_Setups.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\BaseDataSetup.aspx.cs">
+      <DependentUpon>BaseDataSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\BaseDataSetup.aspx.designer.cs">
+      <DependentUpon>BaseDataSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\ChallanSetup.aspx.cs">
+      <DependentUpon>ChallanSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\ChallanSetup.aspx.designer.cs">
+      <DependentUpon>ChallanSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\ClosingVatSd.aspx.cs">
+      <DependentUpon>ClosingVatSd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\ClosingVatSd.aspx.designer.cs">
+      <DependentUpon>ClosingVatSd.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Commissionerates.aspx.cs">
+      <DependentUpon>Commissionerates.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Commissionerates.aspx.designer.cs">
+      <DependentUpon>Commissionerates.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\ContractualProduction_6.4s.aspx.cs">
+      <DependentUpon>ContractualProduction_6.4s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\ContractualProduction_6.4s.aspx.designer.cs">
+      <DependentUpon>ContractualProduction_6.4s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\ContractualProduction_Receive_6.4s.aspx.cs">
+      <DependentUpon>ContractualProduction_Receive_6.4s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\ContractualProduction_Receive_6.4s.aspx.designer.cs">
+      <DependentUpon>ContractualProduction_Receive_6.4s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\CreditNote_6.7s.aspx.cs">
+      <DependentUpon>CreditNote_6.7s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\CreditNote_6.7s.aspx.designer.cs">
+      <DependentUpon>CreditNote_6.7s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\CreditNote_ExtensionDeduct.aspx.cs">
+      <DependentUpon>CreditNote_ExtensionDeduct.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\CreditNote_ExtensionDeduct.aspx.designer.cs">
+      <DependentUpon>CreditNote_ExtensionDeduct.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\DebitNote_6.8s.aspx.cs">
+      <DependentUpon>DebitNote_6.8s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\DebitNote_6.8s.aspx.designer.cs">
+      <DependentUpon>DebitNote_6.8s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\DebitNote_ExtensionIncrease.aspx.cs">
+      <DependentUpon>DebitNote_ExtensionIncrease.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\DebitNote_ExtensionIncrease.aspx.designer.cs">
+      <DependentUpon>DebitNote_ExtensionIncrease.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\DepartmentSetup.aspx.cs">
+      <DependentUpon>DepartmentSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\DepartmentSetup.aspx.designer.cs">
+      <DependentUpon>DepartmentSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\DesignationSetup.aspx.cs">
+      <DependentUpon>DesignationSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\DesignationSetup.aspx.designer.cs">
+      <DependentUpon>DesignationSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\MasterDataSetup.aspx.cs">
+      <DependentUpon>MasterDataSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\MasterDataSetup.aspx.designer.cs">
+      <DependentUpon>MasterDataSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Own_Production_6.4s.aspx.cs">
+      <DependentUpon>Own_Production_6.4s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Own_Production_6.4s.aspx.designer.cs">
+      <DependentUpon>Own_Production_6.4s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Own_Production_Receive6.4s.aspx.cs">
+      <DependentUpon>Own_Production_Receive6.4s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Own_Production_Receive6.4s.aspx.designer.cs">
+      <DependentUpon>Own_Production_Receive6.4s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\PartyBalanceSetup.aspx.cs">
+      <DependentUpon>PartyBalanceSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\PartyBalanceSetup.aspx.designer.cs">
+      <DependentUpon>PartyBalanceSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Payment_Method_Permission_SetUps.aspx.cs">
+      <DependentUpon>Payment_Method_Permission_SetUps.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Payment_Method_Permission_SetUps.aspx.designer.cs">
+      <DependentUpon>Payment_Method_Permission_SetUps.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\ProductsTransfer_6.5s.aspx.cs">
+      <DependentUpon>ProductsTransfer_6.5s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\ProductsTransfer_6.5s.aspx.designer.cs">
+      <DependentUpon>ProductsTransfer_6.5s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\ProductsTransfer_receive_6.5s.aspx.cs">
+      <DependentUpon>ProductsTransfer_receive_6.5s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\ProductsTransfer_receive_6.5s.aspx.designer.cs">
+      <DependentUpon>ProductsTransfer_receive_6.5s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Rebate_Monitorings.aspx.cs">
+      <DependentUpon>Rebate_Monitorings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Rebate_Monitorings.aspx.designer.cs">
+      <DependentUpon>Rebate_Monitorings.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\SupplDutyAdjApp_7.1s.aspx.cs">
+      <DependentUpon>SupplDutyAdjApp_7.1s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\SupplDutyAdjApp_7.1s.aspx.designer.cs">
+      <DependentUpon>SupplDutyAdjApp_7.1s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\TreasuryChallan_6s.aspx.cs">
+      <DependentUpon>TreasuryChallan_6s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\TreasuryChallan_6s.aspx.designer.cs">
+      <DependentUpon>TreasuryChallan_6s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\TreasuryChallan_6s1.aspx.cs">
+      <DependentUpon>TreasuryChallan_6s1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\TreasuryChallan_6s1.aspx.designer.cs">
+      <DependentUpon>TreasuryChallan_6s1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Vat_Areas.aspx.cs">
+      <DependentUpon>Vat_Areas.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Vat_Areas.aspx.designer.cs">
+      <DependentUpon>Vat_Areas.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Vat_Circle_News.aspx.cs">
+      <DependentUpon>Vat_Circle_News.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Vat_Circle_News.aspx.designer.cs">
+      <DependentUpon>Vat_Circle_News.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\Vat_Division_News.aspx.cs">
+      <DependentUpon>Vat_Division_News.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\Vat_Division_News.aspx.designer.cs">
+      <DependentUpon>Vat_Division_News.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\VDSIssue.aspx.cs">
+      <DependentUpon>VDSIssue.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\VDSIssue.aspx.designer.cs">
+      <DependentUpon>VDSIssue.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\VDS_Monitorings.aspx.cs">
+      <DependentUpon>VDS_Monitorings.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\VDS_Monitorings.aspx.designer.cs">
+      <DependentUpon>VDS_Monitorings.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Admin\WasteManagements.aspx.cs">
+      <DependentUpon>WasteManagements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Admin\WasteManagements.aspx.designer.cs">
+      <DependentUpon>WasteManagements.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Audit\IngredientsPurchaseInformations.aspx.cs">
+      <DependentUpon>IngredientsPurchaseInformations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Audit\IngredientsPurchaseInformations.aspx.designer.cs">
+      <DependentUpon>IngredientsPurchaseInformations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Audit\PriceDeclarationInformations.aspx.cs">
+      <DependentUpon>PriceDeclarationInformations.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Audit\PriceDeclarationInformations.aspx.designer.cs">
+      <DependentUpon>PriceDeclarationInformations.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Audit\ProductionNSalesStatements.aspx.cs">
+      <DependentUpon>ProductionNSalesStatements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Audit\ProductionNSalesStatements.aspx.designer.cs">
+      <DependentUpon>ProductionNSalesStatements.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Audit\RebateStatements.aspx.cs">
+      <DependentUpon>RebateStatements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Audit\RebateStatements.aspx.designer.cs">
+      <DependentUpon>RebateStatements.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Audit\VDSStatements.aspx.cs">
+      <DependentUpon>VDSStatements.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Audit\VDSStatements.aspx.designer.cs">
+      <DependentUpon>VDSStatements.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\GiftItemSetups.aspx.cs">
+      <DependentUpon>GiftItemSetups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\GiftItemSetups.aspx.designer.cs">
+      <DependentUpon>GiftItemSetups.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\ItemOpeningInfo.aspx.cs">
+      <DependentUpon>ItemOpeningInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\ItemOpeningInfo.aspx.designer.cs">
+      <DependentUpon>ItemOpeningInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\ItemSetSetups.aspx.cs">
+      <DependentUpon>ItemSetSetups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\ItemSetSetups.aspx.designer.cs">
+      <DependentUpon>ItemSetSetups.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\Item_Tax_Values_NewUpdate.aspx.cs">
+      <DependentUpon>Item_Tax_Values_NewUpdate.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\Item_Tax_Values_NewUpdate.aspx.designer.cs">
+      <DependentUpon>Item_Tax_Values_NewUpdate.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\Item_Tax_Values_Setup.aspx.cs">
+      <DependentUpon>Item_Tax_Values_Setup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\Item_Tax_Values_Setup.aspx.designer.cs">
+      <DependentUpon>Item_Tax_Values_Setup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\OtherPrincipalAndValueAdditionSetups.aspx.cs">
+      <DependentUpon>OtherPrincipalAndValueAdditionSetups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\OtherPrincipalAndValueAdditionSetups.aspx.designer.cs">
+      <DependentUpon>OtherPrincipalAndValueAdditionSetups.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\PriceDeclaration.aspx.cs">
+      <DependentUpon>PriceDeclaration.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\PriceDeclaration.aspx.designer.cs">
+      <DependentUpon>PriceDeclaration.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\PriceDeclarationTD.aspx.cs">
+      <DependentUpon>PriceDeclarationTD.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\PriceDeclarationTD.aspx.designer.cs">
+      <DependentUpon>PriceDeclarationTD.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\SetItemOrders.aspx.cs">
+      <DependentUpon>SetItemOrders.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\SetItemOrders.aspx.designer.cs">
+      <DependentUpon>SetItemOrders.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\SetItems.aspx.cs">
+      <DependentUpon>SetItems.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\SetItems.aspx.designer.cs">
+      <DependentUpon>SetItems.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\SetPropertyNew.aspx.cs">
+      <DependentUpon>SetPropertyNew.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\SetPropertyNew.aspx.designer.cs">
+      <DependentUpon>SetPropertyNew.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Item\UnitConversion.aspx.cs">
+      <DependentUpon>UnitConversion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Item\UnitConversion.aspx.designer.cs">
+      <DependentUpon>UnitConversion.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Others\Disposes.aspx.cs">
+      <DependentUpon>Disposes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Others\Disposes.aspx.designer.cs">
+      <DependentUpon>Disposes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Others\PartySetup.aspx.cs">
+      <DependentUpon>PartySetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Others\PartySetup.aspx.designer.cs">
+      <DependentUpon>PartySetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Others\TreasuryDeposit.aspx.cs">
+      <DependentUpon>TreasuryDeposit.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Others\TreasuryDeposit.aspx.designer.cs">
+      <DependentUpon>TreasuryDeposit.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Purchase\BillOfEntry_6.3s.aspx.cs">
+      <DependentUpon>BillOfEntry_6.3s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Purchase\BillOfEntry_6.3s.aspx.designer.cs">
+      <DependentUpon>BillOfEntry_6.3s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Purchase\LocalPurchase.aspx.cs">
+      <DependentUpon>LocalPurchase.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Purchase\LocalPurchase.aspx.designer.cs">
+      <DependentUpon>LocalPurchase.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Sale\ConsumableItemSales.aspx.cs">
+      <DependentUpon>ConsumableItemSales.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Sale\ConsumableItemSales.aspx.designer.cs">
+      <DependentUpon>ConsumableItemSales.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Sale\SaleChallan_11s.aspx.cs">
+      <DependentUpon>SaleChallan_11s.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\Sale\SaleChallan_11s.aspx.designer.cs">
+      <DependentUpon>SaleChallan_11s.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\MsgBoxs.ascx.cs">
+      <DependentUpon>MsgBoxs.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\MsgBoxs.ascx.designer.cs">
+      <DependentUpon>MsgBoxs.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserSetup\AddNewUser.aspx.cs">
+      <DependentUpon>AddNewUser.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\UserSetup\AddNewUser.aspx.designer.cs">
+      <DependentUpon>AddNewUser.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserSetup\UserPermissionSetup.aspx.cs">
+      <DependentUpon>UserPermissionSetup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UI\UserSetup\UserPermissionSetup.aspx.designer.cs">
+      <DependentUpon>UserPermissionSetup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\admins.ascx.cs">
+      <DependentUpon>admins.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\admins.ascx.designer.cs">
+      <DependentUpon>admins.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DatePicker.ascx.cs">
+      <DependentUpon>DatePicker.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\DatePicker.ascx.designer.cs">
+      <DependentUpon>DatePicker.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Items.ascx.cs">
+      <DependentUpon>Items.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Items.ascx.designer.cs">
+      <DependentUpon>Items.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MsgBoxs.ascx.cs">
+      <DependentUpon>MsgBoxs.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\MsgBoxs.ascx.designer.cs">
+      <DependentUpon>MsgBoxs.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Others.ascx.cs">
+      <DependentUpon>Others.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Others.ascx.designer.cs">
+      <DependentUpon>Others.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm1.aspx.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="WebForm1.aspx.designer.cs">
+      <DependentUpon>WebForm1.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="WebForm2.aspx.cs">
+      <DependentUpon>WebForm2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Styles\bootstrap\bootstrap-theme.css.map" />
+    <Content Include="Styles\bootstrap\bootstrap-theme.min.css.map" />
+    <Content Include="Styles\bootstrap\bootstrap.css.map" />
+    <Content Include="Styles\bootstrap\bootstrap.min.css.map" />
+    <Content Include="Styles\fonts\fontawesome-webfont.eot" />
+    <Content Include="Styles\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Styles\fonts\fontawesome-webfont.woff" />
+    <Content Include="Styles\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Styles\fonts\FontAwesome.otf" />
+    <Content Include="UI\Admin\ContractualProduction_6.4.aspx.bak" />
+    <Content Include="UI\Admin\ProductsTransfer_6.5.aspx.bak" />
+    <Content Include="UI\Admin\ProductsTransfer_6.5.aspx.cs.bak" />
+    <Content Include="UI\Admin\ProductsTransfer_receive_6.5.aspx.bak" />
+    <Content Include="UI\Admin\ProductsTransfer_receive_6.5.aspx.cs.bak" />
+    <Content Include="UI\Item\importItemFromExcel.aspx.cs.bak" />
+    <Content Include="UI\Others\Add_Trans_Party.aspx.bak" />
+    <Content Include="UI\Others\Add_Trans_Party.aspx.cs.bak" />
+    <Content Include="UI\Others\Add_Trans_Party.aspx.zip" />
+    <Content Include="packages.config" />
+    <Content Include="PrecompiledApp.config" />
+    <Content Include="Site.master" />
+    <Content Include="LoginMasterPage.Master" />
+    <Content Include="assets\css\bootstrap.min.css.map" />
+    <Content Include="assets\fonts\boxicons.eot" />
+    <Content Include="assets\fonts\boxicons.ttf" />
+    <Content Include="assets\fonts\boxicons.woff" />
+    <Content Include="assets\fonts\boxicons.woff2" />
+    <Content Include="assets\fonts\LineIcons.eot" />
+    <Content Include="assets\fonts\LineIcons.ttf" />
+    <Content Include="assets\fonts\LineIcons.woff" />
+    <Content Include="assets\fonts\LineIcons.woff2" />
+    <Content Include="assets\js\bootstrap.bundle.min.js.map" />
+    <Content Include="assets\plugins\bootstrap-material-datetimepicker\css\bootstrap-material-datetimepicker.min.css.map" />
+    <Content Include="assets\plugins\bootstrap-material-datetimepicker\js\bootstrap-material-datetimepicker.min.js.map" />
+    <Content Include="assets\plugins\highcharts\js\accessibility.js.map" />
+    <Content Include="assets\plugins\highcharts\js\cylinder.js.map" />
+    <Content Include="assets\plugins\highcharts\js\export-data.js.map" />
+    <Content Include="assets\plugins\highcharts\js\exporting.js.map" />
+    <Content Include="assets\plugins\highcharts\js\funnel3d.js.map" />
+    <Content Include="assets\plugins\highcharts\js\highcharts-3d.js.map" />
+    <Content Include="assets\plugins\highcharts\js\highcharts-more.js.map" />
+    <Content Include="assets\plugins\highcharts\js\highcharts.js.map" />
+    <Content Include="assets\plugins\highcharts\js\solid-gauge.js.map" />
+    <Content Include="assets\plugins\highcharts\js\variable-pie.js.map" />
+    <Content Include="assets\plugins\metismenu\css\metisMenu.min.css.map" />
+    <Content Include="assets\plugins\metismenu\js\metisMenu.min.js.map" />
+    <Content Include="Dashboard.Master" />
+    <Content Include="DashboardVTR.Master" />
+    <Content Include="App_Themes\Theme1\DefaultSkin.skin" />
+    <Content Include="app\query\PriceList Map.sql.design" />
+    <Content Include="app\query\ProductList Query.sql.design" />
+    <Content Include="app\query\Stock search.sql.design" />
+    <Content Include="bin\NBR_VAT_GROUPOFCOM.dll.config" />
+    <None Include="LoginMasterPage.master1" />
+    <Content Include="Reports\AboveTwoLacRep_6.10.aspx.bak" />
+    <Content Include="Reports\Mushok_1.aspx.bak" />
+    <Content Include="Reports\Mushok_1.aspx.cs.bak" />
+    <Content Include="Reports\Mushok4_3.aspx.bak" />
+    <Content Include="Reports\Mushok4_3.aspx.cs.bak" />
+    <Content Include="Reports\purchase &amp; sales_leisure_book.zip" />
+    <None Include="Properties\PublishProfiles\TEST.pubxml" />
+    <Content Include="Report.Master" />
+    <None Include="Reports\schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="Reports\SourceTaxDeductedCertificate_6.6.aspx.bak" />
+    <Content Include="Reports\SourceTaxDeductedCertificate_6.6.aspx.cs.bak" />
+    <Content Include="Reports\VATReturnMushok19.aspx.bak" />
+    <Content Include="Reports\VATReturnMushok19.aspx.cs.bak" />
+    <Content Include="Site1.Master" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Account\" />
+    <Folder Include="App_Data\" />
+    <Folder Include="assets\plugins\Drag-And-Drop\" />
+    <Folder Include="ckeditor\" />
+    <Folder Include="Controller\" />
+    <Folder Include="CSV\" />
+    <Folder Include="Documnets\" />
+    <Folder Include="ErrorPages\" />
+    <Folder Include="files\" />
+    <Folder Include="Jsonfile\" />
+    <Folder Include="NBR\" />
+    <Folder Include="packages\" />
+    <Folder Include="PrintingDocs\" />
+    <Folder Include="Uploads\" />
+    <Folder Include="VMSXML\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\Cashmemo.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Cashmemo.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Challan_Form11.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Challan_Form11.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Country.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Country.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Country_Bangla.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Country_Bangla.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\CreditNote_Summary.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>CreditNote_Summary.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Credit_Note_Form12.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Credit_Note_Form12.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Credit_Note_Form12_Bangla.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Credit_Note_Form12_Bangla.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Current_Account_Form18.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Current_Account_Form18.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Debit_Note_Form12Ka.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Debit_Note_Form12Ka.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Dispose.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Dispose.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Dispose_Inputs_Form26.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Dispose_Inputs_Form26.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Finish_Good_Production_Details.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Finish_Good_Production_Details.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PriceDeclaration_Form1Ga.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PriceDeclaration_Form1Ga.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PriceDeclaration_Form1Kha.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PriceDeclaration_Form1Kha.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Price_Declaration_Form1.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Price_Declaration_Form1.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Price_Declaration_Form1_Bangla.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Price_Declaration_Form1_Bangla.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PurchaseDayChallanGrpRep.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseDayChallanGrpRep.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PurchaseDayItemGrpRep.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseDayItemGrpRep.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PurchaseDaywiseSummaryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseDaywiseSummaryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PurchaseSummaryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseSummaryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\PurchaseTypeWiseSummaryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>PurchaseTypeWiseSummaryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Purchase_Account_Book_Form16.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Purchase_Account_Book_Form16.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Purchase_Account_Book_Form16_Bangla.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Purchase_Account_Book_Form16_Bangla.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Raw_Material_Consumption_Rpt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Raw_Material_Consumption_Rpt.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SaleChallan17.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SaleChallan17.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SaleDayChallanGrpRep.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SaleDayChallanGrpRep.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SaleDayItemGrpRep.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SaleDayItemGrpRep.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SaleDayWiseSummaryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SaleDayWiseSummaryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SaleSummaryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SaleSummaryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Sales_Account_Book_Form17.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Sales_Account_Book_Form17.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\SaleTypeWiseSummaryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>SaleTypeWiseSummaryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Stock_Declaration_rpt.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Stock_Declaration_rpt.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\test.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>test.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\Treasury_Challan_Detail_Report.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>Treasury_Challan_Detail_Report.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\VATMonthlySummaryReport.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>VATMonthlySummaryReport.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\VAT_Return_Form19.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>VAT_Return_Form19.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\VAT_Return_Sub_Enclose_Form19.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>VAT_Return_Sub_Enclose_Form19.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\VAT_Return_Sub_Office_Form19.rpt">
+      <Generator>CrystalDecisions.VSDesigner.CodeGen.ReportCodeGenerator</Generator>
+      <LastGenOutput>VAT_Return_Sub_Office_Form19.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{C0C07587-41A7-46C8-8FBD-3F9C8EBE2DDC}" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>59120</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:59120/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ArrayOfVAT_18>
+  <VAT_18>
+    <sessionvalue>1</sessionvalue>
+    <VatRegistrationNo>123456789</VatRegistrationNo>
+    <TransactionDate>2018/11/01</TransactionDate>
+    <Column1>1</Column1>
+    <Column2>2018/10/01</Column2>
+    <Column3>B/F</Column3>
+    <Column4>
+    </Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>79493.88</Column9>
+    <Column10>0</Column10>
+    <Column1>2</Column1>
+    <Column2>2018/10/07</Column2>
+    <Column3>Treasury Deposit(Advance VAT)</Column3>
+    <Column4>2</Column4>
+    <Column5>500000</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>579493.88</Column9>
+    <Column10>0</Column10>
+    <Column1>3</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Sale Return(C/N)</Column3>
+    <Column4>0118-3</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>33.32</Column8>
+    <Column9>579493.88</Column9>
+    <Column10>0</Column10>
+    <Column1>4</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Sale Return(C/N)</Column3>
+    <Column4>0118-1</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>62.72</Column8>
+    <Column9>579493.88</Column9>
+    <Column10>0</Column10>
+    <Column1>5</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Sale Return(C/N)</Column3>
+    <Column4>0118-2</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>62.72</Column8>
+    <Column9>579493.88</Column9>
+    <Column10>0</Column10>
+    <Column1>6</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Treasury Deposit(Advance VAT)</Column3>
+    <Column4>1</Column4>
+    <Column5>50000</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>629493.88</Column9>
+    <Column10>0</Column10>
+    <Column1>7</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-5</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>1254.4</Column7>
+    <Column8>0</Column8>
+    <Column9>628239.48</Column9>
+    <Column10>1</Column10>
+    <Column1>8</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-6</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>249.9</Column7>
+    <Column8>0</Column8>
+    <Column9>627989.58</Column9>
+    <Column10>1</Column10>
+    <Column1>9</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Purchase (Local)</Column3>
+    <Column4>PC-20181008-155</Column4>
+    <Column5>0</Column5>
+    <Column6>900</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>628889.58</Column9>
+    <Column10>0</Column10>
+    <Column1>10</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Purchase (Local)</Column3>
+    <Column4>RCN - 081018</Column4>
+    <Column5>0</Column5>
+    <Column6>900</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>629789.58</Column9>
+    <Column10>0</Column10>
+    <Column1>11</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-7</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>882</Column7>
+    <Column8>0</Column8>
+    <Column9>628907.58</Column9>
+    <Column10>1</Column10>
+    <Column1>12</Column1>
+    <Column2>2018/10/08</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-8</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>141.12</Column7>
+    <Column8>0</Column8>
+    <Column9>628766.46</Column9>
+    <Column10>1</Column10>
+    <Column1>13</Column1>
+    <Column2>2018/10/09</Column2>
+    <Column3>Treasury Deposit(Advance VAT)</Column3>
+    <Column4>1</Column4>
+    <Column5>5000000</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>5628766.46</Column9>
+    <Column10>0</Column10>
+    <Column1>14</Column1>
+    <Column2>2018/10/10</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-9</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>188.16</Column7>
+    <Column8>0</Column8>
+    <Column9>5628578.30</Column9>
+    <Column10>1</Column10>
+    <Column1>15</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Purchase (Import)</Column3>
+    <Column4>RCN-111018 (I)</Column4>
+    <Column5>0</Column5>
+    <Column6>47628</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>5676206.30</Column9>
+    <Column10>0</Column10>
+    <Column1>16</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Sale Return(C/N)</Column3>
+    <Column4>0118-4</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>490</Column8>
+    <Column9>5676206.30</Column9>
+    <Column10>0</Column10>
+    <Column1>17</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-10</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>5043.08</Column7>
+    <Column8>0</Column8>
+    <Column9>5671163.22</Column9>
+    <Column10>1</Column10>
+    <Column1>18</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Purchase (Local)</Column3>
+    <Column4>RCN-111018</Column4>
+    <Column5>0</Column5>
+    <Column6>223080</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>5894243.22</Column9>
+    <Column10>0</Column10>
+    <Column1>19</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-11</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>3920</Column7>
+    <Column8>0</Column8>
+    <Column9>5890323.22</Column9>
+    <Column10>1</Column10>
+    <Column1>20</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-12</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>1960</Column7>
+    <Column8>0</Column8>
+    <Column9>5888363.22</Column9>
+    <Column10>1</Column10>
+    <Column1>21</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-13</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>462500</Column7>
+    <Column8>0</Column8>
+    <Column9>5425863.22</Column9>
+    <Column10>1</Column10>
+    <Column1>22</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-14</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>2156</Column7>
+    <Column8>0</Column8>
+    <Column9>5423707.22</Column9>
+    <Column10>1</Column10>
+    <Column1>23</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-15</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>734.14</Column7>
+    <Column8>0</Column8>
+    <Column9>5422973.08</Column9>
+    <Column10>1</Column10>
+    <Column1>24</Column1>
+    <Column2>2018/10/11</Column2>
+    <Column3>Sale (Local)</Column3>
+    <Column4>SC000118-16</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>285</Column7>
+    <Column8>0</Column8>
+    <Column9>5422688.08</Column9>
+    <Column10>1</Column10>
+    <Column1>25</Column1>
+    <Column2>2018/10/14</Column2>
+    <Column3>Purchase (Import)</Column3>
+    <Column4>RCN-141018(2)</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>5422688.08</Column9>
+    <Column10>0</Column10>
+    <Column1>26</Column1>
+    <Column2>2018/10/15</Column2>
+    <Column3>VDS Adjustment</Column3>
+    <Column4>SC000118-17</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>29529.36</Column8>
+    <Column9>5422688.08</Column9>
+    <Column10>1</Column10>
+    <Column1>27</Column1>
+    <Column2>2018/10/15</Column2>
+    <Column3>VDS Adjustment</Column3>
+    <Column4>SC000118-18</Column4>
+    <Column5>0</Column5>
+    <Column6>0</Column6>
+    <Column7>0</Column7>
+    <Column8>276.24</Column8>
+    <Column9>5422688.08</Column9>
+    <Column10>1</Column10>
+    <Column1>28</Column1>
+    <Column2>2018/10/21</Column2>
+    <Column3>Purchase (Local)</Column3>
+    <Column4>PC-21102018-125</Column4>
+    <Column5>0</Column5>
+    <Column6>12480</Column6>
+    <Column7>0</Column7>
+    <Column8>0</Column8>
+    <Column9>5435168.08</Column9>
+    <Column10>0</Column10>
+  </VAT_18>
+</ArrayOfVAT_18>

@@ -1,0 +1,493 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+public partial class Reports_Mushok4_3 : System.Web.UI.Page
+{
+    #region Declare 
+
+    PriceDeclaretionBLL objPDBLL = new PriceDeclaretionBLL();
+    SetCountryBLL scBLL = new SetCountryBLL();
+
+
+    #endregion 
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        if (!IsPostBack)
+        {
+            Utilities.fillItemPriceWithDate(drpDeclaretionNo, "M");
+            Session["PRICE_DECLARATION_01"] = new DataSet();
+            pnlContents.Visible = false;
+            //btnPrint.Visible = false;
+            //lblPrintDateTime.Text = DateTime.Now.ToString("dd-MMM-yyyy hh:mm:ss tt");
+            //lblUser.Text = Session["employee_name"].ToString();
+        }
+    }
+    protected void btnReport_Click(object sender, EventArgs e)
+    {
+        if (drpDeclaretionNo.SelectedItem.Value.ToString() != "-99")
+        {
+
+            try
+            {
+                CompanyBLL CBll = new CompanyBLL();
+                DataSet ds = CBll.getFullOrganizationInfo(Convert.ToInt32(Session["ORGANIZATION_ID"].ToString()));
+
+                string strName = ds.Tables[0].Rows[0]["organization_name"].ToString();
+                string strAddress = ds.Tables[0].Rows[0]["business_address"].ToString();
+                string strRegNum = ds.Tables[0].Rows[0]["registration_no"].ToString();
+                string strAreaCode = ds.Tables[0].Rows[0]["circle_code"].ToString();
+
+                string strPhone = ds.Tables[0].Rows[0]["ba_phone"].ToString();
+                string strFax = ds.Tables[0].Rows[0]["ba_fax"].ToString();
+
+                Session["organization_name"] = strName;
+                Session["business_address"] = strAddress;
+                Session["registration_no"] = strRegNum;
+                Session["area_code"] = strAreaCode;
+                //Session["lblPriceDeclarationNumber"] = strDeclarationNum;
+                Session["ba_phone"] = strPhone;
+                Session["ba_fax"] = strFax;
+
+                lblNibondhitoBektirName.Text = strName;
+                lblThikana.Text = strAddress;
+                lblNibondhonShonkha.Text = strRegNum;
+                //lblElakaCode.Text = strAreaCode;
+                //lblTelephoneNumber.Text = strPhone;
+                //lblFaxNumber.Text = strFax;
+                //lblThikana.Text = Session["ORGANIZATION_ADDRESS"].ToString();
+
+
+
+
+
+                //DataTable dt = objPDBLL.getItemPriceNumber(Convert.ToInt32(drpDeclaretionNo.SelectedItem.Value.ToString()));
+                //lblMulloGhoshonaNumber.Text = dt.Rows[0]["price_declaration_no"].ToString();
+                //lblYear.Text = dt.Rows[0]["year"].ToString();
+
+                pnlContents.Visible = true;
+                btnPrint.Visible = true;
+
+            }
+            catch (Exception ex)
+            {
+                ReallySimpleLog.WriteLog(ex);
+            }
+
+
+            LoadFullReport();
+
+
+        }
+    }
+    #region Methods 
+
+    //private void LoadFullReport()
+    //{
+    //    string displayHtml = "";
+
+
+
+    //    //DataTable dt = objPDBLL.rptPriceDeclaration(Convert.ToInt32(drpDeclaretionNo.SelectedItem.Value.ToString()));
+    //    DataTable dt = objPDBLL.rptPriceDeclarationFourPointThree(Convert.ToInt32(drpDeclaretionNo.SelectedItem.Value.ToString()));
+    //    DataTable dtKhat = objPDBLL.rptPriceDeclarationFourPointThreeKhat(Convert.ToInt32(drpDeclaretionNo.SelectedItem.Value.ToString()));
+    //    int k = 0;
+    //    Session["PRICE_DECLARATION_01"] = dt;
+
+    //    string totalSUM = string.Empty;
+
+    //    if (dt != null && dt.Rows.Count > 0)
+    //    {
+    //        displayHtml = "";
+
+    //        string item_name_1 = string.Empty;
+    //        string hs_code_2 = string.Empty;
+    //        string goodsName_3 = string.Empty;
+    //        string saleUnit_4 = string.Empty;
+    //        string rawMeterialName_5 = string.Empty;
+    //        string rawMeterialQuantity_6 = string.Empty;
+    //        string totalPurcasePrice_7 = string.Empty;
+    //        string valueAdd_8 = string.Empty;
+    //        string valueAddedPerUnit_9 = string.Empty;
+    //        string wastagePercentage = string.Empty;
+    //        string present_10 = string.Empty;
+    //        string applied_11 = string.Empty;
+    //        string sdOnAppliedPrice_12 = string.Empty;
+    //        string present_13 = string.Empty;
+    //        string applied_14 = string.Empty;
+    //        string wholesale_15 = string.Empty;
+    //        string retailPrice_16 = string.Empty;
+    //        string total7 = string.Empty;
+    //        string total9 = string.Empty;
+    //        string strReference = string.Empty;
+    //        string strQty = string.Empty;
+    //        string strDateInsert = string.Empty;
+
+    //        decimal sum7 = Convert.ToDecimal(dt.Compute("SUM(Total_Purchase_Price_7)", string.Empty));
+    //        decimal sum9 = Convert.ToDecimal(dt.Compute("SUM(Value_Added_Per_Unit_9)", string.Empty));
+
+
+    //        for (int i = 0; i < dt.Rows.Count; i++)
+    //        {
+    //            if (i == 0)
+    //            {
+    //                item_name_1 = Convert.ToString("১");
+    //            }
+    //            else
+    //            {
+    //                item_name_1 = "";
+    //            }
+
+    //            if (hs_code_2.Length == 0)
+    //            {
+    //                hs_code_2 = dt.Rows[i]["hs_code_2"].ToString();
+    //            }
+    //            else
+    //            {
+    //                hs_code_2 = "";
+    //            }
+
+    //            if (goodsName_3.Length == 0)
+    //            {
+    //                goodsName_3 = dt.Rows[i]["goods_name_3"].ToString();
+    //            }
+
+    //            else
+    //            {
+    //                goodsName_3 = "";
+    //            }
+
+    //            saleUnit_4 = dt.Rows[i]["sale_unit_4"].ToString();
+    //            rawMeterialName_5 = dt.Rows[i]["Raw_Materials_Name_5"].ToString();
+    //            rawMeterialQuantity_6 = dt.Rows[i]["Raw_Meterials_Quantity_6"].ToString();
+    //            totalPurcasePrice_7 = dt.Rows[i]["Total_Purchase_Price_7"].ToString();
+    //            valueAdd_8 = dt.Rows[i]["Value_Add_8"].ToString();
+    //            valueAddedPerUnit_9 = dt.Rows[i]["Value_Added_Per_Unit_9"].ToString();
+    //            wastagePercentage = dt.Rows[i]["wastageparcent"].ToString();
+    //            present_10 = dt.Rows[i]["Price_With_SD_Present_10"].ToString();
+    //            applied_11 = dt.Rows[i]["Price_With_SD_Applied_11"].ToString();
+    //            sdOnAppliedPrice_12 = dt.Rows[i]["SD_On_Applied_Price_12"].ToString();
+    //            present_13 = dt.Rows[i]["VAT_Applicable_Price_Present_13"].ToString();
+
+
+    //            applied_14 = dt.Rows[i]["VAT_Applicable_Price_Applied_14"].ToString();
+    //            wholesale_15 = dt.Rows[i]["Sale_Price_With_DutyNTax_Wholesale_15"].ToString();
+    //            retailPrice_16 = dt.Rows[i]["Sale_Price_With_DutyNTax_Retail_Price_16"].ToString();
+    //            //rawMeterialQuantity_6 = rawMeterialQuantity_6 + "(" + dt.Rows[i]["wastage_quantity"].ToString() + ")" + "" + dt.Rows[i]["unit_code"].ToString() + "";
+    //            rawMeterialQuantity_6 = dt.Rows[i]["wastage_quantity"].ToString();
+    //            strReference = dt.Rows[i]["reference"].ToString();
+    //            strQty = dt.Rows[i]["quantity"].ToString();
+    //            strDateInsert = dt.Rows[i]["date_insert"].ToString();
+    //            if (lblDakhilerTarikh.Text == "")
+    //            {
+    //                lblDakhilerTarikh.Text = strDateInsert.ToString();
+    //            }
+
+
+
+
+    //            displayHtml += "<tr style = 'background-color: White'>";
+    //            displayHtml += "<td class='style10' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + item_name_1 + "</td>";
+    //            displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + hs_code_2 + "</td>";
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + goodsName_3 + "</td>";
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + saleUnit_4 + "</td>";
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + rawMeterialName_5 + "</td>";
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + rawMeterialQuantity_6 + "</td>";
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + totalPurcasePrice_7 + "</td>";
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + valueAdd_8 + "</td>";
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strQty + "</td>";
+
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + wastagePercentage + "</td>";
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + present_10 + "</td>";
+    //            int counter = 0;
+
+    //            string strSource = string.Empty;
+    //            string strMullo = string.Empty;
+    //            if (dtKhat.Rows.Count > 0)
+    //            {
+    //                for (k=i; k < dtKhat.Rows.Count; k++)
+    //                {
+    //                    strSource = dtKhat.Rows[k]["value_add_8"].ToString();
+    //                    strMullo= dtKhat.Rows[k]["Value_Added_Per_Unit_9"].ToString();
+    //                    //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strSource + "</td>";
+    //                    counter++;
+    //                    k++;
+    //                    if (counter > 0)
+    //                    {
+    //                        break;
+    //                    }
+    //                }
+    //            }
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strSource + "</td>";
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strMullo + "</td>";
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + valueAddedPerUnit_9 + "</td>";
+    //            displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strReference + "</td>";
+
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + applied_11 + "</td>";
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + sdOnAppliedPrice_12 + "</td>";
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + present_13 + "</td>";
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + applied_14 + "</td>";
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + wholesale_15 + "</td>";
+    //            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + retailPrice_16 + "</td>";
+
+
+    //            // lblInfoShow.Text = displayHtml;
+    //        }
+
+
+
+    //        //item_name_1 = "";
+    //        //hs_code_2 = "";
+    //        //goodsName_3 = "";
+    //        //saleUnit_4 = "";
+    //        //rawMeterialName_5 = "";
+    //        //rawMeterialQuantity_6 = "মোট মূল্য";
+    //        //totalPurcasePrice_7 = sum7.ToString();
+    //        //valueAdd_8 = "মোট মূল্য";
+    //        //valueAddedPerUnit_9 = sum9.ToString();
+    //        //present_10 = "";
+    //        //applied_11 = "";
+    //        //sdOnAppliedPrice_12 = "";
+    //        //present_13 = "";
+    //        //applied_14 = "";
+    //        //wholesale_15 = "";
+    //        //retailPrice_16 = "";
+
+
+
+    //        //displayHtml += "<tr style = 'background-color: White'>";
+    //        //displayHtml += "<td class='style10' align='left' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + item_name_1 + "</td>";
+    //        //displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + hs_code_2 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + goodsName_3 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + saleUnit_4 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + rawMeterialName_5 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + rawMeterialQuantity_6 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + totalPurcasePrice_7 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + valueAdd_8 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + valueAddedPerUnit_9 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + present_10 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + applied_11 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + sdOnAppliedPrice_12 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + present_13 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + applied_14 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + wholesale_15 + "</td>";
+    //        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + retailPrice_16 + "</td>";
+
+    //        lblInfoShow.Text = displayHtml;
+    //        pnlContents.Visible = true;
+    //        btnPrint.Visible = true;
+    //        btnPrint.Focus();
+    //    }
+
+
+
+    //}
+
+    private void LoadFullReport()
+    {
+        string displayHtml = "";
+
+
+
+        //DataTable dt = objPDBLL.rptPriceDeclaration(Convert.ToInt32(drpDeclaretionNo.SelectedItem.Value.ToString()));
+        DataTable dt = objPDBLL.rptPriceDeclarationFourPointThree(Convert.ToInt32(drpDeclaretionNo.SelectedItem.Value.ToString()));
+        DataTable dtKhat = objPDBLL.rptPriceDeclarationFourPointThreeKhat(Convert.ToInt32(drpDeclaretionNo.SelectedItem.Value.ToString()));
+        int k = 0;
+        Session["PRICE_DECLARATION_01"] = dt;
+
+        string totalSUM = string.Empty;
+
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            displayHtml = "";
+
+            string item_name_1 = string.Empty;
+            string hs_code_2 = string.Empty;
+            string goodsName_3 = string.Empty;
+            string saleUnit_4 = string.Empty;
+            string rawMeterialName_5 = string.Empty;
+            string rawMeterialQuantity_6 = string.Empty;
+            string totalPurcasePrice_7 = string.Empty;
+            string valueAdd_8 = string.Empty;
+            string valueAddedPerUnit_9 = string.Empty;
+            string wastagePercentage = string.Empty;
+            string present_10 = string.Empty;
+            string applied_11 = string.Empty;
+            string sdOnAppliedPrice_12 = string.Empty;
+            string present_13 = string.Empty;
+            string applied_14 = string.Empty;
+            string wholesale_15 = string.Empty;
+            string retailPrice_16 = string.Empty;
+            string total7 = string.Empty;
+            string total9 = string.Empty;
+            string strReference = string.Empty;
+            string strQty = string.Empty;
+            string strAposoyShohoQty = string.Empty;
+            string strDateInsert = string.Empty;
+
+            decimal sum7 = Convert.ToDecimal(dt.Compute("SUM(Total_Purchase_Price_7)", string.Empty));
+            decimal sum9 = Convert.ToDecimal(dt.Compute("SUM(Value_Added_Per_Unit_9)", string.Empty));
+
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                if (i == 0)
+                {
+                    item_name_1 = Convert.ToString("১");
+                }
+                else
+                {
+                    item_name_1 = "";
+                }
+
+                if (hs_code_2.Length == 0)
+                {
+                    hs_code_2 = dt.Rows[i]["hs_code_2"].ToString();
+                }
+                else
+                {
+                    hs_code_2 = "";
+                }
+
+                if (goodsName_3.Length == 0)
+                {
+                    goodsName_3 = dt.Rows[i]["goods_name_3"].ToString();
+                }
+
+                else
+                {
+                    goodsName_3 = "";
+                }
+
+                saleUnit_4 = dt.Rows[i]["sale_unit_4"].ToString();
+                rawMeterialName_5 = dt.Rows[i]["Raw_Materials_Name_5"].ToString();
+                rawMeterialQuantity_6 = dt.Rows[i]["Raw_Meterials_Quantity_6"].ToString();
+                totalPurcasePrice_7 = dt.Rows[i]["Total_Purchase_Price_7"].ToString();
+                valueAdd_8 = dt.Rows[i]["Value_Add_8"].ToString();
+                valueAddedPerUnit_9 = dt.Rows[i]["Value_Added_Per_Unit_9"].ToString();
+                wastagePercentage = dt.Rows[i]["wastageparcent"].ToString();
+                present_10 = dt.Rows[i]["Price_With_SD_Present_10"].ToString();
+                applied_11 = dt.Rows[i]["Price_With_SD_Applied_11"].ToString();
+                sdOnAppliedPrice_12 = dt.Rows[i]["SD_On_Applied_Price_12"].ToString();
+                present_13 = dt.Rows[i]["VAT_Applicable_Price_Present_13"].ToString();
+
+
+                applied_14 = dt.Rows[i]["VAT_Applicable_Price_Applied_14"].ToString();
+                wholesale_15 = dt.Rows[i]["Sale_Price_With_DutyNTax_Wholesale_15"].ToString();
+                retailPrice_16 = dt.Rows[i]["Sale_Price_With_DutyNTax_Retail_Price_16"].ToString();
+                //rawMeterialQuantity_6 = rawMeterialQuantity_6 + "(" + dt.Rows[i]["wastage_quantity"].ToString() + ")" + "" + dt.Rows[i]["unit_code"].ToString() + "";
+                rawMeterialQuantity_6 = dt.Rows[i]["wastage_quantity"].ToString();
+                strReference = dt.Rows[i]["reference"].ToString();
+                strQty = dt.Rows[i]["quantity"].ToString();
+                strAposoyShohoQty = dt.Rows[i]["quantity_total"].ToString();
+                strDateInsert = dt.Rows[i]["date_insert"].ToString();
+                if (lblDakhilerTarikh.Text == "")
+                {
+                    lblDakhilerTarikh.Text = strDateInsert.ToString();
+                }
+
+
+
+
+                displayHtml += "<tr style = 'background-color: White'>";
+                displayHtml += "<td class='style10' align='center' style='width: 2% ;border-style:solid;border-width:1px; background-color: White'>" + item_name_1 + "</td>";
+                displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + hs_code_2 + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + goodsName_3 + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + saleUnit_4 + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + rawMeterialName_5 + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strQty + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strAposoyShohoQty + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + totalPurcasePrice_7 + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + valueAdd_8 + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + rawMeterialQuantity_6 + "</td>";
+
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + wastagePercentage + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + present_10 + "</td>";
+                int counter = 0;
+
+                string strSource = string.Empty;
+                string strMullo = string.Empty;
+                if (dtKhat.Rows.Count > 0)
+                {
+                    for (k = i; k < dtKhat.Rows.Count; k++)
+                    {
+                        strSource = dtKhat.Rows[k]["value_add_8"].ToString();
+                        strMullo = dtKhat.Rows[k]["Value_Added_Per_Unit_9"].ToString();
+                        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strSource + "</td>";
+                        counter++;
+                        k++;
+                        if (counter > 0)
+                        {
+                            break;
+                        }
+                    }
+                }
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + strSource + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 14% ;border-style:solid;border-width:1px; background-color: White'>" + strMullo + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + valueAddedPerUnit_9 + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 14% ;border-style:solid;border-width:1px; background-color: White'>" + strReference + "</td>";
+
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + applied_11 + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + sdOnAppliedPrice_12 + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + present_13 + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + applied_14 + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + wholesale_15 + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + retailPrice_16 + "</td>";
+
+
+                // lblInfoShow.Text = displayHtml;
+            }
+
+
+
+            //item_name_1 = "";
+            //hs_code_2 = "";
+            //goodsName_3 = "";
+            //saleUnit_4 = "";
+            //rawMeterialName_5 = "";
+            //rawMeterialQuantity_6 = "মোট মূল্য";
+            //totalPurcasePrice_7 = sum7.ToString();
+            //valueAdd_8 = "মোট মূল্য";
+            //valueAddedPerUnit_9 = sum9.ToString();
+            //present_10 = "";
+            //applied_11 = "";
+            //sdOnAppliedPrice_12 = "";
+            //present_13 = "";
+            //applied_14 = "";
+            //wholesale_15 = "";
+            //retailPrice_16 = "";
+
+
+
+            //displayHtml += "<tr style = 'background-color: White'>";
+            //displayHtml += "<td class='style10' align='left' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + item_name_1 + "</td>";
+            //displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + hs_code_2 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + goodsName_3 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + saleUnit_4 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + rawMeterialName_5 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + rawMeterialQuantity_6 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + totalPurcasePrice_7 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + valueAdd_8 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + valueAddedPerUnit_9 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + present_10 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + applied_11 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + sdOnAppliedPrice_12 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + present_13 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + applied_14 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + wholesale_15 + "</td>";
+            //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: White'>" + retailPrice_16 + "</td>";
+
+            lblInfoShow.Text = displayHtml;
+            pnlContents.Visible = true;
+            btnPrint.Visible = true;
+            btnPrint.Focus();
+        }
+    }
+
+
+    #endregion
+}

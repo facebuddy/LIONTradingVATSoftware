@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ArrayOfVAT_18>
+  <VAT_11>
+    <sessionvalue>1</sessionvalue>
+    <VatRegistrationNo>123456789</VatRegistrationNo>
+    <CustomerName>USHA COMPANY LIMITED</CustomerName>
+    <CustomerAddress>Dhaka</CustomerAddress>
+    <CustomerVATRegistrationNo>3698521478962</CustomerVATRegistrationNo>
+    <GoodsServicesShippingAddress>
+    </GoodsServicesShippingAddress>
+    <CustomerVehicleTypeAndNo>Covered Van, Dhaka-Ka-124356</CustomerVehicleTypeAndNo>
+    <ChallanNo>SC000118-5</ChallanNo>
+    <ChallanDate>08-OCT-2018</ChallanDate>
+    <ChallanTime>11:43</ChallanTime>
+    <DisposeDate>08-OCT-2018</DisposeDate>
+    <DisposeTime>14:43</DisposeTime>
+    <Column1>1</Column1>
+    <Column2>JAMMIE DODGERS BISCUITE</Column2>
+    <Column3>20</Column3>
+    <Column4_up>320</Column4_up>
+    <Column5_sd>256</Column5_sd>
+    <Column6_tp_sd>6656</Column6_tp_sd>
+    <Column7_vat>998.4</Column7_vat>
+    <Column8_tp_vat_sd>7654.4</Column8_tp_vat_sd>
+    <Column1>2</Column1>
+    <Column2>MOUNTAIN DEW</Column2>
+    <Column3>250</Column3>
+    <Column4_up>18</Column4_up>
+    <Column5_sd>180</Column5_sd>
+    <Column6_tp_sd>4680</Column6_tp_sd>
+    <Column7_vat>702</Column7_vat>
+    <Column8_tp_vat_sd>5382</Column8_tp_vat_sd>
+  </VAT_11>
+</ArrayOfVAT_18>

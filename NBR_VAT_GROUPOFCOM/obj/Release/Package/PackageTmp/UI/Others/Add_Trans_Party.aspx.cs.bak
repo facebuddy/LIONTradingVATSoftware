@@ -1,0 +1,1624 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Collections;
+using System.IO;
+using System.Data.OleDb;
+using System.Runtime.InteropServices;
+using Excel = Microsoft.Office.Interop.Excel;
+
+public partial class UI_Admin_Add_Trans_Party : System.Web.UI.Page
+{
+    #region Declare
+    TransPartyBLL objTsPBLL = new TransPartyBLL();
+    TransPartyDAO objTsPDAO = new TransPartyDAO();
+    OrgRegistrationInfoDAO orgRegInfo = new OrgRegistrationInfoDAO();
+ 	public Dictionary<string, bool> partyNameList = new Dictionary<string, bool>();
+    public ArrayList objectPropertyNameList = new ArrayList();
+    public ArrayList tableDataList = new ArrayList();
+    public ArrayList tableNameList = new ArrayList();
+    public ArrayList validationList = new ArrayList();
+    public short status = 1;
+    #endregion
+
+    #region Constructor
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        MQMM.LoginCheckForUser();
+        if (!IsPostBack)
+        {
+            GetPartyInfo();
+            //drpAreaOfMfg.Visible = false;
+            divAreaOfMfg.Visible = false;
+            LoadTypeOfBusinessOrganization();//28-07-219
+
+            Session["PARTY_LIST"] = new ArrayList();
+            Session["PARTY_INFO"] = new ArrayList();
+            loadVDS();
+            loadBusinessInfo();//28.07.2019
+            ListItem li = new ListItem("--- SELECT ---", "-99");
+            drpRegistrationType.Items.Insert(0, li);
+
+            part_a.Visible = true;
+            part_b.Visible = true;
+            part_c.Visible = true;
+            part_d.Visible = true;
+            part_e.Visible = true;
+            part_f.Visible = true;
+            part_g.Visible = true;
+            part_h.Visible = false;
+
+            //10-July-2019
+            //Div1.Visible = true;
+            Div2.Visible = true;
+            //Div3.Visible = true;
+
+            //loadParty();
+            loadGridView();
+        }
+ 		Utilities.KillExcelFileProcess();
+    }
+    #endregion
+
+    #region Event
+    protected void chklistTypeofBusiness_Changed(object sender, EventArgs e)
+    {
+        string EPA = string.Empty;
+        string EPANames = string.Empty;
+
+        string sManufacturing = string.Empty;
+
+        int EPACount = 0;
+        for (int i = 0; i < chklistTypeofBusiness.Items.Count; i++)
+        {
+            if (chklistTypeofBusiness.Items[i].Selected == true)
+            {
+                //if (EPACount == 0)
+                //{
+                //EPA = chklistTypeofBusiness.Items[i].Value.ToString(); //For Selected items Value
+                //EPANames = chklistTypeofBusiness.Items[i].Text.ToString(); //For Selected items Value
+                //EPACount = EPACount + 1;
+
+                sManufacturing = chklistTypeofBusiness.Items[i].Value.ToString();
+                if (sManufacturing == "4")
+                {
+                    //GetPartyInfoRegistrationWise(Convert.ToInt16(drpRegType.SelectedValue.Trim()));
+
+                    break;
+                }
+                //}
+                //else
+                //{
+                //    EPA = EPA + "," + chklistTypeofBusiness.Items[i].Value.ToString();
+                //    EPANames = EPANames + "," + chklistTypeofBusiness.Items[i].Text.ToString();
+                //}
+
+
+            }
+        }
+        if (sManufacturing == "4")
+        {
+            //drpAreaOfMfg.Visible = true;
+            divAreaOfMfg.Visible = true;
+            GetAreaOfManufacturing();
+        }
+        else
+        {
+            divAreaOfMfg.Visible = false;
+        }
+
+
+    }
+    protected void btnSave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            if (Validation() == true)
+            {
+                objTsPDAO = insertTransParty(objTsPDAO);
+                if (btnSave.Text == "Save")
+                {
+                    bool result = objTsPBLL.insertTransParty(objTsPDAO);
+                    if (result)
+                    {
+                        msgBox.AddMessage("Party Information " + AllConstraint.strSaveSuccessMessage, MsgBoxs.enmMessageType.Success);
+                        clearFrom();
+                        loadGridView();
+                    }
+                    else
+                    {
+                        msgBox.AddMessage(AllConstraint.strSaveFailMessage, MsgBoxs.enmMessageType.Error);
+                    }
+                }
+                else
+                {
+                    objTsPDAO = updateTransParty(objTsPDAO);
+                    bool result = objTsPBLL.updateTrnsParty(objTsPDAO);
+                    if (result)
+                    {
+                        msgBox.AddMessage("Party Information Update Successfully ", MsgBoxs.enmMessageType.Success);
+                        clearFrom();
+                        //loadParty();
+                        loadGridView();
+                    }
+                    else
+                    {
+                        msgBox.AddMessage("Party Information Update Failed ", MsgBoxs.enmMessageType.Error);
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //ReallySimpleLog.WriteLog(ex);
+            Utility.InsertErrorTrack(ex.Message, "Add_trans_Party", "btnSave_Click");
+        }
+       
+    }
+    protected void btnUpdate_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            objTsPDAO = updateTransParty(objTsPDAO);
+            if (btnUpdate.Text == "Update")
+            {
+                bool result = objTsPBLL.updateTrnsParty(objTsPDAO);
+                if (result)
+                {
+                    msgBox.AddMessage("Party Information Update Successfully ", MsgBoxs.enmMessageType.Success);
+                    clearFrom();
+                    //loadParty();
+                    loadGridView();
+                }
+                else
+                {
+                    msgBox.AddMessage("Party Information Update Failed ", MsgBoxs.enmMessageType.Error);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            //ReallySimpleLog.WriteLog(ex);
+            Utility.InsertErrorTrack(ex.Message, "Add_trans_Party", "btnUpdate_Click");
+        }
+       
+    }
+    protected void btnShow_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            loadGridView();
+        }
+        catch (Exception ex)
+        {
+            //ReallySimpleLog.WriteLog(ex);
+            Utility.InsertErrorTrack(ex.Message, "Add_trans_Party", "btnShow_Click");
+        }
+        //loadParty();
+        
+    }
+    protected void btnRefresh_Click(object sender, EventArgs e)
+    {
+        clearFrom();
+    }
+    protected void gvItem_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        DataTable dt = new DataTable();
+        try
+        {
+            Int16 row = Convert.ToInt16(gvShowParty.SelectedDataKey["party_id"]);
+            dt = objTsPBLL.getPartyByPartyID(row);
+            if (dt != null)
+            {
+                if (dt.Rows.Count > 0)
+                {
+                    // comment started by nour on 15th January, 2020
+                    /*isCustomer.Checked=Convert.ToBoolean(dt.Rows[0]["is_customer"].ToString());
+                    isVendor.Checked = Convert.ToBoolean(dt.Rows[0]["is_vendor"].ToString());
+                    isVc.Checked = Convert.ToBoolean(dt.Rows[0]["isVc"].ToString());*/
+                    // comment ended by nour on 15th January, 2020
+
+                    // start // vendor and customer radiobox checked or not // added by nour on 15th January, 2020
+                    bool IsVendor = Convert.ToBoolean(dt.Rows[0]["is_vendor"].ToString());
+                    bool IsCustomer = Convert.ToBoolean(dt.Rows[0]["is_customer"].ToString());
+
+                    if (IsVendor && IsCustomer)
+                    {
+                        isVc.Checked = true;
+                    }
+                    else
+                    {
+                        if (IsVendor)
+                        {
+                            isVendor.Checked = true;
+                        }
+                        else if (IsCustomer)
+                        {
+                            isCustomer.Checked = true;
+                        }
+                    }
+                    // end // vendor and customer radiobox checked or not // added by nour on 15th January, 2020
+
+                    drpRegistrationType.SelectedValue=dt.Rows[0]["reg_type"].ToString();
+                    drpBusinessInfo.SelectedValue = dt.Rows[0]["business_info_id"].ToString();
+                    txtPartyName.Text = dt.Rows[0]["party_name"].ToString();
+                    txtPhone.Text = dt.Rows[0]["phone"].ToString();
+                    txtPartyBIN.Text = dt.Rows[0]["party_bin"].ToString();
+                    txtEmail.Text = dt.Rows[0]["email"].ToString();
+                    txtUltimateDesignation.Text = dt.Rows[0]["ultimate_destination"].ToString();
+                    txtWeb.Text = dt.Rows[0]["web"].ToString();
+                    txtOwnerName.Text = dt.Rows[0]["owner_name"].ToString();
+                    txtcreditlmt.Text= dt.Rows[0]["credit_limit"].ToString();
+                    if (Convert.ToBoolean(dt.Rows[0]["is_vds_deduct"].ToString()) == true)
+                    {
+                        chkVDS.Checked = true;
+                    }
+                    txtPartyAddress.Text = dt.Rows[0]["party_address"].ToString();
+                    lblPartyID.Text = dt.Rows[0]["party_id"].ToString();
+
+                    drpVDS.SelectedValue = dt.Rows[0]["vds"].ToString();
+
+                    //drpRegistrationType.SelectedValue = Convert.ToInt32(dt.Rows[0]["reg_type"].ToString()) > 0 ? dt.Rows[0]["reg_type"].ToString() : "-99";
+                    //08-09-2019 // by Nour
+                    drpRegistrationType.SelectedValue = dt.Rows[0]["reg_type"].ToString().Length > 0 ? dt.Rows[0]["reg_type"].ToString() : "-99";
+
+                    txtNationalIdNo.Text = dt.Rows[0]["national_id_no"].ToString();//09-July-2019
+
+                    //10-July-2019 start
+                    if (Convert.ToBoolean(dt.Rows[0]["is_excise_duty"].ToString()) == true)
+                    {
+                        chkExciseDuty.Checked = true;
+                    }
+                    if (Convert.ToBoolean(dt.Rows[0]["is_development_surcharge"].ToString()) == true)
+                    {
+                        chkDevelopmentSurCharge.Checked = true;
+                    }
+                    if (Convert.ToBoolean(dt.Rows[0]["is_information_technology"].ToString()) == true)
+                    {
+                        chkInformationTechology.Checked = true;
+                    }
+                    if (Convert.ToBoolean(dt.Rows[0]["is_health_safety"].ToString()) == true)
+                    {
+                        chkHealthSafety.Checked = true;
+                    }
+                    if (Convert.ToBoolean(dt.Rows[0]["is_environment_safety"].ToString()) == true)
+                    {
+                        chkEnvironmentSafety.Checked = true;
+                    }
+                    //10-July-2019 end
+
+                    //29-July-2019 start
+                    drpBusinessInfo.SelectedValue = dt.Rows[0]["business_info_id"].ToString();
+                    if (Convert.ToInt16(dt.Rows[0]["area_of_mfg_id"]) != 0)
+                    {
+                        GetAreaOfManufacturing(); 
+                        //drpAreaOfMfg.Visible = true;
+                        divAreaOfMfg.Visible = true;
+                        drpAreaOfMfg.SelectedValue = dt.Rows[0]["area_of_mfg_id"].ToString();
+                    }
+                    else
+                    {
+                        divAreaOfMfg.Visible = false;
+                    }
+                    string sMEconomicAct = string.Empty;
+                    if (dt.Rows[0]["major_area_of_ecn_activity"].ToString() != "")
+                    {
+                        sMEconomicAct = dt.Rows[0]["major_area_of_ecn_activity"].ToString();
+                        if(sMEconomicAct.Length > 1)
+                        {
+                            // start // modified by nour on // 16th January, 2020 // select major area of economic activity
+                            string[] exploded = sMEconomicAct.Split(',');
+                            for (int i = 0; i < chklistTypeofBusiness.Items.Count; i++)
+                            {
+                                chklistTypeofBusiness.Items[i].Selected = exploded.Contains(chklistTypeofBusiness.Items[i].Value);
+                            }
+                            // end // modified by nour on // 16th January, 2020 // select major area of economic activity
+
+                            /*---------------------------------------------------------------------------------------------------------------*/
+
+                            /*for (int i = 0; i < chklistTypeofBusiness.Items.Count; i++)
+                            {
+                                for (int j = 0; j < sMEconomicAct.Length; j++)
+                                {
+                                    if(chklistTypeofBusiness.Items[i].Value.ToString()== sMEconomicAct[j].ToString())
+                                    {
+                                        chklistTypeofBusiness.Items[i].Selected = true;
+                                    }
+                                }
+                                //if (chklistTypeofBusiness.Items[i].Selected == true)
+                                //{
+                                //    if (a == 0)
+                                //    {
+                                //        economic_process = chklistTypeofBusiness.Items[i].Value.ToString(); //For Selected items Value
+                                //        a = a + 1;
+                                //    }
+                                //    else
+                                //    {
+                                //        economic_process = economic_process + "," + chklistTypeofBusiness.Items[i].Value.ToString();
+                                //    }
+
+                                //    //buType = buType + ",";
+
+                                //}
+                            }*/
+                        }
+                    }
+                    //29-July-2019 end
+
+                    // 08-09-2019 // by Nour
+                    if (Convert.ToBoolean(dt.Rows[0]["is_vendor"].ToString()) == true && Convert.ToBoolean(dt.Rows[0]["is_customer"].ToString()) == true)
+                    {
+                        isVc.Checked = true;
+                    } else
+                    {
+                        if(Convert.ToBoolean(dt.Rows[0]["is_vendor"].ToString()) == true) isVendor.Checked = true;
+                        
+                        if(Convert.ToBoolean(dt.Rows[0]["is_customer"].ToString()) == true) isCustomer.Checked = true;
+                    }
+                    //
+
+                    btnSave.Text = "Update";
+
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    //protected void gvItem_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    //{
+    //    try
+    //    {
+    //        int CID = e.RowIndex;
+    //        string Customer = gvShowParty.Rows[e.RowIndex].Cells[1].Text.Trim().ToString();
+    //        bool result = objTsPBLL.deleteTrnsParty(Customer);
+    //        if (result)
+    //        {
+    //            msgBox.AddMessage("Supplier Information Delete Successfully", MsgBoxs.enmMessageType.Success);
+    //            loadGridView();
+    //        }
+    //        else
+    //        {
+    //            msgBox.AddMessage("Supplier Information Delete Failed", MsgBoxs.enmMessageType.Error);
+    //        }
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        ReallySimpleLog.WriteLog(ex);
+    //    }
+    //}
+    protected void gvItem_RowDeleting(object sender, GridViewDeleteEventArgs e)
+    {
+        try
+        {
+            bool result = false;
+            int CID = e.RowIndex;
+            string Customer = gvShowParty.Rows[e.RowIndex].Cells[2].Text.Trim().ToString();
+            //Int16 row = Convert.ToInt16(gvShowParty.SelectedDataKey["party_id"]);
+            int row = Convert.ToInt16(gvShowParty.Rows[e.RowIndex].Cells[1].Text.Trim().ToString());
+            DataTable dtS = objTsPBLL.getPartyfromSale(row);
+            DataTable dtP = objTsPBLL.getPartyfromPurchase(row);
+            DataTable dtPr = objTsPBLL.getPartyfromProduction(row);
+            //if(dtS.Rows.Count>=0 || dtP.Rows.Count >=0 || dtPr.Rows.Count >=0)
+            if (dtS.Rows.Count >= 1 || dtP.Rows.Count >= 1 || dtPr.Rows.Count >= 1)
+            {
+                msgBox.AddMessage(AllConstraint.strDeleteFail + " Transaction exists of this Party.", MsgBoxs.enmMessageType.Error);
+                return;
+            }
+            else
+            {
+                result = objTsPBLL.deleteTrnsParty(Customer);
+            }
+
+            if (result)
+            {
+                msgBox.AddMessage("Supplier Information Delete Successfully", MsgBoxs.enmMessageType.Success);
+                loadGridView();
+            }
+            else
+            {
+                msgBox.AddMessage("Supplier Information Delete Failed", MsgBoxs.enmMessageType.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            //ReallySimpleLog.WriteLog(ex);
+            Utility.InsertErrorTrack(ex.Message, "Add_trans_Party", "gvItem_RowDeleting");
+        }
+    }
+    protected void gvShowParty_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gvShowParty.PageIndex = e.NewPageIndex;
+        //loadParty();
+        this.loadGridView();
+    }
+    protected void gvShowParty_RowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        if (e.Row.RowType == DataControlRowType.DataRow && (e.Row.RowState == DataControlRowState.Normal || e.Row.RowState == DataControlRowState.Alternate))
+        {
+            //((ImageButton)e.Row.Cells[10].Controls[0]).Attributes["onclick"] = "if(!confirm('Do you want to delete?'))return   false;";
+
+            // 07-Sept-2019 // by Nour
+            ((ImageButton)e.Row.Cells[e.Row.Cells.Count -2].Controls[0]).Attributes["onclick"] = "if(!confirm('Do you want to delete?'))return false;";
+            //
+        }
+    }
+
+    // 07-Sept-2019 // by Nour
+    protected void gvShowParty_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.CommandName == "Details")
+            {
+                //int rowIndex = Convert.ToInt32(e.CommandArgument);
+                //GridViewRow row = gvShowParty.Rows[rowIndex];
+                //Int16 partyId = Convert.ToInt16(row.Cells[1].Text);
+
+                //DataTable dt = orgRegInfo.GetPartyInfo(partyId);
+
+                //DataTable dt = new DataTable();
+                //dt = objTsPBLL.getPartyByPartyID(partyId);
+
+                //18/11/2019 start
+                GridViewRow Row = (GridViewRow)(((Button)e.CommandSource).NamingContainer);
+                Int32 partyId = Convert.ToInt32(Row.Cells[1].Text.ToString());
+                DataTable dt = orgRegInfo.GetPartyInfo(partyId);
+                if (dt != null)
+                {
+                    if (dt.Rows.Count > 0)
+                    {
+                        var data = dt.Rows[0];
+
+                        detailsPartyName.InnerText = data[1].ToString().Length > 0 ? data[1].ToString() : "N/A";
+                        detailsPartyAddress.InnerText = data[3].ToString().Length > 0 ? data[3].ToString() : "N/A";
+                        detailsPartyTin.InnerText = data[2].ToString().Length > 0 ? data[2].ToString() : "N/A";
+                        detailsPartyNid.InnerText = data[21].ToString().Length > 0 ? data[21].ToString() : "N/A";
+                        detailsOwnerName.InnerText = data[5].ToString().Length > 0 ? data[5].ToString() : "N/A";
+                        detailsBusinessType.InnerText = data[32].ToString().Length > 0 ? data[32].ToString() : "N/A";
+                        detailsPhone.InnerText = data[6].ToString().Length > 0 ? data[6].ToString() : "N/A";
+                        detailsEmail.InnerText = data[7].ToString().Length > 0 ? data[7].ToString() : "N/A";
+                        detailsWeb.InnerText = data[8].ToString().Length > 0 ? data[8].ToString() : "N/A";
+                        detailsMajorAreaOfEcnActivity.InnerText = data[29].ToString().Length > 0 ? data[29].ToString() : "N/A";
+                        detailsVendor.InnerText = data[30].ToString().Length > 0 ? data[30].ToString() : "N/A";
+                        detailsCustomer.InnerText = data[31].ToString().Length > 0 ? data[31].ToString() : "N/A";
+
+                        if (detailsVendor.InnerText.Length > 0 && detailsCustomer.InnerText.Length > 0)
+                        {
+                            partyHeader.InnerText = "Vendor / Customer Profile";
+                        }
+                        else
+                        {
+                            if (detailsVendor.InnerText.Length > 0)
+                            {
+                                partyHeader.InnerText = "Vendor Profile";
+                            } else if(detailsCustomer.InnerText.Length > 0)
+                            {
+                                partyHeader.InnerText = "Customer Profile";
+                            } else
+                            {
+                                partyHeader.InnerText = "Profile";
+                            }
+                        }
+
+                        partyDetailsDiv.Visible = true;
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    //
+
+ protected void btnUpload_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            #region declare & reset variables
+            ChallanBLL challanBLL = new ChallanBLL();
+            Dictionary<string, bool> validations = new Dictionary<string, bool>();
+            Dictionary<Int16, string> regType = new Dictionary<Int16, string>()
+            {
+                {1,"Regular Registered (Vat)"},
+                {4,"Registered For Turnover"},
+                {5,"Not Registered"},
+                {7, "Procurement Provider"},
+                {8, "Trader"}
+            };
+            Dictionary<string, int> economicActivities = chklistTypeofBusiness.Items.Cast<ListItem>().ToDictionary(i => i.Text.ToUpper(), i => Convert.ToInt32(i.Value));
+            ArrayList tableDataList = new ArrayList();
+            tableNameList = new ArrayList();
+            objectPropertyNameList = new ArrayList();
+            validationList = new ArrayList();
+            partyNameList = new Dictionary<string, bool>();
+
+            //reset gridView
+            gvExcelFile.DataSource = null;
+            gvExcelFile.DataBind();
+            //declare all variables here
+            string column = "", tableColumn = "", path = "";
+            string sheetName = "SetParty";
+            #endregion
+            #region upload excel file to CSV folder
+            string ext = Path.GetExtension(FileUpload1.FileName).ToLower();
+            if (!string.IsNullOrEmpty(ext))
+            {
+                path = Server.MapPath("~/CSV/partyImport_" + (DateTime.Now.ToString("ddMMyyyy_HHmmssFFF")) + ext);
+                FileUpload1.SaveAs(path);
+                // show file name with message in view label
+                Label11.Text = FileUpload1.FileName + "\'s Data showing into the GridView";
+            }
+            else
+            {
+                msgBox.AddMessage(" File Path not Found! Please Brows Your File. ", MsgBoxs.enmMessageType.Attention);
+                return;
+            }
+            #endregion
+           
+            try
+            {
+                #region create objects for excel manipulation
+                Excel.Application oExcel = new Excel.Application();
+                Excel.Workbook WB = null;
+                Excel.Worksheet wks = null;
+                #endregion
+                #region get worksheet
+                //accessing excel file with oExcel object
+                WB = oExcel.Workbooks.Open(path);
+                //get exact worksheet from list of worksheets
+                foreach (Excel.Worksheet wSheet in WB.Worksheets)
+                {
+                    if (sheetName.ToUpper().Equals(wSheet.Name.ToUpper()))
+                    {
+                        wks = wSheet;
+                    }
+                }
+                #endregion
+                #region get column headers
+                //getting range object and number of rows and columns respectively
+                int rowCount = wks.UsedRange.Rows.Count;
+                int colCount = wks.UsedRange.Columns.Count;
+                TransPartyDAO objDetailDAO = new TransPartyDAO();
+                for (int j = 1; j <= colCount; j++)
+                {
+                    column = ((Excel.Range)wks.Cells[1, j]).Value.ToString().Trim();
+                    tableColumn = ((Excel.Range)wks.Cells[2, j]).Value.ToString().Trim();
+                    if (objDetailDAO.GetType().GetProperty(column) != null && !string.IsNullOrEmpty(tableColumn))
+                    {
+                        objectPropertyNameList.Add(column);
+                        tableNameList.Add(tableColumn);
+                        validations.Add(column, false);
+
+                        BoundField bfield = new BoundField();
+                        bfield.HeaderText = tableColumn;
+                        bfield.DataField = column;
+                        gvExcelFile.Columns.Add(bfield);
+                    }
+                }
+                #endregion
+                #region get dataList
+                for (int i = 3; i < rowCount; i++)
+                {
+                    var firstCellOfTheRow = ((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf("TransPartyName") + 1]).Value;
+                    if (firstCellOfTheRow == null) break;
+                    if (string.IsNullOrWhiteSpace(firstCellOfTheRow.ToString())) break;
+
+                    #region new validation object
+                    Dictionary<string, bool> validation = new Dictionary<string, bool>();
+                    foreach (var key in validations.Keys)
+                    {
+                        validation.Add(key, validations[key]);
+                    }
+                    #endregion
+                    #region add data to list
+                    if ((((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf("TransPartyName") + 1]).Value != null))
+                    {
+                        objDetailDAO = new TransPartyDAO();
+                        objDetailDAO.TransPartyName = ((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf("TransPartyName") + 1]).Value.ToString();
+                        bool state = false;
+                        if (!partyNameList.ContainsKey(objDetailDAO.TransPartyName.Trim()))
+                        {
+                            if (partyNameList.TryGetValue(objDetailDAO.TransPartyName.Trim(), out state))
+                            {
+                                partyNameList[objDetailDAO.TransPartyName.Trim()] = true;
+                            }
+                            else if (objTsPBLL.getTrnsParty(objDetailDAO.TransPartyName.Trim()) > 0)
+                            {
+                                partyNameList[objDetailDAO.TransPartyName.Trim()] = true;
+                            }
+                            else
+                            {
+                                partyNameList.Add(objDetailDAO.TransPartyName.Trim(), false);
+                            }
+                        }
+                        else
+                        {
+                            partyNameList[objDetailDAO.TransPartyName.Trim()] = true;
+                        }
+                        foreach (string col in objectPropertyNameList)
+                        {
+                            if (objDetailDAO.GetType().GetProperty(col).PropertyType.Name == "Boolean")
+                            {
+                                Boolean value = false;
+                                if (((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf(col) + 1]).Value != null)
+                                {
+                                    value = Convert.ToBoolean(((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf(col) + 1]).Value);
+                                    objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, value, null);
+                                }
+                            }
+                            else if (objDetailDAO.GetType().GetProperty(col).PropertyType.Name == "Int16")
+                            {
+                                Int16 value = 0;
+                                if (((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf(col) + 1]).Value != null)
+                                {
+                                    value = Convert.ToInt16(((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf(col) + 1]).Value);
+                                    objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, value, null);
+                                }
+                            }
+                            else if (objDetailDAO.GetType().GetProperty(col).PropertyType.Name == "Decimal")
+                            {
+                                Decimal value = 0;
+                                if (((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf(col) + 1]).Value != null)
+                                {
+                                    value = Convert.ToDecimal(((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf(col) + 1]).Value);
+                                    objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, value, null);
+                                }
+                            }
+                            else
+                            {
+                                string value = String.Empty;
+                                if (((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf(col) + 1]).Value != null)
+                                {
+                                    value = ((Excel.Range)wks.Cells[i, objectPropertyNameList.IndexOf(col) + 1]).Value.ToString().Trim();
+                                    objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, value, null);
+                                    if (col == "BusinessInformation")
+                                    {
+                                        //                                        get business info db from db entry by given name
+                                        DataTable dt = objTsPBLL.getBusinessInfo(24, objDetailDAO.BusinessInformation);
+                                        if (dt.Rows.Count == 1)
+                                        {
+                                            objDetailDAO.BusinessInfo = Convert.ToInt16(dt.Rows[0]["code_id_d"]);
+                                        }
+                                    }
+                                    if (col == "AreaOfManufacturing")
+                                    {
+                                        //                                        get area of manufacturing info from db entry by given name
+                                        DataTable dt = challanBLL.GetAreaOfManufacturing(objDetailDAO.AreaOfManufacturingInfo);
+                                        if (dt.Rows.Count == 1)
+                                        {
+                                            objDetailDAO.AreaOfManufacturing = Convert.ToInt16(dt.Rows[0]["code_id_d"]);
+                                        }
+                                        else
+                                        {
+                                            validation[col] = true;
+                                        }
+                                    }
+                                    if (col == "VdsInfo")
+                                    {
+                                        DataTable dt = objTsPBLL.getVDSData(18, objDetailDAO.VdsInfo);
+                                        if (dt.Rows.Count == 1)
+                                        {
+                                            objDetailDAO.VDS = Convert.ToInt16(dt.Rows[0]["code_id_d"]);
+                                        }
+                                        else
+                                        {
+                                            validation[col] = true;
+                                        }
+
+                                    }
+                                    if (col == "RegistraionType")
+                                    {
+                                        objDetailDAO.RegType = regType.FirstOrDefault(x => x.Value.Trim().ToUpper() == objDetailDAO.RegistraionType.Trim().ToUpper()).Key;
+
+                                        if (objDetailDAO.RegType == 0)
+                                        {
+                                            validation[col] = true;
+                                        }
+                                    }
+                                    if (col == "EconomicProcess")
+                                    {
+                                        string[] epList = objDetailDAO.EconomicProcess.Split(',');
+                                        foreach (string ep in epList)
+                                        {
+                                            /*DataTable dt = objTsPBLL.GetEconomicProcessActivity(ep.Trim());
+                                            if (dt.Rows.Count != 1 && !validation[col])
+                                            {
+                                                validation[col] = true;
+                                            }*/
+                                            if (!economicActivities.ContainsKey(ep.Trim().ToUpper()) && !validation[col])
+                                            {
+                                                validation[col] = true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        objDetailDAO.UserID = Convert.ToInt16(Session["employee_id"]);
+                        objDetailDAO.OrganizationID = Convert.ToInt32(Session["ORGANIZATION_ID"]);
+                        objDetailDAO.PartyTIN = objDetailDAO.PartyBIN;
+                        //add rowno of validation list in datalist 
+                        objDetailDAO.RowNo = Convert.ToInt16(validationList.Count);
+                        tableDataList.Add(objDetailDAO);
+                        validationList.Add(validation);
+                    }
+                    #endregion
+
+                }
+                #endregion
+                // set item to gridView
+                // gvExcelFile.DataSource = tableDataList;
+                // gvExcelFile.DataBind();
+                
+                WB.Close(false);
+                oExcel.Quit();
+                Utilities.KillExcelFileProcess();
+            }
+            #region Exception handle
+            catch (Exception exception)
+            {
+                Utilities.KillExcelFileProcess();
+                //                msgBox.AddMessage("Error Occured While Reading Excel File. Check if data missing or file corruption.",
+                //                    MsgBoxs.enmMessageType.Attention);
+                msgBox.AddMessage(exception.Message, MsgBoxs.enmMessageType.Attention);
+                return;
+            }
+            #endregion
+            //#region destroy all unnecessary excel related objects
+            //finally
+            //{
+            //    wks.Delete();
+            //    Marshal.ReleaseComObject(wks);
+            //    WB.Close();
+            //    Marshal.ReleaseComObject(WB);
+            //    oExcel.Quit();
+            //    Marshal.ReleaseComObject(oExcel);
+            //}
+            //#endregion
+
+            gvExcelFile.DataSource = tableDataList;
+            gvExcelFile.DataBind();
+            foreach (TransPartyDAO objDetailDAO in tableDataList)
+            {
+                if (!string.IsNullOrWhiteSpace(objDetailDAO.EconomicProcess))
+                {
+                    bool foundFirstActivity = false;
+                    string economicProcessess = string.Empty;
+                    string[] epList = objDetailDAO.EconomicProcess.Split(',');
+                    foreach (string ep in epList)
+                    {
+                        if (economicActivities.ContainsKey(ep.Trim().ToUpper()))
+                        {
+                            if (!foundFirstActivity)
+                            {
+                                economicProcessess = economicActivities[ep.Trim().ToUpper()].ToString();
+                                foundFirstActivity = true;
+                            }
+                            else
+                            {
+                                economicProcessess = economicProcessess + "," + economicActivities[ep.Trim().ToUpper()].ToString();
+                            }
+                        }
+                    }
+                    objDetailDAO.EconomicProcess = economicProcessess;
+                }
+            }
+            Session["PARTY_LIST"] = tableDataList;
+        }
+        catch (Exception ex)
+        {
+            Utilities.KillExcelFileProcess();
+            //ReallySimpleLog.WriteLog(ex);
+            Utility.InsertErrorTrack(ex.Message, "Add_trans_Party", "btnUpload_Click");
+        }
+        Utilities.KillExcelFileProcess();
+    }
+    protected void chkManualInput_OnCheckedChanged(object sender, EventArgs e)
+    {
+ 		Div4.Visible = true;
+        part_a.Visible = true;
+        Div5.Visible = true;
+        part_b.Visible = true;
+        part_c.Visible = true;
+        part_d.Visible = true;
+        part_e.Visible = true;
+        Div7.Visible = true;
+        part_f.Visible = true;
+        Div2.Visible = true;
+        part_g.Visible = true;
+        part_h.Visible = false;
+    }
+    protected void chkExcelImport_OnCheckedChanged(object sender, EventArgs e)
+    {
+        Div4.Visible = false;
+        part_a.Visible = false;
+        Div5.Visible = false;
+        part_b.Visible = false;
+        part_c.Visible = false;
+        part_d.Visible = false;
+        part_e.Visible = false;
+        Div7.Visible = false;
+        part_f.Visible = false;
+        Div2.Visible = false;
+        part_g.Visible = false;
+        part_h.Visible = true;
+        btnExcelSave.Visible = false;
+    }
+
+    #endregion
+
+    #region Method
+    private void GetAreaOfManufacturing()
+    {
+        drpAreaOfMfg.Items.Clear();
+        ChallanBLL objBLL = new ChallanBLL();
+        DataTable ds = objBLL.GetAreaOfManufacturing("");
+        if (ds != null && ds.Rows.Count > 0)
+        {
+            drpAreaOfMfg.DataSource = ds;
+            drpAreaOfMfg.DataTextField = ds.Columns["code_name"].ToString();
+            drpAreaOfMfg.DataValueField = ds.Columns["code_id_d"].ToString();
+            drpAreaOfMfg.DataBind();
+        }
+
+        ListItem li = new ListItem("-- SELECT --", "-99");
+        drpAreaOfMfg.Items.Insert(0, li);
+    }
+    private void LoadTypeOfBusinessOrganization()
+    {
+        DataTable dt = orgRegInfo.GetEconomicPrcActivity();
+
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            drpTypeofBusiness.DataSource = dt;
+            drpTypeofBusiness.DataTextField = dt.Columns["code_name"].ToString();
+            drpTypeofBusiness.DataValueField = dt.Columns["code_id_d"].ToString();
+            drpTypeofBusiness.DataBind();
+
+            // chklistTypeofBusiness.DataSource = dt;
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                chklistTypeofBusiness.Items.Add(new ListItem(dt.Rows[i]["code_name"].ToString(), dt.Rows[i]["code_id_d"].ToString()));
+            }
+        }
+        ListItem li = new ListItem("-- SELECT --", "-99");
+        drpTypeofBusiness.Items.Insert(0, li);
+
+
+        Session["TYPEOFBUSINESS_INFO"] = dt;
+    }
+    private bool Validation()
+    {
+        if (drpRegistrationType.SelectedValue == "-99")
+        {
+            msgBox.AddMessage("Please select registration type", MsgBoxs.enmMessageType.Attention);
+            return false;
+        }
+        if (drpBusinessInfo.SelectedValue == "-99")
+        {
+            msgBox.AddMessage("Please select Business Info.", MsgBoxs.enmMessageType.Attention);
+            return false;
+        }
+        if (txtPartyName.Text.Trim().Length < 1)
+        {
+            msgBox.AddMessage("Please type party name", MsgBoxs.enmMessageType.Attention);
+            //msgBox.AddMessage("Please type Customer name", MsgBoxs.enmMessageType.Attention);
+            txtPartyName.Focus();
+            return false;
+        }
+        
+        if (isVendor.Checked==false && isCustomer.Checked==false && isVc.Checked == false)
+        {
+            msgBox.AddMessage("Please Select party type", MsgBoxs.enmMessageType.Attention);
+           
+            return false;
+        }
+        //27-07-2019
+        //if (txtNationalIdNo.Text != "")
+        //{
+        //    if (txtNationalIdNo.Text.Length < 10)
+        //    {
+        //        msgBox.AddMessage("NID no is too short", MsgBoxs.enmMessageType.Attention);
+        //        txtNationalIdNo.Focus();
+        //        return false;
+        //    }
+        //}
+        if (Convert.ToInt16(drpRegistrationType.SelectedValue) == 5 && txtNationalIdNo.Text == "")
+        {
+            msgBox.AddMessage("Please insert national id", MsgBoxs.enmMessageType.Attention);
+            txtNationalIdNo.Focus();
+            return false;
+        }
+        if ((Convert.ToInt16(drpRegistrationType.SelectedValue) == 1 || Convert.ToInt16(drpRegistrationType.SelectedValue) == 4) && txtPartyBIN.Text == "")
+        {
+            msgBox.AddMessage("Please insert Party BIN.", MsgBoxs.enmMessageType.Attention);
+            txtNationalIdNo.Focus();
+            return false;
+        }
+        if (txtPartyBIN.Text!="" && txtPartyBIN.Text.Trim().Length < 13)
+        {
+            msgBox.AddMessage("Party BIN must be 13 digit.", MsgBoxs.enmMessageType.Attention);
+            txtPartyName.Focus();
+            return false;
+        }
+
+
+        //sabbir 27/5/20
+        if (txtPhone.Text.Length > 0)
+        {
+            if (txtPhone.Text.Length != 11)
+            {
+                msgBox.AddMessage("You should insert a valid (11 digit) phone number", MsgBoxs.enmMessageType.Error);
+                txtEmail.Focus();
+                return false;
+            }
+        }
+        //end sabbir 27/5/20
+        if (btnSave.Text == "Save")
+        {
+            DataTable dt = objTsPBLL.getParty();
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    if (txtPartyName.Text == dt.Rows[i]["party_name"].ToString())
+                    {
+                        msgBox.AddMessage("Duplicate Party Name", MsgBoxs.enmMessageType.Attention);
+
+                        return false;
+                    }
+                }
+            }
+        }
+        //sabbir 7/6/20
+        // updated below to add @ and .com validaTION 
+        if (txtEmail.Text.Length != 0)
+        {
+            
+            if (txtEmail.Text.EndsWith(".com") && txtEmail.Text.Contains("@"))
+            {
+                //do nothing
+            }
+
+            else
+            {
+                msgBox.AddMessage("You should insert a valid mail address", MsgBoxs.enmMessageType.Error);
+                txtEmail.Focus();
+                return false;
+            }
+        }
+        //end sabbir 7/6/20
+
+        return true;
+    }
+    private TransPartyDAO insertTransParty(TransPartyDAO objTransPartyDAO)
+    {
+        objTransPartyDAO.OrganizationID = Convert.ToInt32(Session["ORGANIZATION_ID"]);
+        objTransPartyDAO.TransPartyName = Utilities.checkForSingleQuotes(txtPartyName.Text.Trim());
+        objTransPartyDAO.PartyBIN = txtPartyBIN.Text.Trim();
+        objTransPartyDAO.PartyTIN = txtPartyBIN.Text.Trim();
+        objTransPartyDAO.PartAddress = Utilities.checkForSingleQuotes(txtPartyAddress.Text.Trim());
+        objTransPartyDAO.UltimateDesignation = txtUltimateDesignation.Text.Trim();
+        objTransPartyDAO.OwnerName = Utilities.checkForSingleQuotes(txtOwnerName.Text.Trim());
+        objTransPartyDAO.Phone = txtPhone.Text.Trim();
+        objTransPartyDAO.Email = txtEmail.Text.Trim();
+        objTransPartyDAO.WebAddress = txtWeb.Text.Trim();
+        objTransPartyDAO.UserID = Convert.ToInt32(Session["EMPLOYEE_ID"]);
+        objTransPartyDAO.PartyBIN = txtPartyBIN.Text.Trim();
+        objTransPartyDAO.CreditLimit = !string.IsNullOrEmpty(txtcreditlmt.Text.ToString()) ? Convert.ToDecimal(txtcreditlmt.Text) : 0;
+        if (drpVDS.SelectedValue != "-99")
+        {
+            objTransPartyDAO.VDS = Convert.ToInt16(drpVDS.SelectedValue);
+        }
+        else
+        {
+            objTransPartyDAO.VDS = 0;
+        }
+
+        if (chkVDS.Checked == true)
+        {
+            objTransPartyDAO.IsVDS = true;
+        }
+        else
+        {
+            objTransPartyDAO.IsVDS = false;
+        }
+        if (drpRegistrationType.SelectedValue != "-99")
+        {
+            objTransPartyDAO.RegType = Convert.ToInt16(drpRegistrationType.SelectedValue);
+        }
+        else
+        {
+            objTransPartyDAO.RegType = 0;
+        }
+        //mohi uddin 09.07.2019
+        objTransPartyDAO.nationalIdNo = txtNationalIdNo.Text.Trim();
+        if (chkExciseDuty.Checked == true)
+        {
+            objTransPartyDAO.isExciseDuty = true;
+        }
+        else
+        {
+            objTransPartyDAO.isExciseDuty = false;
+        }
+        if (chkDevelopmentSurCharge.Checked == true)
+        {
+            objTransPartyDAO.isDevelopmentSurcharge = true;
+        }
+        else
+        {
+            objTransPartyDAO.isDevelopmentSurcharge = false;
+        }
+        if (chkInformationTechology.Checked == true)
+        {
+            objTransPartyDAO.isInformationTechnology = true;
+        }
+        else
+        {
+            objTransPartyDAO.isInformationTechnology = false;
+        }
+        if (chkHealthSafety.Checked == true)
+        {
+            objTransPartyDAO.isHealthSafety = true;
+        }
+        else
+        {
+            objTransPartyDAO.isHealthSafety = false;
+        }
+        if (chkEnvironmentSafety.Checked == true)
+        {
+            objTransPartyDAO.isEnvironmentSafety = true;
+        }
+        else
+        {
+            objTransPartyDAO.isEnvironmentSafety = false;
+        }
+
+        //29-July-2019 start
+        string economic_process = string.Empty;
+        int a = 0;
+        for (int i = 0; i < chklistTypeofBusiness.Items.Count; i++)
+        {
+            if (chklistTypeofBusiness.Items[i].Selected == true)
+            {
+                if (a == 0)
+                {
+                    economic_process = chklistTypeofBusiness.Items[i].Value.ToString(); //For Selected items Value
+                    a = a + 1;
+                }
+                else
+                {
+                    economic_process = economic_process + "," + chklistTypeofBusiness.Items[i].Value.ToString();
+                }
+
+                //buType = buType + ",";
+
+            }
+        }
+        economic_process = economic_process.Trim();
+        objTransPartyDAO.EconomicProcess = economic_process;
+        objTransPartyDAO.BusinessInfo = Convert.ToInt16(drpBusinessInfo.SelectedValue);
+        if(drpAreaOfMfg.SelectedValue!="")
+        {
+            objTransPartyDAO.AreaOfManufacturing = Convert.ToInt16(drpAreaOfMfg.SelectedValue);
+        }
+        else
+        {
+            //do nothing
+        }
+
+        //29-July-2019 end
+
+
+        //07-Sept-2019 // by Nour
+        if (isVc.Checked)
+        {
+            objTransPartyDAO.IsVendor = true;
+            objTransPartyDAO.IsCustomer = true;
+        } else
+        {
+            objTransPartyDAO.IsVendor = isVendor.Checked ? true : false;
+            objTransPartyDAO.IsCustomer = isCustomer.Checked ? true : false;
+        }
+        //
+
+        return objTransPartyDAO;
+    }
+    private void clearFrom()
+    {
+        txtPartyName.Text = "";
+        txtPartyBIN.Text = "";
+        txtPartyAddress.Text = "";
+        txtPartyAddress.Text = "";
+        txtUltimateDesignation.Text = "";
+        txtOwnerName.Text = "";
+        txtPhone.Text = "";
+        txtEmail.Text = "";
+        txtWeb.Text = "";
+        chkVDS.Checked = false;
+        chkExciseDuty.Checked = false;
+        chkDevelopmentSurCharge.Checked = false;
+        chkInformationTechology.Checked = false;
+        chkHealthSafety.Checked = false;
+        chkEnvironmentSafety.Checked = false;
+        isVendor.Checked = false;
+        isCustomer.Checked = false;
+        isVc.Checked = false;
+        chklistTypeofBusiness.ClearSelection();
+        drpRegistrationType.SelectedValue = "-99";
+        drpVDS.SelectedValue = "0";
+        txtNationalIdNo.Text = "";
+        drpBusinessInfo.SelectedValue = "-99";
+        drpTypeofBusiness.SelectedValue = "-99";
+        txtcreditlmt.Text = "";
+        btnSave.Text = "Save";
+        // setAddMode();
+
+
+    }
+    private void setAddMode()
+    {
+        btnSave.Text = "Save";
+        btnRefresh.Text = "Refresh";
+    }
+    private void loadVDS()
+    {
+        TransPartyBLL objTransParty = new TransPartyBLL();
+        try
+        {
+            int code_id_m = 18;
+            DataTable dt = objTransParty.getVDSData(code_id_m, "");
+            if (dt.Rows.Count > 0)
+            {
+                drpVDS.DataSource = dt;
+                drpVDS.DataTextField = dt.Columns["code_name"].ToString();
+                drpVDS.DataValueField = dt.Columns["code_id_d"].ToString();
+                drpVDS.DataBind();
+
+                ListItem li = new ListItem("--- SELECT ---", "0");
+                drpVDS.Items.Insert(0, li);
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    //28-July-2019
+    //load business information
+    private void loadBusinessInfo()
+    {
+        TransPartyBLL objTransParty = new TransPartyBLL();
+        try
+        {
+            int code_id_m = 24;//24=Owner Type which means business information
+            DataTable dt = objTransParty.getBusinessInfo(code_id_m, "");
+            if (dt.Rows.Count > 0)
+            {
+                drpBusinessInfo.DataSource = dt;
+                drpBusinessInfo.DataTextField = dt.Columns["code_name"].ToString();
+                drpBusinessInfo.DataValueField = dt.Columns["code_id_d"].ToString();
+                drpBusinessInfo.DataBind();
+
+                ListItem li = new ListItem("--- SELECT ---", "-99");
+                drpBusinessInfo.Items.Insert(0, li);
+            }
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    private void loadParty()
+    {
+        TransPartyBLL objTransParty = new TransPartyBLL();
+        ArrayList list = new ArrayList();
+        try
+        {
+            DataTable dt = objTransParty.getAllParty();
+            TransPartyDAO objPartyDAO;
+            if (dt.Rows.Count > 0)
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    objPartyDAO = new TransPartyDAO();
+                    objPartyDAO.RowNo = Convert.ToInt16((i + 1));
+                    objPartyDAO.PartyID = Convert.ToInt32(dt.Rows[i]["party_id"].ToString());
+                    objPartyDAO.TransPartyName = dt.Rows[i]["party_name"].ToString();
+                    objPartyDAO.PartAddress = dt.Rows[i]["party_address"].ToString();
+                    objPartyDAO.PartyBIN = dt.Rows[i]["party_bin"].ToString();
+                    objPartyDAO.OwnerName = dt.Rows[i]["owner_name"].ToString();
+                    objPartyDAO.Phone = dt.Rows[i]["phone"].ToString();
+                    objPartyDAO.IsVDS = Convert.ToBoolean(dt.Rows[i]["is_vds_deduct"]);
+
+                    // 07-Sept-2019 // by Nour
+                    objPartyDAO.IsVendor = Convert.ToBoolean(dt.Rows[i]["is_vendor"]);
+                    objPartyDAO.IsCustomer = Convert.ToBoolean(dt.Rows[i]["is_customer"]);
+                    //
+
+                    objPartyDAO.UltimateDesignation = dt.Rows[i]["ultimate_destination"].ToString();
+                    objPartyDAO.Email = dt.Rows[i]["email"].ToString();
+                    objPartyDAO.WebAddress = dt.Rows[i]["web"].ToString();
+                    objPartyDAO.VDS = Convert.ToInt16(dt.Rows[i]["vds"].ToString());
+                    objPartyDAO.RegType = Convert.ToInt16(dt.Rows[i]["reg_type"].ToString());
+                    list.Add(objPartyDAO);
+                }
+            }
+            Session["PARTY_INFO"] = list;
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+   
+    private void loadGridViewByPartyId(int party_id)
+    {
+        TransPartyBLL objTransParty = new TransPartyBLL();
+        //ArrayList list = (ArrayList)Session["PARTY_INFO"];
+        DataTable dt = objTransParty.getPartyByPartyID(party_id);
+        gvShowParty.DataSource = dt;
+        gvShowParty.DataBind();
+    }
+    private void loadGridView()
+    {
+        TransPartyBLL objTransParty = new TransPartyBLL();
+        //ArrayList list = (ArrayList)Session["PARTY_INFO"];
+        DataTable dt = objTransParty.getAllPartyForGrid();
+        gvShowParty.DataSource = dt;
+        gvShowParty.DataBind();
+    }
+    private void showDataForEdit(TransPartyDAO objPartyDAO)
+    {
+        TransPartyBLL objParty = new TransPartyBLL();
+        if (objPartyDAO != null)
+        {
+            txtPartyName.Text = objPartyDAO.TransPartyName;
+            txtPhone.Text = objPartyDAO.Phone;
+            txtPartyBIN.Text = objPartyDAO.PartyBIN;
+            txtEmail.Text = objPartyDAO.Email;
+            txtUltimateDesignation.Text = objPartyDAO.UltimateDesignation;
+            txtWeb.Text = objPartyDAO.WebAddress;
+            txtOwnerName.Text = objPartyDAO.OwnerName;
+            if (objPartyDAO.IsVDS == true)
+            {
+                chkVDS.Checked = true;
+            }
+            txtPartyAddress.Text = objPartyDAO.PartAddress;
+            lblPartyID.Text = objPartyDAO.PartyID.ToString();
+
+            drpVDS.SelectedValue = objPartyDAO.VDS.ToString();
+            drpRegistrationType.SelectedValue = objPartyDAO.RegType.ToString();
+
+        }
+    }
+    private TransPartyDAO updateTransParty(TransPartyDAO objTransPartyDAO)
+    {
+        objTransPartyDAO.TransPartyName = Utilities.checkForSingleQuotes(txtPartyName.Text.Trim());
+        objTransPartyDAO.PartyBIN = txtPartyBIN.Text.Trim();
+        objTransPartyDAO.PartyTIN = txtPartyBIN.Text.Trim();
+        objTransPartyDAO.PartAddress = Utilities.checkForSingleQuotes(txtPartyAddress.Text.Trim());
+        objTransPartyDAO.UltimateDesignation = Utilities.checkForSingleQuotes(txtUltimateDesignation.Text.Trim());
+        objTransPartyDAO.OwnerName = Utilities.checkForSingleQuotes(txtOwnerName.Text.Trim());
+        objTransPartyDAO.Phone = txtPhone.Text.Trim();
+        objTransPartyDAO.Email = txtEmail.Text.Trim();
+        objTransPartyDAO.WebAddress = txtWeb.Text.Trim();
+        objTransPartyDAO.UserID = Convert.ToInt32(Session["EMPLOYEE_ID"]);
+        objTransPartyDAO.PartyBIN = txtPartyBIN.Text.Trim();
+        if (drpVDS.SelectedValue != "-99")
+        {
+            objTransPartyDAO.VDS = Convert.ToInt16(drpVDS.SelectedValue);
+        }
+        else
+        {
+            objTransPartyDAO.VDS = 0;
+        }
+
+        if (chkVDS.Checked == true)
+        {
+            objTransPartyDAO.IsVDS = true;
+        }
+        else
+        {
+            objTransPartyDAO.IsVDS = false;
+        }
+
+        //10-July-2019
+        if (chkExciseDuty.Checked == true)
+        {
+            objTransPartyDAO.isExciseDuty = true;
+        }
+        else
+        {
+            objTransPartyDAO.isExciseDuty = false;
+        }
+        if (chkDevelopmentSurCharge.Checked == true)
+        {
+            objTransPartyDAO.isDevelopmentSurcharge = true;
+        }
+        else
+        {
+            objTransPartyDAO.isDevelopmentSurcharge = false;
+        }
+        if (chkInformationTechology.Checked == true)
+        {
+            objTransPartyDAO.isInformationTechnology = true;
+        }
+        else
+        {
+            objTransPartyDAO.isInformationTechnology = false;
+        }
+        if (chkHealthSafety.Checked == true)
+        {
+            objTransPartyDAO.isHealthSafety = true;
+        }
+        else
+        {
+            objTransPartyDAO.isHealthSafety = false;
+        }
+        if (chkEnvironmentSafety.Checked == true)
+        {
+            objTransPartyDAO.isEnvironmentSafety = true;
+        }
+        else
+        {
+            objTransPartyDAO.isEnvironmentSafety = false;
+        }
+        //
+
+        if (drpRegistrationType.SelectedValue != "-99")
+        {
+            objTransPartyDAO.RegType = Convert.ToInt16(drpRegistrationType.SelectedValue);
+        }
+        else
+        {
+            objTransPartyDAO.RegType = 0;
+        }
+
+        objTransPartyDAO.PartyID = Convert.ToInt32(lblPartyID.Text.Trim());
+        objTransPartyDAO.nationalIdNo = txtNationalIdNo.Text.Trim();//09-July-2019
+        objTransPartyDAO.CreditLimit =Convert.ToDecimal(txtcreditlmt.Text);
+        //29-July-2019 start
+        string economic_process = string.Empty;
+        int a = 0;
+        for (int i = 0; i < chklistTypeofBusiness.Items.Count; i++)
+        {
+            if (chklistTypeofBusiness.Items[i].Selected == true)
+            {
+                if (a == 0)
+                {
+                    economic_process = chklistTypeofBusiness.Items[i].Value.ToString(); //For Selected items Value
+                    a = a + 1;
+                }
+                else
+                {
+                    economic_process = economic_process + "," + chklistTypeofBusiness.Items[i].Value.ToString();
+                }
+
+                //buType = buType + ",";
+
+            }
+        }
+        economic_process = economic_process.Trim();
+        objTransPartyDAO.EconomicProcess = economic_process;
+        objTransPartyDAO.BusinessInfo = Convert.ToInt16(drpBusinessInfo.SelectedValue);
+
+        //objTransPartyDAO.AreaOfManufacturing = Convert.ToInt16(drpAreaOfMfg.SelectedValue);
+        //08-09-2019 // by Nour
+        objTransPartyDAO.AreaOfManufacturing = drpAreaOfMfg.SelectedValue.ToString().Length > 0 ? Convert.ToInt16(drpAreaOfMfg.SelectedValue) : Convert.ToInt16(0);
+
+        //29-July-2019 end
+
+        //07-Sept-2019 // by Nour
+        if (isVc.Checked)
+        {
+            objTransPartyDAO.IsVendor = true;
+            objTransPartyDAO.IsCustomer = true;
+        }
+        else
+        {
+            objTransPartyDAO.IsVendor = isVendor.Checked ? true : false;
+            objTransPartyDAO.IsCustomer = isCustomer.Checked ? true : false;
+        }
+        //
+
+
+        return objTransPartyDAO;
+    }
+    #endregion
+    protected void btnSearch_Click(object sender, EventArgs e)
+    {
+        int partyId = Convert.ToInt32(drpParty.SelectedValue);
+        loadGridViewByPartyId(partyId);
+    }
+    private void GetPartyInfo()
+    {
+        try
+        {
+            drpParty.Items.Clear();
+            ChallanBLL objBLL = new ChallanBLL();
+            // DataTable ds = objBLL.GetAllPartyInfo();
+            DataTable ds = objBLL.GetAllPartyInfo();
+            if (ds != null && ds.Rows.Count > 0)
+            {
+                // drpParty.ClearSelection();
+                drpParty.DataSource = ds;
+                drpParty.DataTextField = ds.Columns["party_name"].ToString();
+                drpParty.DataValueField = ds.Columns["party_id"].ToString();
+                drpParty.DataBind();
+            }
+
+            ListItem li = new ListItem("-- SELECT --", "-99");
+            drpParty.Items.Insert(0, li);
+
+            Session["PARTY_INFO"] = ds;
+        }
+        catch (Exception ex)
+        {
+            Utility.InsertErrorTrack(ex.Message, "SaleChallan_11.aspx", "GetPartyInfo");
+        }
+
+    }
+    protected void btnExcelSave_Click(object sender, EventArgs e)
+    {
+         try
+         {
+            btnExcelSave.Visible = false;
+            ArrayList list = new ArrayList();
+            list = (ArrayList)Session["PARTY_LIST"];
+            Session.Remove("PARTY_LIST");
+            if (list == null || list.Count == 0)
+            {
+                gvExcelFile.DataSource = null;
+                gvExcelFile.DataBind();
+                msgBox.AddMessage("Please Upload Excel with valid DATA set.", MsgBoxs.enmMessageType.Error);
+                return;
+            }
+            if (btnExcelSave.Text == "Save")
+            {
+                int i = 1;
+                foreach (TransPartyDAO objItemDao in list)
+                {
+                    bool result = objTsPBLL.insertTransParty(objItemDao);
+                    if (result)
+                    {
+                        msgBox.AddMessage(i + ". Party information " + AllConstraint.strSaveSuccessMessage, MsgBoxs.enmMessageType.Success);
+                    }
+                    else
+                    {
+                        msgBox.AddMessage(i + ". " + AllConstraint.strSaveFailMessage, MsgBoxs.enmMessageType.Error);
+                    }
+                }
+            }
+            gvExcelFile.DataSource = null;
+            gvExcelFile.DataBind();
+        }
+        catch (Exception ex)
+        {
+            //ReallySimpleLog.WriteLog(ex);
+            Utility.InsertErrorTrack(ex.Message, "Add_trans_Party", "btnExcelSave_Click");
+        }
+    }
+
+    private void clearExcelData()
+    {
+        gvExcelFile.DataSource = null;
+        gvExcelFile.DataBind();
+    }
+ protected void gvExcelFile_OnRowDataBound(object sender, GridViewRowEventArgs e)
+{
+        #region Hide Cells
+        e.Row.Cells[0].Visible = false;
+        #endregion
+        TableCell cell;
+        HiddenField hidd;
+        int id = 0;
+        string symbol = "";
+
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            #region value check if valid or not
+            hidd = e.Row.FindControl("rowNo") as HiddenField;
+            Dictionary<string, bool> validations = (Dictionary<string, bool>)validationList[Convert.ToInt32(hidd.Value)];
+            foreach (string hName in tableNameList)
+            {
+                int index = tableNameList.IndexOf(hName);
+                cell = e.Row.Cells[index + 1];
+                if (validations[objectPropertyNameList[index].ToString()])
+                {
+                    if (status == 1)
+                    {
+                        if (objectPropertyNameList[index].ToString().Trim() != "EconomicProcess")
+                        {
+                            status = 0;
+                        }
+                    }
+                    cell.BackColor = System.Drawing.Color.Crimson;
+                }
+                else if (objectPropertyNameList[index].ToString() == "TransPartyName")
+                {
+                    if (partyNameList[cell.Text.Trim()] == true)
+                    {
+                        if (status == 1)
+                        {
+                            status = 0;
+                        }
+                        cell.BackColor = System.Drawing.Color.Crimson;
+                    }
+                }
+            }
+            btnExcelSave.Visible = Convert.ToBoolean(status);
+            #endregion
+        }
+    }
+    protected void drpRegistrationType_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+        if (drpRegistrationType.SelectedValue == "1" || drpRegistrationType.SelectedValue == "4")
+        {
+            makeC2SectionRequired(true);
+            makeC1SectionRequired(false);
+        }
+
+        else
+        {
+            makeC2SectionRequired(false);
+            makeC1SectionRequired(true);
+
+        }
+        //else
+        //{
+        //    makeC2SectionRequired(false);
+        //    makeC1SectionRequired(false);
+        //}
+
+    }
+    protected void makeC2SectionRequired(bool required)
+    {
+        // this function added by nour on 8th Oct, 2019
+
+        if (required)
+        {
+            labelpartyBIN.CssClass = "control-label col-sm-5 rqrd";
+            //txtrjscno.Attributes.Add("required", "");
+            //lblTxtrjscdate.CssClass = "control-label col-sm-5 rqrd";
+            //txtrjscdate.Attributes.Add("required", "");
+        }
+        else
+        {
+            labelpartyBIN.CssClass = "control-label col-sm-5";
+            //txtrjscno.Attributes.Remove("required");
+            //lblTxtrjscdate.CssClass = "control-label col-sm-5";
+            //txtrjscdate.Attributes.Remove("required");
+        }
+    }
+    protected void makeC1SectionRequired(bool required)
+    {
+        // this function added by nour on 8th Oct, 2019
+
+        if (required)
+        {
+            lblNID.CssClass = "control-label col-sm-5 rqrd";
+            //txtrjscno.Attributes.Add("required", "");
+            //lblTxtrjscdate.CssClass = "control-label col-sm-5 rqrd";
+            //txtrjscdate.Attributes.Add("required", "");
+        }
+        else
+        {
+            lblNID.CssClass = "control-label col-sm-5";
+            //txtrjscno.Attributes.Remove("required");
+            //lblTxtrjscdate.CssClass = "control-label col-sm-5";
+            //txtrjscdate.Attributes.Remove("required");
+        }
+    }
+}

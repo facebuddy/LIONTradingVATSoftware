@@ -1,0 +1,458 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.OleDb;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using Excel = Microsoft.Office.Interop.Excel;
+
+public partial class UI_Item_importItemFromExcel : System.Web.UI.Page
+{
+    public ItemBLL bll = new ItemBLL();
+    public AddItemBLL objAddItemsBll = new AddItemBLL();
+    public Dictionary<string, bool> itemNameList = new Dictionary<string, bool>();
+    public ArrayList detailsList = new ArrayList();
+    public ArrayList headerList = new ArrayList();
+    public ArrayList headerNames = new ArrayList();
+    public bool status = true;
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        btnExcelSave.Visible = false;
+		Utilities.KillExcelFileProcess();
+    }
+    //save excel data
+    protected void btnExcelSave_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            int organizationId = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
+            Label29.Text = "";
+            detailsList = (ArrayList)Session["ITEM_DETAIL_LIST"];
+            if (detailsList == null || detailsList.Count == 0)
+            {
+                gvExcelFile.DataSource = null;
+                gvExcelFile.DataBind();
+                msgBox.AddMessage("Please Upload Excel with valid DATA set.", MsgBoxs.enmMessageType.Error);
+                return;
+            }
+            if (btnExcelSave.Text == "Save")
+            {
+                foreach (SetItemDAO objItemDao in detailsList)
+                {
+                    #region create / get parent category
+                    objItemDao.ParentID = bll.getParentID(objItemDao.Category);
+                    if (objItemDao.ParentID == 0)
+                    {
+                        SetItemCategoryDAO objCategoryDAO = new SetItemCategoryDAO();
+                        objCategoryDAO.CategoryName = Utilities.ReplaceQuotes(objItemDao.Category.Trim());
+                        objCategoryDAO.Description = Utilities.ReplaceQuotes(objItemDao.Category.Trim());
+                        objCategoryDAO.CategoryLevel = AllConstraint.categoryLevel;
+                        objCategoryDAO.Organization_id = organizationId;
+                        objCategoryDAO.UserIdInsert = 1;
+                        bool result = objAddItemsBll.InsertItemCategory(objCategoryDAO);
+                        if (result)
+                        {
+                            objItemDao.ParentID = bll.getParentID(objItemDao.Category);
+                        }
+
+                    }
+                    #endregion
+                    #region create / edit sub category
+                    objItemDao.CategoryID = bll.getCategoryID(objItemDao.Sub_category);
+                    if (objItemDao.CategoryID == 0)
+                    {
+                        SetItemCategoryDAO objSubCategoryDAO = new SetItemCategoryDAO();
+                        objSubCategoryDAO.CategoryName = Utilities.ReplaceQuotes(objItemDao.Sub_category.Trim());
+                        objSubCategoryDAO.Description = Utilities.ReplaceQuotes(objItemDao.Sub_category.Trim());
+                        objSubCategoryDAO.Organization_id = organizationId;
+                        objSubCategoryDAO.UserIdInsert = 1; // Utility.GetLoggedUserID();
+                        objSubCategoryDAO.CategoryLevel = AllConstraint.subCategoryLevel;
+                        objSubCategoryDAO.ParentID = objItemDao.ParentID;
+                        int subCatId = objAddItemsBll.InsertItemSubCategory(objSubCategoryDAO);
+                        if (subCatId > 0)
+                        {
+                            objItemDao.CategoryID = subCatId;
+                        }
+                    }
+                    #endregion
+                    int itemId = objAddItemsBll.InsertItem(objItemDao);
+                    if (itemId > 0)
+                    {
+                        msgBox.AddMessage("Item information " + AllConstraint.strSaveSuccessMessage, MsgBoxs.enmMessageType.Success);
+                    }
+                    else
+                    {
+                        msgBox.AddMessage(AllConstraint.strSaveFailMessage, MsgBoxs.enmMessageType.Error);
+                    }
+                }
+            }
+            gvExcelFile.DataSource = null;
+            gvExcelFile.DataBind();
+        }
+        catch (Exception ex)
+        {
+            ReallySimpleLog.WriteLog(ex);
+        }
+    }
+    // on button upload click calls function and uploads excel in CSV dir and extracts excel file data for gridView
+    // on button upload click calls function and uploads excel in CSV dir and extracts excel file data for gridView
+    protected void btnUpload_Click(object sender, EventArgs e)
+    {
+        //reset gridView
+        headerList = new ArrayList();
+        headerNames = new ArrayList();
+        detailsList = new ArrayList();
+        itemNameList = new Dictionary<string, bool>();
+        gvExcelFile.DataSource = null;
+        gvExcelFile.DataBind();
+        //declare all variables here
+        string column = "";
+        DataTable dt = new DataTable();
+        DataTable ds = new DataTable();
+        string sheetName = "ItemList";
+        //        ChildControlsCreated excel object
+        #region static fields
+        Dictionary<char, string> productType = new Dictionary<char, string>() {
+            { 'R', "Raw Material"},
+            { 'F', "Goods"},
+            { 'P', "Finished Product"},
+            { 'C', "Finished Product(Production)" },
+            { 'W', "Real - estate Property"},
+            { 'M', "Medicine"}
+        };
+        Dictionary<char, string> serviceType = new Dictionary<char, string>() {
+            { 'F', "Service"},
+            { 'C', "Service (Finished Production)"},
+            { 'R', "Service (Raw Material)"}
+        };
+        #endregion
+
+        #region Upload excel
+        string ext = Path.GetExtension(FileUpload1.FileName).ToLower();
+        if (!string.IsNullOrEmpty(ext))
+        {
+            string path = Server.MapPath(Path.Combine("~/CSV/itemImport_"+ (DateTime.Now.ToString("ddMMyyyy_HHmmssFFF")) + ext));
+            FileUpload1.SaveAs(path);
+            Label29.Text = FileUpload1.FileName + "\'s Data showing into the GridView";
+           
+            try
+            {
+                Excel.Application oExcel = new Excel.Application();
+                //blank worksheet objects
+                Excel.Workbook WB = null;
+                Excel.Worksheet wks = null;
+                #region get worksheet
+                //accessing excel file with oExcel object
+                WB = oExcel.Workbooks.Open(path);
+                //get exact worksheet from list of worksheets
+                foreach (Excel.Worksheet wSheet in WB.Worksheets)
+                {
+                    if (sheetName.ToUpper().Equals(wSheet.Name.ToUpper()))
+                    {
+                        wks = wSheet;
+                    }
+                }
+                #endregion
+                #region get column headers
+                //getting range object and number of rows and columns respectively
+                int rowCount = wks.UsedRange.Rows.Count;
+                int colCount = wks.UsedRange.Columns.Count;
+                SetItemDAO objDetailDAO = new SetItemDAO();
+                for (int j = 1; j <= colCount; j++)
+                {
+                    column = ((Excel.Range)wks.Cells[1, j]).Value.ToString();
+                    string colName = ((Excel.Range)wks.Cells[2, j]).Value.ToString();
+                    if (objDetailDAO.GetType().GetProperty(column) != null)
+                    {
+                        headerList.Add(column);
+                        headerNames.Add(colName);
+
+                        /*BoundField bfield = new BoundField();
+                        bfield.HeaderText = column;
+                        bfield.DataField = column;
+                        gvExcelFile.Columns.Add(bfield);*/
+                        BoundField bfield = new BoundField();
+                        bfield.HeaderText = colName;
+                        bfield.DataField = column;
+                        gvExcelFile.Columns.Add(bfield);
+                    }
+                }
+                Session["COL"] = headerList;
+                #endregion
+                #region get dataList
+                for (int i = 3; i < rowCount; i++)
+                {
+                    objDetailDAO = new SetItemDAO();
+                    if (((Excel.Range)wks.Cells[i, headerList.IndexOf("ItemName") + 1]).Value != null)
+                    {
+                        var temp = ((Excel.Range) wks.Cells);
+                        objDetailDAO.ItemName = ((Excel.Range)wks.Cells[i, headerList.IndexOf("ItemName") + 1]).Value.ToString();
+                        objDetailDAO.IsAllBssUnt = true;
+                    }
+                    if (!string.IsNullOrEmpty(objDetailDAO.ItemName))
+                    {
+                        foreach (string col in headerList)
+                        {
+                            string propertyType = objDetailDAO.GetType().GetProperty(col).PropertyType.Name;
+                            if (propertyType == "Boolean")
+                            {
+                                objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, Convert.ToBoolean(((Excel.Range)wks.Cells[i, headerList.IndexOf(col) + 1]).Value), null);
+                            }
+                            else if (propertyType == "Int16")
+                            {
+                                objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, Convert.ToInt16(((Excel.Range)wks.Cells[i, headerList.IndexOf(col) + 1]).Value), null);
+                            }
+                            else if (propertyType == "Double")
+                            {
+                                objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, Convert.ToDouble(((Excel.Range)wks.Cells[i, headerList.IndexOf(col) + 1]).Value), null);
+                            }
+                            else
+                            {
+                                if (((Excel.Range)wks.Cells[i, headerList.IndexOf(col) + 1]).Value != null)
+                                {
+                                    objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, ((Excel.Range)wks.Cells[i, headerList.IndexOf(col) + 1]).Value.ToString().Trim(), null);
+                                }
+                                else
+                                {
+                                    objDetailDAO.GetType().GetProperty(col).SetValue(objDetailDAO, "", null);
+                                }
+                                if (col == "ItemName")
+                                {
+                                    bool state = false;
+                                    objDetailDAO.ItemName = objDetailDAO.ItemName.Trim().ToUpper();
+                                    objDetailDAO.ItemID = bll.getItemID(objDetailDAO.ItemName);
+                                    if (itemNameList.TryGetValue(objDetailDAO.ItemName, out state))
+                                    {
+                                        //name already exists
+                                        itemNameList[objDetailDAO.ItemName] = true;
+                                    }
+                                    else
+                                    {
+                                        //name addeed 
+                                        itemNameList.Add(objDetailDAO.ItemName, false);
+                                    }
+                                }
+                                if (col == "Unit")
+                                {
+                                    objDetailDAO.Unit = objDetailDAO.Unit.ToUpper();
+                                    objDetailDAO.UnitID = bll.getUnitIDByName(objDetailDAO.Unit);
+                                    Int16 uid2 = bll.getUnitID(objDetailDAO.Unit);
+                                    if (objDetailDAO.UnitID < uid2)
+                                    {
+                                        objDetailDAO.UnitID = uid2;
+                                    }
+                                }
+                                if (col == "Category")
+                                {
+                                    objDetailDAO.ParentID = bll.getParentID(objDetailDAO.Category);
+                                }
+                                if (col == "Sub_category")
+                                {
+                                    objDetailDAO.CategoryID = bll.getCategoryID(objDetailDAO.Sub_category);
+                                }
+                                if (col == "Measurement_type")
+                                {
+                                    objDetailDAO.Measurement_type = objDetailDAO.Measurement_type.ToUpper();
+                                    objDetailDAO.MesurementIDD = bll.getMesurementIDD(objDetailDAO.Measurement_type);
+                                }
+                                if (col == "Item_type")
+                                {
+                                    objDetailDAO.Item_type = objDetailDAO.Item_type.Trim().ToUpper();
+                                    if (objDetailDAO.Item_type.ToUpper() == "ITEM")
+                                    {
+                                        objDetailDAO.ItemType = 'I';
+                                    }
+                                    else if (objDetailDAO.Item_type.ToUpper() == "SERVICE")
+                                    {
+                                        objDetailDAO.ItemType = 'S';
+                                    }
+                                    else if (objDetailDAO.Item_type.ToUpper() == "UTILITY")
+                                    {
+                                        objDetailDAO.ItemType = 'U';
+                                    }
+                                }
+                                if (col == "Product_type")
+                                {
+                                    objDetailDAO.Product_type = objDetailDAO.Product_type.Trim().ToUpper();
+                                    if (objDetailDAO.ItemType == 'I')
+                                    {
+                                        objDetailDAO.ProductType = productType.FirstOrDefault(x => x.Value.Trim().ToUpper() == objDetailDAO.Product_type).Key;
+                                    }
+                                    else if (objDetailDAO.ItemType == 'S')
+                                    {
+                                        objDetailDAO.ProductType = serviceType.FirstOrDefault(x => x.Value.Trim().ToUpper() == objDetailDAO.Product_type).Key;
+                                    }
+                                    else if (objDetailDAO.ItemType == 'U')
+                                    {
+                                        objDetailDAO.ProductType = 'R';
+                                    }
+                                }
+                            }
+                        }
+                        objDetailDAO.MesurementIDM = AllConstraint.measurementTypeMasterId;
+                        objDetailDAO.UserIdInsert = Convert.ToInt16(Session["employee_id"]);
+
+                        // start // added by nour on 16th January, 2020 // generate hscode and put organization_id
+                        if (!string.IsNullOrWhiteSpace(objDetailDAO.HsHeading) && !string.IsNullOrWhiteSpace(objDetailDAO.HsSuffix))
+                        {
+                            objDetailDAO.HsCode = objDetailDAO.HsHeading + objDetailDAO.HsSuffix;
+                        }
+                        objDetailDAO.Organization_id = Convert.ToInt16(Session["ORGANIZATION_ID"]);
+                        // end // added by nour on 16th January, 2020 // generate hscode and put organization_id
+
+                        detailsList.Add(objDetailDAO);
+                    }
+                }
+
+
+                #endregion
+
+                // set item to gridView
+                gvExcelFile.DataSource = detailsList;
+                gvExcelFile.DataBind();
+                WB.Close();
+                oExcel.Quit();
+                Utilities.KillExcelFileProcess();
+            }
+            catch (Exception exception)
+            {
+                Utilities.KillExcelFileProcess();
+                //msgBox.AddMessage("Error Occured While Reading Excel File. Check if data missing or file corruption.",
+                //    MsgBoxs.enmMessageType.Attention);
+                Console.WriteLine(exception.Message);
+                return;
+            }
+            #region destroy all unnecessary excel related objects
+            finally
+            {
+                //Marshal.ReleaseComObject(wks);
+                //WB.Close();
+                //Marshal.ReleaseComObject(WB);
+                //oExcel.Quit();
+                //Marshal.ReleaseComObject(oExcel);
+            }
+            #endregion
+        }
+        else
+        {
+            Utilities.KillExcelFileProcess();
+            msgBox.AddMessage(" File Path not Found! Please Browse Your File. ", MsgBoxs.enmMessageType.Attention);
+            return;
+        }
+        #endregion
+        ////set all item details in session
+        Session["ITEM_DETAIL_LIST"] = detailsList;
+        Utilities.KillExcelFileProcess();
+    }
+
+    //test the inputs validity before showing the gridView
+    protected void gvExcelFile_OnRowDataBound(object sender, GridViewRowEventArgs e)
+    {
+        #region Hide Cells
+        e.Row.Cells[0].Visible = false;
+        e.Row.Cells[1].Visible = false;
+        e.Row.Cells[2].Visible = false;
+        e.Row.Cells[3].Visible = false;
+        e.Row.Cells[4].Visible = false;
+        e.Row.Cells[5].Visible = false;
+        e.Row.Cells[6].Visible = false;
+        #endregion
+        TableCell cell;
+        HiddenField hidd;
+        int id = 0;
+        string symbol = "";
+
+        if (e.Row.RowType == DataControlRowType.DataRow)
+        {
+            #region item
+            cell = e.Row.Cells[GetColumnIndexByName(gvExcelFile, "ItemName")];
+            hidd = e.Row.FindControl("itemID") as HiddenField;
+            id = Convert.ToInt32(hidd.Value);
+            //if (id > 0 || itemNameList[cell.Text.Trim()] == true) // commented by nour
+            if (id > 0) // modified by nour
+            {
+                status = false;
+                cell.BackColor = System.Drawing.Color.Crimson;
+            }
+            #endregion
+            #region category
+            cell = e.Row.Cells[GetColumnIndexByName(gvExcelFile, "Category")];
+            hidd = e.Row.FindControl("ParentID") as HiddenField;
+            id = Convert.ToInt32(hidd.Value);
+            if (id == 0)
+            {
+                cell.BackColor = System.Drawing.Color.LimeGreen;
+            }
+            #endregion
+            #region sub category
+            cell = e.Row.Cells[GetColumnIndexByName(gvExcelFile, "Sub_category")];
+            hidd = e.Row.FindControl("CategoryID") as HiddenField;
+            id = Convert.ToInt32(hidd.Value);
+            if (id == 0)
+            {
+                cell.BackColor = System.Drawing.Color.LimeGreen;
+            }
+            #endregion
+            #region Measurement type
+            cell = e.Row.Cells[GetColumnIndexByName(gvExcelFile, "Measurement_type")];
+            hidd = e.Row.FindControl("MesurementIDD") as HiddenField;
+            id = Convert.ToInt32(hidd.Value);
+            if (id == 0)
+            {
+                status = false;
+                cell.BackColor = System.Drawing.Color.Crimson;
+            }
+            #endregion
+            #region Unit
+            cell = e.Row.Cells[GetColumnIndexByName(gvExcelFile, "Unit")];
+            hidd = e.Row.FindControl("UnitID") as HiddenField;
+            id = Convert.ToInt32(hidd.Value);
+            if (id == 0)
+            {
+                status = false;
+                cell.BackColor = System.Drawing.Color.Crimson;
+            }
+            #endregion
+            #region item type
+            cell = e.Row.Cells[GetColumnIndexByName(gvExcelFile, "Item_type")];
+            hidd = e.Row.FindControl("ItemType") as HiddenField;
+            symbol = hidd.Value.ToString();
+            if (symbol == "\0")
+            {
+                status = false;
+                cell.BackColor = System.Drawing.Color.Crimson;
+            }
+            #endregion
+            #region product type
+            cell = e.Row.Cells[GetColumnIndexByName(gvExcelFile, "Product_type")];
+            hidd = e.Row.FindControl("ProductType") as HiddenField;
+            symbol = hidd.Value.ToString();
+            if (symbol == "\0")
+            {
+                status = false;
+                cell.BackColor = System.Drawing.Color.Crimson;
+            }
+            #endregion
+        }
+        btnExcelSave.Visible = status;
+    }
+
+    //get column index by the column name from gridView
+    private int GetColumnIndexByName(GridView grid, string name)
+    {
+        foreach (DataControlField col in grid.Columns)
+        {
+            if (col.HeaderText.ToLower().Trim() == name.ToLower().Trim())
+            {
+                return grid.Columns.IndexOf(col);
+            }
+        }
+
+        return -1;
+    }
+}

@@ -1,0 +1,744 @@
+﻿{
+  "Tax_Payer_Information": {
+    "BN": "অংশ-১: করদাতার তথ্য",
+    "EN": "Part 1: TAXPAYER'S INFORMATION"
+  },
+
+  "People_republic_half1": {
+    "BN": "গণপ্রজাতন্ত্রী বাংলাদেশ সরকার",
+    "EN": "GOVERNMENT OF THE PEOPLE'S REPUBLIC"
+  },
+  "People_republic_half2": {
+    "BN": "",
+    "EN": "OF BANGLADESH"
+  },
+  "national_revenue_board": {
+    "BN": "জাতীয় রাজস্ব বোর্ড",
+    "EN": "NATIONAL BOARD OF REVENUE"
+  },
+  "Value_added_tax": {
+    "BN": " মূল্য সংযোজন কর দাখিলপত্র",
+    "EN": "VALUE ADDED TAX RETURN FORM"
+  },
+  "rule_47_sub_rule_1": {
+    "BN": "[বিধি ৪৭ এর উপ-বিধি (১) দ্রষ্টব্য]",
+    "EN": "[ See Rule 47(1) ]"
+  },
+  "Buisness_E_Bin": {
+    "BN": "(১) ব্যবসায় সনাক্তকরণ সংখ্যা (ই-বিন)",
+    "EN": " (1) BIN "
+  },
+  "Import": {
+    "BN": "আমদানি",
+    "EN": " Import"
+  },
+  "Tax_payer_Name": {
+    "BN": "(২) করদাতার নাম",
+    "EN": "(2) Name Of Taxpayer"
+  },
+  "Tax_payer_address": {
+    "BN": "(৩) করদাতার ঠিকানা",
+    "EN": "(3) Address Of Taxpayer"
+  },
+  "Type_Of_Ownership": {
+    "BN": "(৪) মালিকানার প্রকৃতি",
+    "EN": "(4) Type Of Ownership"
+  },
+  "Economic_Activity": {
+    "BN": "(৫) অর্থনৈতিক কাযক্রম এর প্রকৃতি",
+    "EN": "(5) Economic Activity"
+  },
+  "Return_submission_data": {
+    "BN": "অংশ-২: দাখিলপত্র জমার তথ্য",
+    "EN": "Part-2: RETURN SUBMISSION DATA"
+  },
+  "Tax_period": {
+    "BN": "(১) কর মেয়াদ",
+    "EN": "(1) Tax Period"
+  },
+  "Type_of_Return": {
+    "BN": "(২) দাখিলপত্রের প্রকার [অনুগ্রহ করিয়া প্রযোজ্যটিতে টিক দিন]",
+    "EN": "(2) Type of Return [Please select your desired option]"
+  },
+  "please_select_your_desired_option": {
+    "BN": "[অনুগ্রহ করিয়া প্রযোজ্যটিতে টিক দিন]",
+    "EN": "[Please select your desired option]"
+  },
+  "Original_return_sec_64": {
+    "BN": "(ক) মূল্য দাখিলপত্র (ধারা-৬৪)  ",
+    "EN": "(A) Original Return (Section 64)"
+  },
+  "Late_return_65": {
+    "BN": "(খ) দেরীতে প্রদত্ত দাখিলপত্র (ধারা-৬৫)",
+    "EN": "(B) Late Return (Section 65)"
+  },
+  "Amended_return_66": {
+    "BN": "(গ) সংশোধিত দাখিলপত্র (ধারা-৬৬) ",
+    "EN": "(C) Amended Return (Section 66)"
+  },
+  "F_or_A_67": {
+    "BN": "(ঘ) পূর্ণ,অতিরিক্ত বা বিকল্প দাখিলপত্র (ধারা-৬৭)",
+    "EN": "(D) Full or Additional or Alternative Return (Section 67)"
+  },
+  "Q_any_act_in_tax": {
+    "BN": "(৩) বিগত করমেয়াদে কোনো কার্যক্রম সম্পাদিত হইয়াছে কি?",
+    "EN": "(3) Any activities in this Tax Period?"
+  },
+  "No_1_2_12": {
+    "BN": "[যদি না হয় তাহা হইলে অংশ ১,২ এবং ১২ পূরণ করুন]",
+    "EN": "[If Selected 'No' Please Fill part 1,2 and 12]"
+  },
+  "Yes": {
+    "BN": "হ্যাঁ",
+    "EN": "Yes"
+  },
+  "No": {
+    "BN": "না",
+    "EN": "No"
+  },
+  "Submission_date": {
+    "BN": "(৪) পেশের তারিখ",
+    "EN": "(4)Date of Submission"
+  },
+  "supply_out_put_tax": {
+    "BN": "অংশ-৩: সরবরাহ প্রদান-প্রদেয় কর",
+    "EN": "Part-3: SUPPLY - OUTPUT TAX"
+  },
+  "Nature_of_supply": {
+    "BN": "সরবরাহের প্রকৃতি",
+    "EN": "Nature of supply"
+  },
+  "Note": {
+    "BN": "নোট",
+    "EN": "Note"
+  },
+  "Value_a": {
+    "BN": "মূল্য (ক)",
+    "EN": "Value (a)"
+  },
+  "Sd_kha": {
+    "BN": "এসডি (খ)",
+    "EN": " SD (b)"
+  },
+  "Vat_gha": {
+    "BN": "মূসক (গ)",
+    "EN": " VAT(c)"
+  },
+  "1": {
+    "BN": "১",
+    "EN": "1"
+  },
+  "2": {
+    "BN": "২",
+    "EN": "2"
+  },
+  "3": {
+    "BN": "৩",
+    "EN": "3"
+  },
+  "4": {
+    "BN": "৪",
+    "EN": "4"
+  },
+  "5": {
+    "BN": "৫",
+    "EN": "5"
+  },
+  "6": {
+    "BN": "৬",
+    "EN": "6"
+  },
+  "7": {
+    "BN": "৭",
+    "EN": "7"
+  },
+  "8": {
+    "BN": "৮",
+    "EN": "8"
+  },
+  "9": {
+    "BN": "৯",
+    "EN": "9"
+  },
+  "10": {
+    "BN": "১০",
+    "EN": "10"
+  },
+  "11": {
+    "BN": "১১",
+    "EN": "11"
+  },
+  "12": {
+    "BN": "",
+    "EN": "12"
+  },
+  "13": {
+    "BN": "১৩",
+    "EN": "13"
+  },
+  "14": {
+    "BN": "১৪",
+    "EN": "14"
+  },
+  "15": {
+    "BN": "১৫",
+    "EN": "15"
+  },
+  "16": {
+    "BN": "১৬",
+    "EN": "16"
+  },
+  "17": {
+    "BN": "১৭",
+    "EN": "17"
+  },
+  "18": {
+    "BN": "১৮",
+    "EN": "18"
+  },
+  "19": {
+    "BN": "১৯",
+    "EN": "19"
+  },
+  "20": {
+    "BN": "২০",
+    "EN": "20"
+  },
+  "21": {
+    "BN": "২১",
+    "EN": "21"
+  },
+  "22": {
+    "BN": "২২",
+    "EN": "22"
+  },
+  "23": {
+    "BN": "২৩",
+    "EN": "23"
+  },
+  "24": {
+    "BN": "২৪",
+    "EN": "24"
+  },
+  "25": {
+    "BN": "২৫",
+    "EN": "25"
+  },
+  "26": {
+    "BN": "২৬",
+    "EN": "26"
+  },
+  "27": {
+    "BN": "২৭",
+    "EN": "27"
+  },
+  "28": {
+    "BN": "২৮",
+    "EN": "28"
+  },
+  "29": {
+    "BN": "২৯",
+    "EN": "29"
+  },
+  "30": {
+    "BN": "৩০",
+    "EN": "30"
+  },
+  "31": {
+    "BN": "৩১",
+    "EN": "30"
+  },
+  "32": {
+    "BN": "৩২",
+    "EN": "32"
+  },
+  "33": {
+    "BN": "৩৩",
+    "EN": "33"
+  },
+  "34": {
+    "BN": "৩৪",
+    "EN": "34"
+  },
+  "35": {
+    "BN": "৩৫",
+    "EN": "35"
+  },
+  "36": {
+    "BN": "৩৬",
+    "EN": "36"
+  },
+  "37": {
+    "BN": "৩৭",
+    "EN": "37"
+  },
+  "38": {
+    "BN": "৩৮",
+    "EN": "38"
+  },
+  "39": {
+    "BN": "৩৯",
+    "EN": "39"
+  },
+  "40": {
+    "BN": "৪০",
+    "EN": "40"
+  },
+  "41": {
+    "BN": "৪১",
+    "EN": "41"
+  },
+  "42": {
+    "BN": "৪২",
+    "EN": "42"
+  },
+  "43": {
+    "BN": "৪৩",
+    "EN": "43"
+  },
+  "44": {
+    "BN": "৪৪",
+    "EN": "44"
+  },
+  "45": {
+    "BN": "৪৫",
+    "EN": "45"
+  },
+  "46": {
+    "BN": "৪৬",
+    "EN": "46"
+  },
+  "47": {
+    "BN": "৪৭",
+    "EN": "47"
+  },
+  "48": {
+    "BN": "৪৮",
+    "EN": "48"
+  },
+  "49": {
+    "BN": "৪৯",
+    "EN": "49"
+  },
+  "50": {
+    "BN": "৫০",
+    "EN": "50"
+  },
+  "51": {
+    "BN": "৫১",
+    "EN": "51"
+  },
+  "52": {
+    "BN": "৫২",
+    "EN": "52"
+  },
+  "53": {
+    "BN": "৫৩",
+    "EN": "53"
+  },
+  "54": {
+    "BN": "৫৪",
+    "EN": "54"
+  },
+  "55": {
+    "BN": "৫৫",
+    "EN": "55"
+  },
+  "56": {
+    "BN": "৫৬",
+    "EN": "56"
+  },
+  "57": {
+    "BN": "৫৭",
+    "EN": "57"
+  },
+  "58": {
+    "BN": "৫৮",
+    "EN": "58"
+  },
+  "59": {
+    "BN": "৫৯",
+    "EN": "59"
+  },
+  "60": {
+    "BN": "৬০",
+    "EN": "60"
+  },
+  "61": {
+    "BN": "৬১",
+    "EN": "61"
+  },
+  "62": {
+    "BN": "৬২",
+    "EN": "62"
+  },
+  "63": {
+    "BN": "৬৩",
+    "EN": "63"
+  },
+  "64": {
+    "BN": "৬৪",
+    "EN": "64"
+  },
+  "65": {
+    "BN": "৬৫",
+    "EN": "65"
+  },
+  "66": {
+    "BN": "৬৬",
+    "EN": "66"
+  },
+  "67": {
+    "BN": "৬৭",
+    "EN": "67"
+  },
+  "68": {
+    "BN": "৬৮",
+    "EN": "68"
+  },
+  "Subform_text": {
+    "BN": "সাবফর্ম",
+    "EN": "Sub-form"
+  },
+  "Direct_export": {
+    "BN": "সরাসরি রপ্তানি",
+    "EN": "Direct Export"
+  },
+  "Deemed_export": {
+    "BN": "প্রচ্ছন্ন রপ্তানি",
+    "EN": "Deemed Export"
+  },
+  "Zero_rated": {
+    "BN": "শূন্যহার বিশিষ্ট পণ্য/সেবা",
+    "EN": "Zero Rated Goods/Service"
+  },
+  "Ex_GoodsOrService": {
+    "BN": "অব্যাহতিপ্রাপ্ত পণ্য/সেবা",
+    "EN": "Exempted Goods/Service"
+  },
+  "st_rated_goodsOrService": {
+    "BN": "আদর্শ হারের পণ্য/সেবা",
+    "EN": "Standard  Rated Goods/Service"
+  },
+  "Goods_mrp": {
+    "BN": "সর্বোচ্চ খুচরা মূল্যভিত্তিক পণ্য",
+    "EN": "Goods Based on MRP"
+  },
+  "Specefic_vat_goodsOrServices": {
+    "BN": "সুনির্দিষ্ট কর ভিত্তিক পণ্য/সেবা",
+    "EN": "Goods/Service Based On Specific VAT"
+  },
+  "standard_rate_GoodsOrService": {
+    "BN": "আদর্শ করহার ব্যতীত ভিন্ন করহার ভিত্তিক পণ্য/সেবা",
+    "EN": "Goods/service Other than Standard Rate"
+  },
+  "Retail_Whsale_based_Supply": {
+    "BN": "খুচরা/পাইকারী/ব্যবসায়ী ভিত্তিক সরবরাহ",
+    "EN": "Retail/Wholesale/Trade Based Supply"
+  },
+  "total_sale_payable_tax": {
+    "BN": "মোট বিক্রয়মূল্য ও মোট প্রদেয় কর",
+    "EN": "Total Sales Value & Total Payable Taxes"
+  },
+  "part_4_Index": {
+    "BN": "অংশ-৪: ক্রয় – উপকরণ কর",
+    "EN": " Part-4 : PURCHASE -INPUT TAX "
+  },
+  "part_4_rule_1": {
+    "BN": "(১)আপনার সরবরাহকৃত সকল পণ্য যদি আদর্শ হারের হয়, সেক্ষেত্রে নোট ১০-২০ পূরণ করুন।",
+    "EN": " (1) If all the products/services you supply are standard rated, fill up note 10-20."
+  },
+  "part_4_rule_2": {
+    "BN": "(২)আপনার সরবরাহকৃত সকল পণ্য যদি আদর্শ হারের না হয়, অথবা ধারা ৪৬ এ বর্ণিত সময়ের মধ্যে রেয়াত না নিলে সেক্ষেত্রে নোট্ ২১-২২ পূরণ করুন।",
+    "EN": "(2) All the products/services you supply are not standard rated or input tax credit not taken within stipulated time period under section 46, fill up note 21-22."
+  },
+  "part_4_rule_3": {
+    "BN": "(৩)আপনার সরবরাহকৃত সকল পণ্য যদি আদর্শ হারের এবং আদর্শ হার ব্যতীত উভয় হয়,সেক্ষেত্রে আদর্শ হারের পণ্য উৎপাদন বা সরবরাহে ব্যবহৃত উপকরণের জন্য নোট ১০-২০ পূরণ করুন এবং আদর্শ হার ব্যতীত অন্যান্য হারের জন্য নোট ২১-২২ পূরণ করুন এবং ব্যবহার অনুযায়ী উপকরণ মূল্য আনুপাতিক হরে প্রযোজ্যতা অনুযায়ী নোট ১০-২২ এ প্রদর্শন করুন |",
+    "EN": "(3) If the products/services you supply consist of both standard rated and non-standard rated, then fill up note 10-20 for the raw materials that were used to product/supply standard rated goods/services and fill up note 21-22 for the raw materials that were used to produce/supply non-standard rated goods/services and show the value proportionately in note 10-22 as applicable."
+  },
+  "nature_of_purchase": {
+    "BN": "ক্রয়ের প্রকৃতি",
+    "EN": "Nature of Purchase"
+  },
+
+  "note": {
+    "BN": "নোট",
+    "EN": "Note"
+  },
+  "vat_kha": {
+    "BN": "মূসক (খ)",
+    "EN": "VAT(b)"
+  },
+  "goods_other_than_st_rate": {
+    "BN": "আদর্শ হার ব্যতীত অন্যান্য হারের পণ্য/সেবা",
+    "EN": "Goods/Service Other than Standard Rate"
+  },
+
+  "goods_credit": {
+    "BN": "রেয়াতযোগ্য নয় এরূপ পণ্য/সেবা (স্থানীয় ক্রয়)",
+    "EN": "Goods/Service not Admissible for Credit(Local Purchase)"
+  },
+  "goods_n_credit_sell": {
+    "BN": "রেয়াতযোগ্য নয় এরূপ পণ্য/সেবা (যে সকল করদাতা শুধুমাত্র অব্যাহতিপ্রাপ্ত/ সুনির্দিষ্ট কর /আদর্শ হার ব্যতীত অন্যান্য হারে পণ্য/সেবা সরবরাহ করেন )",
+    "EN": "Goods/Services Not Admissible for Credit(Taxpayers who sell only  Exempted/Specific VAT and Goods/Service  other than Standard Rate/Credits not taken within stipulated time)"
+  },
+  "local_purchase": {
+    "BN": "স্থানীয় ক্রয়",
+    "EN": "Local Purchase"
+  },
+
+  "from_turnover_tax_units": {
+    "BN": "টাৰ্ণওভার প্রতিষ্ঠান হইতে",
+    "EN": "From Turnover Tax Units"
+  },
+  "from_unregistered_entities": {
+    "BN": "অনিবন্ধিত প্রতিষ্ঠান হইতে",
+    "EN": "From Unregistered Entities"
+  },
+  "total_input_tax_credit": {
+    "BN": "মোট উপকরণ কর রেয়াত",
+    "EN": "Total Input Tax Credit"
+  },
+  "part_5_adjustment": {
+    "BN": "অংশ-৫: বৃদ্ধিকারী সমন্বয় (মূল্য সংযোজন কর)",
+    "EN": "Part-5: INCREASING ADJUSTMENTS(VAT)"
+  },
+  "adj_details": {
+    "BN": "সমন্বয় ঘটনা",
+    "EN": "Adjustment Details"
+  },
+  "vat_amount": {
+    "BN": "পরিমাণ",
+    "EN": "VAT Amount"
+  },
+  "due_to_vat_deduct_recv": {
+    "BN": "সরবরাহ গ্রহীতা কর্তৃক উৎসে কর্তনের জন্য",
+    "EN": "Due to VAT Deducted at Source by the supply receiver"
+  },
+  "payment_not_made_through_bank": {
+    "BN": "ব্যাংকিং চ্যানেলে মূল্য পরিশোধিত হয় নাই এমন সরবরাহের জন্য",
+    "EN": "Payment Not Made Through Banking Channel"
+  },
+  "Issuance_of_debit_note": {
+    "BN": "ডেবিট নোটের জন্য",
+    "EN": "Issuance of Debit Note"
+  },
+  "any_other_adj": {
+    "BN": "অন্যকোনো সমন্বয় ঘটনার জন্য(নিচে বর্ণনা করুন)",
+    "EN": "Any Other Adjustments (please specify below)"
+  },
+  "total_inc_adj": {
+    "BN": "মোট বৃদ্ধিকারী সমন্বয়",
+    "EN": "Total Increasing Adjustment"
+  },
+  "part_6_index": {
+    "BN": "অংশ-৬: হ্রাসকারী সমন্বয় (মূল্য সংযোজন কর) ",
+    "EN": "Part-6 : DECREASING ADJUSTMENTS(VAT) "
+  },
+  "due_vat_deduction_delivered": {
+    "BN": "প্রদত্ত সরবরাহ হইতে উৎসে কর্তনের জন্য",
+    "EN": "Due to VAT Deducted at Source from the supplies delivered "
+  },
+  "adv_tax_import_stage": {
+    "BN": "আমদানি পর্যায়ে প্রদেয় আগাম কর",
+    "EN": "Advance Tax Paid at Import Stage"
+  },
+  "Issuance_of_credit_note": {
+    "BN": "ক্রেডিট নোট্ ইস্যুর জন্য",
+    "EN": "Issuance of Credit Note"
+  },
+  "total_dec_adj": {
+    "BN": "মোট হ্রাসকারী সমন্বয়",
+    "EN": "Total Decreasing Adjustment"
+  },
+  "part_7_net_tax": {
+    "BN": "অংশ-৭: নীট কর হিসাব",
+    "EN": "Part-7: NET TAX CALCULATION"
+  },
+  "items": {
+    "BN": "আইটেম",
+    "EN": "Items"
+  },
+  "net_vat_tax": {
+    "BN": "বর্তমান করমেয়াদে প্রদেয় মোট মূসক (সমাপনী জের এর সহিত সমন্বয় ব্যতীত) (ধারা-৪৫) (৯গ-২৩খ+২৮-৩৩)",
+    "EN": "Net Payable VAT for the Tax Period (Section-45)(9C-23B+28-33)"
+  },
+  "net_18_6": {
+    "BN": "সমাপনী জের এবং মূসক ১৮.৬ হতে প্রাপ্ত জের এর সহিত সমন্বয়ের পর বর্তমান মেয়াদে প্রদেয় মোট মূসক [৩৪-(৫২+৫৬)]",
+    "EN": "Net Payable VAT for the Tax Period after Adjustment with Closing Balance and balance of form 18.6 [34-(52+56)]"
+  },
+  "net_bef_adj": {
+    "BN": "বর্তমান করমেয়াদে প্রদেয় মোট সম্পূরক শুল্ক (সমাপনী জের এর সহিত সমন্বয় ব্যতীত) [৯খ+৩৮-(৩৯+৪০)]",
+    "EN": "Net Payable Supplementary Duty for the Tax Period (Before adjustment with Closing Balance)[9B+38-(39+40)]"
+  },
+  "net_aft_adj": {
+    "BN": "সমাপনী জের এবং মূসক ১৮.৬ হতে প্রাপ্ত জের এর সহিত সমন্বয়ের পর বর্তমান করমেয়াদে প্রদেয় মোট সম্পূরক শুল্ক [৩৬-(৫৩+৫৭)]",
+    "EN": "Net Payable Supplementary Duty for the Tax Period after Adjusted with closing Balance and balance of form 18.6 [36-(53+57)]"
+  },
+  "inc_adj": {
+    "BN": "ডেবিট নোট ইস্যুর জন্য সমন্বয়কৃত সম্পূরূক শুল্ক",
+    "EN": "[Increasing Adjustment of Supplementary Duty]"
+  },
+  "dec_adj": {
+    "BN": "ক্রেডিট নোট ইস্যুর জন্য সমন্বয়কৃত সম্পূরূক শুল্ক",
+    "EN": "[Decreasing Adjustment of Supplementary Duty]"
+  },
+  "sup_paid_exports": {
+    "BN": "রপ্তানি পণ্য উৎপাদনে ব্যবহৃত কাঁচামালের বিপরীতে প্রদেয় সম্পূরক শুল্ক",
+    "EN": "Supplementary Duty Paid on Inputs Against Exports"
+  },
+  "int_odue_nt35": {
+    "BN": "অপরিশোধিত মূসকের জন্য সুদ (নোট ৩৫ এর ভিত্তিতে)",
+    "EN": "Interest on Overdue VAT (Based on note 35)"
+  },
+  "int_odue_nt37": {
+    "BN": "অপরিশোধিত সম্পূরূক শুল্ক এর জন্য সুদ(নোট ৩৭ এর ভিত্তিতে)",
+    "EN": "Interest on Overdue VAT (Based on note 35)"
+  },
+  "fn_pn_nsub_rt": {
+    "BN": "সময়মতো দাখিলপত্র জমা না দেয়ার জন্য অর্থদণ্ড ও জরিমানা",
+    "EN": "Fine/Penalty for Non-submission of Return"
+  },
+  "otr_fn_pn": {
+    "BN": "অন্যান্য অর্থদণ্ড/জরিমানা/সুদ",
+    "EN": "Other Fine/Penalty/Interest"
+  },
+  "pb_excise_duty": {
+    "BN": "আবগারি শুল্ক",
+    "EN": "Payable Excise Duty"
+  },
+  "pb_dev_surcharge": {
+    "BN": "উন্নয়ন ও সারচার্জ",
+    "EN": "Payable Development Surcharge"
+  },
+  "pb_ict_surchg": {
+    "BN": "তথ্য প্রযুক্তি উন্নয়ন সারচার্জ",
+    "EN": "Payable ICT Development Surcharge"
+  },
+  "pb_hlth_care_surchg": {
+    "BN": "স্বাস্থ্য সুরক্ষা সারচার্জ",
+    "EN": "Payable Health Care Surcharge"
+  },
+  "pb_env_prot_surcharge": {
+    "BN": "পরিবেশ সুরক্ষা সারচার্জ",
+    "EN": "Payable Environmental Protection Surcharge"
+  },
+  "pb_vat_treasury": {
+    "BN": "ট্রেজারী জমার জন্য নীট প্রদেয় মূল্য সংযোজন কর (৩৫+৪১+৪৩+৪৪)",
+    "EN": "Net payable VAT for treasury deposit (35+41+43+44)"
+  },
+  "pb_sd_treasury": {
+    "BN": "ট্রেজারী জমার জন্য নীট প্রদেয় সম্পূরক শুল্ক (৩৭+৪২)",
+    "EN": "Net payable SD for treasury deposit (37+42)"
+  },
+  "closing_bal_vat": {
+    "BN": "শেষ করমেয়াদের সমাপনী জের(মূসক)",
+    "EN": "Closing Balance of Last Tax Period (VAT)"
+  },
+  "closing_bal_sd": {
+    "BN": "শেষ করমেয়াদের সমাপনী জের(সম্পূরক শুল্ক)",
+    "EN": "Closing Balance of Last Tax Period (SD)"
+  },
+  "part_8_index": {
+    "BN": "অংশ-৮: পুরাতন চলতি হিসাবের জের সমন্বয়",
+    "EN": "Part-8: ADJUSTMENT FOR OLD ACCOUNT CURRENT BALANCE"
+  },
+  "rm_bal_vat_rule118": {
+    "BN": "মূসক-১৮.৬ হতে অবশিষ্ট জের (মূসক) [বিধি-১১৮(৫)]",
+    "EN": "Remaining Balance (VAT) from Mushak- 18.6, [Rule 118(5)]"
+  },
+  "rm_bal_sd_rule118": {
+    "BN": "মূসক-১৮.৬ হতে অবশিষ্ট জের (সম্পূরক শুল্ক) [বিধি-১১৮(৫)]",
+    "EN": "Remaining Balance (SD) from Mushak- 18.6, [Rule 118(5)]"
+  },
+  "dec_adj_note54": {
+    "BN": "নোট ৫৪ হতে হ্রাসকারী সমন্বয় (নোট ৩৪ এর সর্বোচ্চ ৩০%)",
+    "EN": "Decreasing Adjustment for Note 54 (up to 30% of Note 34)"
+  },
+  "dec_adj_note55": {
+    "BN": "নোট ৫৫ হতে হ্রাসকারী সমন্বয় (নোট ৩৬ এর সর্বোচ্চ ৩০%)",
+    "EN": "Decreasing Adjustment for Note 55 (up to 30% of Note 36)"
+  },
+  "part_9_index": {
+    "BN": "অংশ-৯: কর পরিশোধের তফসিল(ট্রেজারী জমা)",
+    "EN": "Part-9: ACCOUNTS CODE WISE PAYMENT SCHEDULE (TREASURY DEPOSIT)"
+  },
+  "account_code": {
+    "BN": "অর্থনৈতিক কোড",
+    "EN": "Account Code"
+  },
+  "vat_dep_current_tax": {
+    "BN": "বর্তমান করমেয়াদে পরিশোধিত মোট মূসক",
+    "EN": "VAT Deposit for the Current Tax Period"
+  },
+  "sd_dep_current_tax": {
+    "BN": "বর্তমান করমেয়াদে পরিশোধিত মোট সম্পূরক শুল্ক",
+    "EN": "SD Deposit for the Current Tax Period"
+  },
+  "part_10_index": {
+    "BN": "অংশ-১০: সমাপনী জের(পরবতী কর মেয়াদের প্রারম্ভিক জের)",
+    "EN": "Part-10: CLOSING BALANCE"
+  },
+  "cl_vat": {
+    "BN": "সমাপনী জের (মূল্য সংযোজন কর) [৫৮-(৫০+৬৭) + রিফান্ডের পরিমাণ যা অনুমোদন করা হয়নি]",
+    "EN": "Closing Balance (VAT) [58 -(50+67)+The refund amount not approved]"
+  },
+  "cl_sd": {
+    "BN": "সমাপনী জের (সম্পুরক কর) [৫৯-(৫১+৬৮) + রিফান্ডের পরিমাণ যা অনুমোদন করা হয়নি]",
+    "EN": "Closing Balance (SD) [59 -(51+68)+The refund amount not approved]"
+  },
+  "part_11_index": {
+    "BN": "অংশ-১১: ফেরত",
+    "EN": "Part-11: REFUND"
+  },
+  "i_int_refund": {
+    "BN": "আমি সমাপনী জেরে উল্লিখিত অর্থ ফেরৎ গ্রহনে ইছুক",
+    "EN": "I am interested to get refund of my Closing Balance"
+  },
+  "req_amount_vat": {
+    "BN": "দাবীকৃত ফেরতের পরিমাণ (ভ্যাট)",
+    "EN": "Requested Amount for Refund(VAT)"
+  },
+  "req_amount_sd": {
+    "BN": "দাবীকৃত ফেরতের পরিমাণ (সম্পূরক শুল্ক)",
+    "EN": "Requested Amount for Refund(VAT)"
+  },
+  "part_12_index": {
+    "BN": "অংশ-১২: ঘোষণা",
+    "EN": "Part-12: DECLARATION"
+  },
+  "i_hereby_declare": {
+    "BN": "আমি ঘোষণা করিতেছি যে, এই দাখিলপত্রে প্রদত্ত তথ্য সর্বোতভাবে সম্পূর্ণ, সত্য ও নির্ভুল। কোনো অসম্পূর্ণ বা অসত্য তথ্যের জন্য মূল্য সংযোজন কর ও সম্পূরক শুল্ক আইন, ২০১২ অথবা আপাতত বলবৎ এসংক্রান্ত যেকোন আইনের আওতায় দণ্ডনীয় অপরাধী হব।",
+    "EN": "I hereby declare that all information provided in this Return Form are complete,true & accurate. In case of any untrue/incomplete statement, I may be subjected to penal action under The Value Added Tax and Supplementary Duty Act,2012 or any other applicable Act prevailing at present."
+  },
+  "name": {
+    "BN": "নাম",
+    "EN": "name"
+  },
+  "designation": {
+    "BN": "পদবী",
+    "EN": "Designation"
+  },
+  "mobile_no": {
+    "BN": "মোবাইল নম্বর",
+    "EN": "Mobile Number"
+  },
+  "nid_pass": {
+    "BN": "জাতীয় পরিচয়পত্র/পাসপোর্ট নাম্বার",
+    "EN": "National ID/Passport Number"
+  },
+  "email": {
+    "BN": "ই-মেইল",
+    "EN": "Email"
+  },
+  "signature": {
+    "BN": "স্বাক্ষর",
+    "EN": "Signature"
+  },
+  "not_req_electronic_sub": {
+    "BN": "(অনলাইনে দাখিলের ক্ষেত্রে প্রয়োজন নাই )",
+    "EN": "[Not required for electronic submission]"
+  }
+
+
+}

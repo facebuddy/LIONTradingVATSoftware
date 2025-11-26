@@ -1,0 +1,50 @@
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\NBR_VAT_GROUPOFCOM.dll.config
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\NBR_VAT_GROUPOFCOM.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\NBR_VAT_GROUPOFCOM.pdb
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\EntityFramework.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\EntityFramework.SqlServer.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\Npgsql.EntityFramework.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\stdole.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\EntityFramework.xml
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\EntityFramework.SqlServer.xml
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\Npgsql.EntityFramework.xml
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\obj\Debug\NBR_VAT_GROUPOFCOM.csprojResolveAssemblyReference.cache
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\obj\Debug\NBR_VAT_GROUPOFCOM.dll
+C:\Users\Asib\Desktop\Work Desk\nbrmanufacture\NBR_VAT_GROUPOFCOM\obj\Debug\NBR_VAT_GROUPOFCOM.pdb
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\obj\Debug\NBR_VAT_GROUPOFCOM.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\obj\Debug\NBR_VAT_GROUPOFCOM.csprojResolveAssemblyReference.cache
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\NBR_VAT_GROUPOFCOM.dll.config
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\NBR_VAT_GROUPOFCOM.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\NBR_VAT_GROUPOFCOM.pdb
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\EntityFramework.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\EntityFramework.SqlServer.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\Npgsql.EntityFramework.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.DataDefModel.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.ClientDoc.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.ReportDefModel.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.Controllers.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.CommLayer.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.DataSetConversion.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.Prompting.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.XmlSerialize.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.CubeDefModel.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.CommonObjectModel.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.ObjectFactory.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\CrystalDecisions.ReportAppServer.CommonControls.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\stdole.dll
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\EntityFramework.xml
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\EntityFramework.SqlServer.xml
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\bin\Npgsql.EntityFramework.xml
+H:\WORK BENCH 2023\nbrmanufacture\NBR_VAT_GROUPOFCOM\obj\Debug\NBR_VAT_GROUPOFCOM.pdb

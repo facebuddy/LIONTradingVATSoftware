@@ -1,0 +1,153 @@
+﻿
+
+
+
+<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Report.master.cs" Inherits="NBR_VAT_GROUPOFCOM.Report" %>
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<!DOCTYPE html>
+<html>
+
+<head runat="server">
+    <title>Welcome to to NBR POS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+    <script type="text/javascript" src="../../Scripts/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="../../Scripts/sweetalert2.all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+
+<body>
+    <!--------------------------------------------- Css --------------------------------------------->
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/bootstrap/bootstrap.css") %>'>
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/fontawesome/font-awesome.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Styles/str.css") %>' />
+    <link rel="stylesheet" type="text/css" href='<%= this.ResolveClientUrl("~/Scripts/select2.min.css") %>' />
+    <style>
+        .header {
+            min-height: 80px;
+        }
+        /* Affix */
+        .affix {
+            top: 0;
+            width: 100%;
+        }
+        /* menu */
+        .navbar-wrpper {
+            margin-bottom: 20px;
+        }
+
+        .active-menu {
+            border-bottom: 2px solid #337AB7;
+        }
+
+            .active-menu a {
+                color: #337AB7 !important;
+            }
+
+        .nav li a:hover {
+            background: #ddd !important;
+        }
+
+        .col-sm-5 {
+            padding-left: 0 !important;
+        }
+
+        .col-sm-7 {
+            padding-left: 0 !important;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('.select2').select2();
+            Sys.WebForms.PageRequestManager.getInstance().add_pageLoaded(PageLoaded);
+        });
+        function PageLoaded(sender, args) {
+            $(".select2").select2();
+        }
+    </script>
+    <script type="text/javascript">
+        function pageload(scrollY) {
+            if (!isNaN(scrollY)) {
+                setTimeout(function () {
+                    window.scrollTo(0, scrollY);
+                    //console.log('pageload() called');
+                }, 200);
+            }
+            //console.log('pageload() called');
+        }
+
+        window.onscroll = function () {
+            var scrollY = document.body.scrollTop;
+            if (scrollY == 0) {
+                if (window.pageYOffset) {
+                    scrollY = window.pageYOffset;
+                }
+                else {
+                    scrollY = (document.body.parentElement) ? document.body.parentElement.scrollTop : 0;
+                }
+            }
+            if (scrollY > 0) {
+                var input = document.getElementById("scrollY");
+                if (input == null) {
+                    input = document.createElement("input");
+                    input.setAttribute("type", "hidden");
+                    input.setAttribute("id", "scrollY");
+                    input.setAttribute("name", "scrollY");
+                    document.forms[0].appendChild(input);
+                }
+                input.value = scrollY;
+            }
+        };
+    </script>
+    <!----------------------------------------- End Css --------------------------------------------->
+    <div style="height:5px; width:100%; background-color:royalblue">
+
+    </div>
+    <div class="container-fluid">
+        <form runat="server" class="form-horizontal">
+            <div style="min-height: 550px;">
+                <div class="noPrint">
+                  
+                </div>
+                <div class="main">
+                    <ajaxToolkit:ToolkitScriptManager runat="Server" ID="ToolkitScriptManager1" />
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+            <div class="footer noPrint">
+                <div class="form-group form-group-sm">
+                    <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                        Copyright &copy;2019 | All rights reserved | Technohaven Company Ltd. Version 5.1.2
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <%-----------------------------------------------javascript---------------------------------------------%>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/jquery-3.1.1.min.js") %>'></script>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/jquery-ui-1.12.1.js") %>'></script>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/bootstrap/bootstrap.js") %>'></script>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/main.js") %>'></script>
+    <%--<script type="text/javascript" src="Scripts/Select2JS/select2.full.min.js"></script>--%>
+    <%-- <script type="text/javascript" src="Scripts/Select2JS/select2.full.min.js"></script>--%>
+    <%-- <script  src="../../Scripts/jquery-ui-1.12.1.js"></script>
+    <script  src="../../Scripts/jquery-3.1.1.min.js"></script>
+    <script  src="../../Scripts/bootstrap/bootstrap.js"></script>
+    <script  src="../../Scripts/main.js"></script>--%>
+    <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/select2.full.min.js") %>'></script>
+    <%--  <script type="text/javascript" src='<%= this.ResolveClientUrl("~/Scripts/jquery-1.4.4.min.js") %>'></script>--%>
+    <%-- <script type="text/javascript" src="Scripts/jquery-1.4.4.min.js"></script>--%>
+    <%-----------------------------------------------End javascript---------------------------------------------%>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+<script>
+
+    $(function () { $('.jstree_demo_div').jstree(); });
+
+</script>
+</body>
+
+</html>

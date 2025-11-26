@@ -1,0 +1,920 @@
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/DashboardVTR.Master" AutoEventWireup="true" CodeBehind="ContractualProduction_6.4s.aspx.cs" Inherits="NBR_VAT_GROUPOFCOM.UI.Admin.ContractualProduction_6__4s" %>
+
+
+
+<%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
+<%@ Register Src="~/UserControls/MsgBoxs.ascx" TagPrefix="uc1" TagName="MsgBoxs" %>
+
+
+
+<asp:Content ID="Content3" ContentPlaceHolderID="HeadContent" runat="Server">
+   
+   <%--  <link rel="stylesheet" href="/resources/demos/style.css">
+    <link href="../../Styles/Main.css" rel="stylesheet" />
+    <link href="../../Styles/Box_Border.css" rel="Stylesheet" type="text/css" />
+    <link href="../../Styles/mqmm.css" rel="stylesheet" />
+    <link href="../../Styles/bootstrap/bootstrap.css" rel="stylesheet" />
+    <link href="../../Styles/muktadir.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-1.4.4.min.js"></script>--%>
+    <style type="text/css">
+        .style1 {
+            text-align: right;
+        }
+
+        .input_field {
+            text-align: right;
+        }
+
+        .FixedHeader {
+            position: fixed;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .grid_header {
+            background-image: none;
+            color: #000 !important;
+            border: 1px solid #c9c9c9;
+            font-family: arial,Helvetica,sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            height: 20px;
+            text-align: center;
+        }
+
+        .label {
+            color: #000;
+            font-size: 13px !important;
+            font-family: arial,Helvetica,sans-serif;
+        }
+    </style>
+    <script type="text/javascript">
+        function ToggleDiv(flag) {
+            if (flag == "first") {
+                var id = document.getElementById("cpPrint");
+                if (id.style.display == 'none') {
+                    document.getElementById("cpPrint").style.display = 'block';
+                } else {
+                    document.getElementById("cpPrint").style.display = 'none';
+                }
+            }
+        }
+
+
+             function SelectAllCheckboxesSpecific(spanChk) {
+
+            var IsChecked = spanChk.checked;
+
+            var Chk = spanChk;
+
+
+            var jsGvItem = document.getElementById("<%=gvItem.ClientID%>");
+            var items = jsGvItem.getElementsByTagName('input');
+
+            //var rowCount = jsGvItem.rows.length;
+
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type == "checkbox") {
+                    if (items[i].checked != IsChecked) {
+                        items[i].click();
+                    }
+                }
+            }
+
+        }
+        function SelectAllCheckboxesgvIngredience(spanChk) {
+
+            var IsChecked = spanChk.checked;
+
+            var Chk = spanChk;
+
+
+            var jsGvItem = document.getElementById("<%=gvIngredience.ClientID%>");
+            var items = jsGvItem.getElementsByTagName('input');
+
+            //var rowCount = jsGvItem.rows.length;
+
+            for (var i = 0; i < items.length; i++) {
+                if (items[i].type == "checkbox") {
+                    if (items[i].checked != IsChecked) {
+                        items[i].click();
+                    }
+                }
+            }
+
+        }
+    </script>
+    <script type="text/javascript">
+       <%-- function PrintPanel() {
+            var panel = document.getElementById("<%=cpPrint.ClientID %>");
+            var printWindow = window.open('', '', 'left=1,top=0,height=auto,width=auto,toolbar=0,scrollbars=1,status=0,dir=ltr');
+            printWindow.document.write('<html><head><title>DIV Contents</title>');
+            printWindow.document.write('<link rel="stylesheet" type="text/css" href="../Styles/bootstrap/bootstrap.css" />');
+            //            printWindow.document.write('<link rel="stylesheet" type="text/css" href="../Styles/print.css" />');
+            printWindow.document.write('</head>');
+            printWindow.document.write('<body style="margin: 50px; font-family: "Times New Roman", Times, serif; font-size:18px">');
+            printWindow.document.write(panel.innerHTML);
+            printWindow.document.write('</body>');
+            printWindow.document.write('</html>');
+            printWindow.document.close();
+            setTimeout(function () {
+                printWindow.print();
+            }, 500);
+            return false;
+        }--%>
+    </script>
+</asp:Content>
+<asp:Content ID="Content4" ContentPlaceHolderID="MainContent" runat="server">
+    <div class="container-fluid">
+        <asp:UpdatePanel runat="server">
+            <ContentTemplate>
+                <div class="panel-group">
+                    <div class="panel panel-primary">
+                        <%--<div class="panel-heading" style="text-align: center; font-size: 21px; font-weight: bold; height: 30px; padding-top: 0px">
+                            সত্ত্বাধীকারীর সরবরাহস্থল হইতে উৎপাদনের জন্য প্রেরিত উপকরণ এর চালানপত্র (মূসক-১১গ)
+                        </div>--%>
+                        <div class="panel-heading" style="text-align: center;font-family:Tahoma; font-size:18px; font-weight: bold; height: 30px; padding-top: 0px">
+                          <%--  সত্ত্বাধীকারীর সরবরাহস্থল হইতে উৎপাদনের জন্য প্রেরিত উপকরণ এর চালানপত্র ৬.৪ --%>
+                            Issue / চুক্তিভিত্তিক উৎপাদনের চালানপত্র (মূসক-৬.৪)
+                        </div>
+                        <div class="panel-body" style="padding-top: 0px; padding-bottom: 0px">
+                            <div class="row hiddencol" style="background-color: #FFD9C3; ">
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label text-right">Org. Name :</label>
+                                        <div class="col-sm-7 m">
+                                            <asp:Label ID="org_name" runat="server"></asp:Label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label text-right">Org. Address :</label>
+                                        <div class="col-sm-7 m">
+                                            <asp:Label ID="org_address" runat="server"></asp:Label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label text-right">Org. BIN :</label>
+                                        <div class="col-sm-7 m">
+                                            <asp:Label ID="lblOrgBIN" runat="server"></asp:Label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row hiddencol">
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label text-right">Org. Branch Name :</label>
+                                        <div class="col-sm-7">
+                                             <asp:DropDownList ID="drpBranchName" runat="server" OnSelectedIndexChanged="drpBranchName_SelectedIndexChanged" AutoPostBack="true"
+                                            CssClass="form-control">
+                                        </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label text-right">Org. Branch Address :</label>
+                                        <div class="col-sm-7">
+                                            <asp:Label ID="lblBranchAddress" runat="server"></asp:Label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label text-right">Org. Branch BIN :</label>
+                                        <div class="col-sm-7">
+                                            <asp:Label ID="lblBranchBin" runat="server"></asp:Label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top:2px;">
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                      <%--  <label class="col-sm-5 control-label text-right">Party Name :</label>--%>
+                                          <label ID="label21" class="control-label col-sm-5"><span class="required"> * </span>Party Name :</label>
+                                        <div class="col-sm-5">
+                                            <asp:DropDownList ID="drpParty" runat="server" CssClass="form-control select2" 
+                                            AutoPostBack="True" OnSelectedIndexChanged="drpParty_SelectedIndexChanged">
+                                        </asp:DropDownList>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <asp:Button ID="btnAddParty" runat="server" Style="float: left;" OnClick="btnAddParty_Click" Text="New" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label text-right">Party Address :</label>
+                                        <div class="col-sm-7">
+                                            <asp:TextBox class="form-control" ID="txtAddress" runat="server"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label text-right">Party BIN :</label>
+                                        <div class="col-sm-7">
+                                            <asp:TextBox ID="txtPartyBIN" runat="server" CssClass="form-control" ReadOnly="True"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                           <%-- <div class="row" style="background-color: #E0EBF5">
+                                <div class="col-sm-4">
+                                    <asp:Label ID="Label1" runat="server" Text="Name:"></asp:Label>
+                                    <asp:Literal ID="org_name" runat="server"></asp:Literal>
+                                </div>
+                                <div class="col-sm-6">
+                                    <asp:Label class="col-sm-2" ID="Label2" runat="server" Text="Address:"></asp:Label>
+                                    <asp:Literal ID="org_address" runat="server"></asp:Literal>
+                                </div>
+                                <div class="col-sm-2">
+                                    <asp:Label ID="Label8" runat="server" Text="BIN:"></asp:Label>
+                                    <asp:Label ID="lblOrgBIN" runat="server"></asp:Label>
+                                </div>
+                                <div class="col-sm-3 col-xs-3 col-lg-2">
+                                    <asp:Label ID="Label56" runat="server" Text="Unit:" Visible="False"></asp:Label>
+                                    <asp:DropDownList ID="drpOrgUnit" runat="server" Visible="False" Width="50px">
+                                    </asp:DropDownList>
+                                    <asp:Label ID="lblOrgAddress" runat="server" Visible="False"></asp:Label>
+                                </div>
+                            </div>--%>
+
+                            <%--<div class="row" style="margin-top: 5px; background-color: #E0EBF5">
+                                <div class="col-sm-4" style="padding: 0px">
+                                    <div class="col-sm-3" style="padding: 0px">
+                                        <asp:Label ID="Label26" CssClass="present-address-lbl" Style="margin-left: 22%" runat="server"
+                                            Text="Branch Name:">
+                                        </asp:Label>
+                                    </div>
+                                    <div class="col-sm-5" style="padding: 0px">
+                                        <asp:DropDownList ID="drpBranchName" runat="server" Style="margin-left: 11px; height: 27px; text-align: left" OnSelectedIndexChanged="drpBranchName_SelectedIndexChanged" AutoPostBack="true"
+                                            CssClass="present-address-tb">
+                                        </asp:DropDownList>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" style="padding: 0px">
+                                    <div class="col-sm-3" style="padding: 0px">
+                                        <asp:Label ID="Label28" runat="server" Style="margin-left: 9%" CssClass="present-address-lbl"
+                                            Text="Branch Address:"></asp:Label>
+                                    </div>
+                                    <div class="col-sm-9" style="padding: 0px">
+                                        <asp:Label ID="lblBranchAddress" runat="server"></asp:Label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" style="padding: 0px">
+                                    <div class="col-sm-3" style="padding: 0px; margin-left: 36px">
+                                        <asp:Label ID="Label34" Style="margin-left: 42%; margin-top: 4px" CssClass="present-address-lbl"
+                                            runat="server" Text="BIN:"></asp:Label>
+                                    </div>
+                                    <div class="col-sm-3" style="padding: 0px">
+                                        <asp:Label ID="lblBranchBin" runat="server"></asp:Label>
+                                    </div>
+                                </div>
+                            </div>--%>
+
+
+                            <%--<div class="row" style="margin-top: 1%">
+                                <div class="col-sm-4" style="padding: 0px">
+                                    <div class="col-sm-1" style="padding: 0px">
+                                        <asp:Label ID="Label3" Style="margin-left: 35px; margin-top: 2px;" CssClass="present-address-lbl"
+                                            runat="server" Text="Name:"></asp:Label>
+                                    </div>
+                                    <div class="col-sm-5" style="padding: 0px">
+                                        <asp:DropDownList ID="drpParty" runat="server" CssClass="present-address-tb" Style="width: 150px; height: 27px; margin-left: 40px; text-align: left"
+                                            AutoPostBack="True" OnSelectedIndexChanged="drpParty_SelectedIndexChanged">
+                                        </asp:DropDownList>
+                                    </div>
+                                    <div class="col-sm-2" style="padding: 0px">
+                                        <asp:Button ID="btnAddParty" runat="server" OnClick="btnAddParty_Click" Text="New"
+                                            Style="width: 60px; height: 27px; margin-left: 11px" />
+                                    </div>
+                                    <div class="col-sm-4" style="padding: 0px">
+                                        <asp:TextBox ID="txtPartyName" runat="server" Visible="False" CssClass="present-address-tb"
+                                            Style="width: 150px; height: 27px" placeholder="enter company name"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" style="padding: 0px">
+                                    <div class="col-sm-3" style="padding: 0px">
+                                        <asp:Label ID="Label4" Style="margin-left: 32%; margin-top: 2px;" runat="server" class="present-address-lbl" Text="Address:"></asp:Label>
+                                    </div>
+                                    <div class="col-sm-9" style="padding: 0px">
+                                        <asp:TextBox Style="height: 27px; width: 80%; margin-left: -7px" class="present-address-tb" ID="txtAddress" runat="server" placeholder="address here"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4" style="padding: 0px">
+                                    <div class="col-sm-5" style="padding: 0px">
+                                        <asp:Label ID="Label12" Style="margin-top: 2px; margin-left: 77%" runat="server" Text="BIN:" class="present-address-lbl"></asp:Label>
+                                    </div>
+                                    <div class="col-sm-7" style="padding: 0px">
+                                        <asp:TextBox ID="txtPartyBIN" runat="server" Style="width: 94%; margin-left: 0px; height: 27px" class="present-address-tb"></asp:TextBox>
+                                    </div>
+                                </div>
+                            </div>--%>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                   <%--  <label class="col-sm-5 control-label">Challan No :</label>--%>
+                                         <label ID="label211" class="control-label col-sm-5"><span class="required"> * </span>Challan No :</label>
+                                        <div class="col-sm-7">
+                                            <asp:TextBox ID="txtChallanNo" CssClass="form-control" Style="height: 27px" runat="server" Enabled="false"  AutoPostBack="true" OnTextChanged="txtChallanNo_TextChanged" PlaceHolder="(Challan.Sl.month/year):Challan.1.01/2020" />
+                                            <asp:HiddenField ID="hdBookId" runat="server" />
+                                            <asp:HiddenField ID="hdPageNo" runat="server" />
+                                            <asp:CheckBox ID="chkDiscard" Style="float: left; margin-left: 3px; margin-top: 4px;" runat="server" AutoPostBack="True" OnCheckedChanged="chkDiscard_CheckedChanged"
+                                                Text="Discard" Visible="false" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label">Challan Date :</label>
+                                        <div class="col-sm-7">
+                                            <asp:TextBox ID="txtChallanDate" Style="width: 50%; float: left" CssClass="form-control" runat="server" DateFormat="dd/MM/yyyy"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender ID="CalendarExtender2" runat="server" Format="dd/MM/yyyy" TargetControlID="txtChallanDate" />
+                                            <asp:DropDownList ID="drpChDtHr" Style="width: 25%; float: left" CssClass="form-control" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="drpChDtMin" Style="width: 25%; float: left" CssClass="form-control" runat="server"></asp:DropDownList>
+
+
+                                            <%--<div class="col-sm-6" style="padding: 0px">
+                                                <asp:TextBox ID="" CssClass="form-control" runat="server" Style="height: 27px" DateFormat="dd/MM/yyyy" ReadOnly="true"></asp:TextBox>
+                                                <ajaxToolkit:CalendarExtender ID="cc11" runat="server" Format="dd/MM/yyyy" TargetControlID="txtChallanDate" />
+                                            </div>
+                                            <div class="col-sm-3" style="padding: 0px">
+                                                <asp:DropDownList ID="" CssClass="form-control" runat="server" Style="height: 27px" AutoPostBack="True">
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="col-sm-3" style="padding: 0px">
+                                                <asp:DropDownList ID="" CssClass="form-control" runat="server" Style="height: 27px" AutoPostBack="True">
+                                                </asp:DropDownList>
+                                            </div>--%>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label">Delivery Date :</label>
+                                        <div class="col-sm-7">
+                                            <asp:TextBox ID="txtDeliveryDate" Style="width: 50%; float: left" CssClass="form-control" runat="server" DateFormat="dd/MM/yyyy"></asp:TextBox>
+                                            <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy" TargetControlID="txtChallanDate" />
+                                            <asp:DropDownList ID="drpDeliveryHour" Style="width: 25%; float: left" CssClass="form-control" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="drpDeliveryMin" Style="width: 25%; float: left" CssClass="form-control" runat="server"></asp:DropDownList>
+
+
+                                           <%-- <div class="col-sm-6" style="padding: 0px">
+                                                <asp:TextBox ID="txtDeliveryDate" CssClass="form-control" runat="server" Style="height: 27px" DateFormat="dd/MM/yyyy"></asp:TextBox>
+                                                <ajaxToolkit:CalendarExtender ID="CalendarExtender1" runat="server" Format="dd/MM/yyyy" TargetControlID="txtDeliveryDate" />
+                                            </div>
+                                            <div class="col-sm-3" style="padding: 0px">
+                                                <asp:DropDownList ID="drpDeliveryHour" CssClass="form-control" runat="server" Style="height: 27px">
+                                                </asp:DropDownList>
+                                            </div>
+                                            <div class="col-sm-3" style="padding: 0px">
+                                                <asp:DropDownList ID="drpDeliveryMin" CssClass="form-control" runat="server" Style="height: 27px">
+                                                </asp:DropDownList>
+                                            </div>--%>
+
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <%--<div class="col-sm-4" style="padding: 0px">
+                            <asp:Label ID="Label30" CssClass="present-address-lbl" Style="margin-left: 5px; margin-top: 2px;"
+                                runat="server" Text="Challan No:"></asp:Label>
+                            <asp:TextBox ID="txtChallanNo" CssClass="present-address-tb" Style="float: left; width: 150px; height: 27px" runat="server" Enabled="true" ></asp:TextBox>
+                             <asp:HiddenField ID="hdBookId" runat="server" />
+                             <asp:HiddenField ID="hdPageNo" runat="server" />
+                            <asp:CheckBox ID="chkDiscard" Style="float: left; margin-left: 3px; margin-top: 4px;"
+                                runat="server" AutoPostBack="True" OnCheckedChanged="chkDiscard_CheckedChanged"
+                                Text="Discard" Visible="false" />
+                        </div>
+                        <div class="col-sm-4" style="padding: 0px">
+                            <asp:Label ID="Label32" CssClass="present-address-lbl" runat="server" Style="margin-left: 9px;
+                                float: left; margin-top: 2px;" Text="Challan Date:"></asp:Label>
+                            <asp:TextBox ID="txtChallanDate" CssClass="present-address-tb" runat="server" Style="width: 150px;
+                                margin-left: 14px; float: left; height: 27px" DateFormat="dd/MM/yyyy" ReadOnly="true"></asp:TextBox>
+                            <asp:DropDownList ID="drpChDtHr" CssClass="present-address-tb" runat="server" Style="width: 50px;
+                                float: left; height: 27px" AutoPostBack="True" OnSelectedIndexChanged="drpChDtHr_SelectedIndexChanged">
+                            </asp:DropDownList>
+                            <asp:DropDownList ID="drpChDtMin" CssClass="present-address-tb" runat="server" Style="width: 50px;
+                                float: left; height: 27px" AutoPostBack="True" OnSelectedIndexChanged="drpChDtMin_SelectedIndexChanged">
+                            </asp:DropDownList>
+                        </div>
+                         <div class="col-sm-4" style="padding: 0px">
+                            <asp:Label ID="Label13" CssClass="present-address-lbl" runat="server" Style="margin-left: 84px;
+                                float: left; margin-top: 2px;" Text="Delivery Date:"></asp:Label>
+                            <asp:TextBox ID="txtDeliveryDate" CssClass="present-address-tb" runat="server" Style="width: 127px;
+                                margin-left: 14px; float: left; height: 27px" DateFormat="dd/MM/yyyy" ></asp:TextBox>
+                            <asp:DropDownList ID="drpDeliveryHour" CssClass="present-address-tb" runat="server" Style="width: 50px;
+                                float: left; height: 27px" AutoPostBack="True" OnSelectedIndexChanged="drpChDtHr_SelectedIndexChanged">
+                            </asp:DropDownList>
+                            <asp:DropDownList ID="drpDeliveryMin" CssClass="present-address-tb" runat="server" Style="width: 50px;
+                                float: left; height: 27px" AutoPostBack="True" OnSelectedIndexChanged="drpChDtMin_SelectedIndexChanged">
+                            </asp:DropDownList>
+                        </div>--%>
+                            </div>
+
+                            <div class="row">
+                               <div class="col-md-4">
+                                     <div class="form-group form-group-sm">
+                                    <label ID="Label4" runat="server"  class="control-label col-sm-5" Text="">Batch No.:</label>
+                                    <div class="col-sm-7">
+                                         <asp:TextBox ID="txtBatchNo" CssClass="form-control"  runat="server"></asp:TextBox>
+                                   </div>
+                                </div>
+                             </div>
+                             <div class="col-md-4">
+                                <div class="form-group form-group-sm">
+                                    <label ID="Label8" runat="server"  class="control-label col-sm-5" Text="" >Mfg.Date:</label>
+                                <div class="col-sm-7">
+                                      <asp:TextBox ID="txtMfgDate" CssClass="form-control"  Format="dd/MM/yyyy" runat="server"></asp:TextBox>
+                                      <ajaxToolkit:CalendarExtender ID="CalendarExtender4" runat="server" Format="dd/MM/yyyy" TargetControlID="txtMfgDate" />
+                              </div>
+                                </div>
+                                  </div>
+
+                               <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                    <label ID="Label10" runat="server"  class="control-label col-sm-5" Text="">Expiry Date:</label>
+                                   <div class="col-sm-7">
+                                      <asp:TextBox ID="txtExpDate" CssClass="form-control"  Format="dd/MM/yyyy" runat="server"></asp:TextBox>
+                                      <ajaxToolkit:CalendarExtender ID="CalendarExtender3" runat="server" Format="dd/MM/yyyy" TargetControlID="txtExpDate" />
+                                  </div>
+                               </div>
+                             </div>
+                            </div>
+                            <div class="row">
+                                     <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <%--<label class="col-sm-5 control-label">Product Quantity :</label>--%>
+                                           <label ID="label2" class="control-label col-sm-5"><span class="required"> * </span>Product Quantity :</label>
+                                        <div class="col-sm-7">
+                                            <asp:TextBox runat="server" Style="height: 27px;" ID="txtPQuantity" CssClass="form-control" />
+                                        <ajaxToolkit:FilteredTextBoxExtender ID="txtLCAmount_FilteredTextBoxExtender1"
+                                                        runat="server" Enabled="True" TargetControlID="txtPQuantity"
+                                                        ValidChars=".0123456789">
+                                                    </ajaxToolkit:FilteredTextBoxExtender>
+                                             </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                    <%--    <label class="col-sm-5 control-label">Price Decl. No :</label>--%>
+                                        <label ID="label3" class="control-label col-sm-5"><span class="required"> * </span>Price Decl. No :</label>
+                                        <div class="col-sm-7">
+                                            <asp:DropDownList ID="drpPriceDeclarationNo" CssClass="form-control select2" runat="server" Style="height: 27px; text-align: left">
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                       <%-- <label class="col-sm-5 control-label">Finish Product(Pr) :</label>--%>
+                                           <label ID="label11" class="control-label col-sm-5"><span class="required"> * </span>Finish Product(Pr) :</label>
+                                        <div class="col-sm-7">
+                                            <asp:DropDownList ID="drpFinishProduct" CssClass="form-control select2" runat="server" Style="height: 27px; text-align: left" OnSelectedIndexChanged="drpFinishProduct_Click" AutoPostBack="true"  ToolTip="If choose finish product, Product Quantity & Price Decl. No are mandatory">
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                </div>
+                                <%--<div class="col-sm-4" style="padding: 0px">
+                            <div class="col-sm-3" style="padding: 0px">
+                                <asp:Label ID="Label27" CssClass="present-address-lbl" Style="" runat="server" Text="Vehicle Type:"></asp:Label></div>
+                            <div class="col-sm-9" style="padding: 0px">
+                                <asp:DropDownList ID="drpVehicleType" CssClass="present-address-tb" runat="server" Style="width: 46%; margin-left:-9%; height: 27px; text-align: left">
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                        <div class="col-sm-4" style="padding: 0px">
+                            <div class="col-sm-3" style="padding: 0px">
+                                <asp:Label ID="Label35" CssClass="present-address-lbl" Style="margin-left: 20px;"  runat="server" Text="Vehicle No:"></asp:Label></div>
+                            <div class="col-sm-9" style="padding: 0px">
+                                <asp:TextBox ID="txtVehicleNo" CssClass="present-address-tb" runat="server" Style="height: 27px; width: 80%;margin-left:-4px"></asp:TextBox></div>
+                        </div>
+                        <div class="col-sm-4" style="padding: 0px">
+                        <div class="col-sm-5" style="padding: 0px">
+                                <asp:Label ID="lblFinishProduct" CssClass="present-address-lbl" Style="margin-left: 3%;
+                                    margin-top: 3px;" runat="server" Text="Finish Product(Production):" Visible="True"></asp:Label></div>
+                            <div class="col-sm-7" style="padding: 0px">
+                                <asp:DropDownList ID="drpFinishProduct" CssClass="present-address-tb" runat="server"
+                                    Style="width: 94%; height: 27px; margin-left: 0px;text-align:left" Visible="True" OnSelectedIndexChanged="drpFinishProduct_Click" AutoPostBack="true" >
+                                </asp:DropDownList>
+                            </div>
+                        </div>--%>
+                            </div>
+                           <%--     <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label">Vehicle Type :</label>
+                                        <div class="col-sm-7">
+                                            <asp:DropDownList ID="drpVehicleType" CssClass="form-control" runat="server" Style="height: 27px; text-align: left">
+                                            </asp:DropDownList>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-5 control-label">Vehicle No :</label>
+                                        <div class="col-sm-7">
+                                            <asp:TextBox ID="txtVehicleNo" CssClass="form-control" runat="server" Style="height: 27px;" />
+                                        </div>
+                                    </div>
+                                </div>--%>
+                            <div class="row">
+                       <div class="col-md-4"></div>
+                       <div class="col-md-4"></div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-group-sm">
+                                        <label class="col-sm-6 control-label"></label>
+                                        <div class="col-sm-6">
+                                            <asp:Button runat="server" Style="width: 122px; float: right; margin-right: 15px" ID="btnShowIngredience" OnClick="btnShowIngredience_OnClick" Text="Show Ingredience" CssClass="test-btn-primary" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <%-- <div class="col-sm-4" style="padding: 0px">
+                            <div class="col-sm-5" style="padding: 0px"><asp:Label runat="server" style="margin-left:-14px" ID="lblPQuantity" Text="Product Quantity:" CssClass="present-address-lbl" /></div>
+                            <div class="col-sm-7" style="padding: 0px"><asp:TextBox runat="server" style="height:27px;margin-left:-77px;width: 46%;" ID="txtPQuantity" CssClass="present-address-tb" /></div>
+                         </div>
+                        <div class="col-sm-4" style="padding: 0px">
+                            <div class="col-sm-3" style="padding: 0px">
+                                <asp:Label ID="Label10" CssClass="present-address-lbl" Style="" runat="server" Text="Price Declaration No:"></asp:Label></div>
+                            <div class="col-sm-9" style="padding: 0px">
+                                <asp:DropDownList ID="DropDownList1" CssClass="present-address-tb" runat="server" Style="width: 104%; height: 27px; text-align: left">
+                                </asp:DropDownList>
+                            </div>
+                        </div>
+                         <div class="col-sm-4" style="padding: 0px"><asp:Button runat="server" style="width:122px;float:right;margin-right:15px" ID="btnShowIngredience" OnClick="btnShowIngredience_OnClick" Text="Show Ingredience" CssClass="test-btn-primary" /></div>--%>
+                            </div>
+                            <div class="row" style="margin-top: 10px; padding: 5px;margin-left:5px">
+                                <div class="test-label hiddencol">
+                                    <asp:Label ID="Label6" runat="server" Text="Role:"></asp:Label><br />
+                                    <asp:DropDownList ID="drpRole" runat="server" style="width:150px;" CssClass="detail-role select2" OnSelectedIndexChanged="drpRole_SelectedIndexChanged"
+                                        AutoPostBack="True" TabIndex="1">
+                                        <asp:ListItem>Ingredient</asp:ListItem>
+                                        <asp:ListItem>Finish Product</asp:ListItem>
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="test-label">
+                                    <asp:Label ID="Label7" runat="server" Text="Category :"></asp:Label><br />
+                                    <asp:DropDownList ID="drpCategory" runat="server" Style="width:150px;text-align: left" CssClass="category select2" OnSelectedIndexChanged="drpCategory_SelectedIndexChanged"
+                                        Enabled="true" AutoPostBack="True">
+                                    </asp:DropDownList>
+                                </div>
+                                <div class="test-label">
+                                    <asp:Label ID="Label15" runat="server" Text="Sub Cat:"></asp:Label><br />
+                                    <asp:DropDownList ID="drpSubCategory" Style="width:150px;text-align: left" runat="server" AutoPostBack="True" OnSelectedIndexChanged="drpSubCategory_SelectedIndexChanged"
+                                        Enabled="true" CssClass="sub-category select2">
+                                    </asp:DropDownList>
+
+                                </div>
+                               <%-- <div class="test-label">
+                                    <asp:Label ID="Label40" runat="server" Text="Search Product:" /><br />
+                                    <asp:TextBox Style="text-align: left" ID="productName" CssClass="search-product" AutoPostBack="true" placeholder="Search Product"
+                                        runat="server" OnTextChanged="productName_TextChanged" />
+                                    <div id="listPlacement" style="height: 100px; overflow: scroll;">
+                                    </div>
+                                    <ajaxToolkit:AutoCompleteExtender ID="accProductName" runat="server" TargetControlID="productName"
+                                        ServicePath="~/WebService.asmx" CompletionListElementID="listPlacement" MinimumPrefixLength="1"
+                                        EnableCaching="true" CompletionSetCount="1" CompletionInterval="1000" ServiceMethod="GetProductByProductName">
+                                    </ajaxToolkit:AutoCompleteExtender>
+                                </div>--%>
+                                <div class="test-label">
+                                    <asp:Label ID="Label16" runat="server" Text="Item Name:" Style="margin-left: 0px;" /><br />
+                                    <asp:DropDownList ID="drpItem" CssClass="item select2" Style="width:150px;text-align: left" runat="server" AutoPostBack="True" Enabled="true" OnSelectedIndexChanged="drpItem_SelectedIndexChanged" />
+                                    <asp:Label runat="server" ID="lblProductType" Visible="false"></asp:Label>
+                                    <asp:Label runat="server" ID="lblProp1" Visible="false"></asp:Label>
+                                    <asp:Label runat="server" ID="lblProp2" Visible="false"></asp:Label>
+                                    <asp:Label runat="server" ID="lblProp3" Visible="false"></asp:Label>
+                                    <asp:Label runat="server" ID="lblProp4" Visible="false"></asp:Label>
+                                    <asp:Label runat="server" ID="lblProp5" Visible="false"></asp:Label>
+                                    <asp:Label runat="server" ID="lblUnitPrice" Visible="false"></asp:Label>
+                                    <asp:Label runat="server" ID="lblVatRate" Visible="false"></asp:Label>
+                                    <asp:Label runat="server" ID="lblSdRate" Visible="false"></asp:Label>
+                                </div>
+                                <div class="test-label">
+                                    <asp:Label ID="Label17" runat="server" Text="HS Code:" /><br />
+                                    <asp:TextBox ID="lblHSCode" CssClass="hs-code" runat="server" Style="width: 80px"
+                                        Enabled="false"></asp:TextBox>
+                                </div>
+                                 
+                                <div class="test-label">
+                                    <asp:Label ID="Label18" runat="server" Text="Quantity:" Style="margin-left: 0px;" /><br />
+                                    <asp:TextBox ID="txtQuantity" CssClass="quantity" Style="width: 75px" runat="server"
+                                        AutoPostBack="True" OnTextChanged="txtQuantity_TextChanged"></asp:TextBox>
+                                      <ajaxToolkit:FilteredTextBoxExtender ID="FilteredTextBoxExtender1"
+                                                        runat="server" Enabled="True" TargetControlID="txtQuantity"
+                                                        ValidChars=".0123456789">
+                                                    </ajaxToolkit:FilteredTextBoxExtender>
+                                    <asp:Label runat="server" ID="Label9" Text="avl qnt: " Style="color: #008000;font-weight:bold;margin-left: -35px;" /><asp:Label runat="server" Style="color: #008000;font-weight:bold"  ID="avlQuantity" />
+                                </div>
+                                <div class="test-label">
+                                    <asp:Label ID="Label41" runat="server" Text="Unit:" /><br />
+                                    <asp:TextBox ID="lblUnit" CssClass="unit" runat="server" Style="width:60px"></asp:TextBox>
+                                    <asp:Label runat="server" ID="lblUnitId" Visible="false" />
+                                </div>
+                                <div class="test-label">
+                                    <asp:Label ID="Label5" runat="server" Text="Remarks:" /><br />
+                                    <asp:TextBox ID="txtRemark" CssClass="remark" runat="server" Style="width: 150px"></asp:TextBox>
+                                    <asp:Label ID="lblErrorMessage" runat="server" Font-Bold="true" ForeColor="red" Visible="false"></asp:Label>
+                                </div>
+                                </div>
+                               <div class="row" style="text-align:right">
+                                <div class="test-btn">
+                                    <asp:Button ID="printBTN" runat="server" class="btn-btn" OnClick="btnPrint_Click"
+                                        Text="Show Report" style="background-color:#5CB85C;margin-top: 15px" />
+                                </div>
+                                <div class="test-btn">
+                                    <asp:Button ID="btnAdd" runat="server" class="btn-btn" style="background-color:#B681B7;margin-top: 15px;" OnClick="btnAddItem_Click" Enabled="true"
+                                        Text="Add Item"  />
+                                </div>
+                                <div class="test-btn">
+                                    <asp:Button ID="btnSave" runat="server" style="background-color:#0D7B78;margin-top: 15px" class="btn-btn" Text="Save" OnClick="btnSave_Click"
+                                        />
+                                </div>
+                                <div class="test-btn">
+                                    <asp:Button ID="btnClear" runat="server" style="background-color: #F0AD4E;margin-top: 15px" class="btn-btn" OnClick="btnClear_Click"
+                                        Text="Refresh"  />
+                                </div>
+                            </div>
+                            <div class="row" style="margin: 10px">
+                                <div class="panel panel-primary">
+                                     <div class="panel-body">
+                                         <div class="table table-responsive">
+                                            <asp:GridView ID="gvItem" runat="server" AutoGenerateColumns="False" CssClass="mydatagrid"
+                                    HeaderStyle-CssClass="gvheader" RowStyle-CssClass="gvrows" PagerStyle-CssClass="gvpager"
+                                    DataKeyNames="RowNo" Width="100%" OnRowDeleting="gvItem_RowDeleting">
+                                                <Columns>
+                                                   <%-- <asp:CommandField HeaderText="" ButtonType="Image" DeleteImageUrl="~/Images/Trash.gif" SelectImageUrl="~/Images/Ok.gif"
+                                                        ShowSelectButton="True" />--%>
+                                                     <asp:TemplateField HeaderText="">
+                                            <HeaderTemplate >
+                                                <asp:CheckBox ID="chkAll" runat="server" onclick="SelectAllCheckboxesSpecific(this)" ToolTip="Check to Select All Item" />
+                                            </HeaderTemplate>
+                                            <ItemTemplate >
+                                                <asp:CheckBox ID="chkChallan" runat="server"/>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                                    <asp:BoundField HeaderText="Category" DataField="CategoryName" />
+                                                    <asp:BoundField HeaderText="Sub Category" DataField="SubCategoryName" />
+                                                    <asp:BoundField HeaderText="Item" DataField="ItemName" />
+                                                    <asp:BoundField HeaderText="Unit" DataField="UnitName" />
+                                                     <asp:BoundField HeaderText="Batch No" DataField="Batch_no" />
+                                                     <asp:BoundField HeaderText="Mfg. Date" DataField="MfgDate" />
+                                                     <asp:BoundField HeaderText="Expiry Date" DataField="ExpiryDate" />
+                                                    <asp:BoundField HeaderText="Property1" DataField="Property_id1" Visible="False" />
+                                                    <asp:BoundField HeaderText="Property2" DataField="Property_id2" Visible="False" />
+                                                    <asp:BoundField HeaderText="Property3" DataField="Property_id3" Visible="False" />
+                                                    <asp:BoundField HeaderText="Property4" DataField="Property_id4" Visible="False" />
+                                                    <asp:BoundField HeaderText="Property5" DataField="Property_id5" Visible="False" />
+                                                    <asp:BoundField HeaderText="Quantity" DataField="Quantity" />
+                                                    <asp:BoundField HeaderText="Price" DataField="Price"  />
+                                                    <asp:BoundField HeaderText="Remark" DataField="Remark" />
+                                                    <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Images/Trash.gif" ShowDeleteButton="True" />
+                                                </Columns>
+                                                <FooterStyle BackColor="#F7DFB5" ForeColor="#29a531" />
+                                                <HeaderStyle Height="25px" BackColor="#29a531" Font-Bold="True" ForeColor="White" />
+                                                <PagerStyle ForeColor="#29a531" HorizontalAlign="Center" />
+                                                <RowStyle BorderStyle="Solid" BorderWidth="1px" BackColor="#FFF7E7" ForeColor="#29a531" />
+                                                <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
+                                                <SortedAscendingCellStyle BackColor="#FFF1D4" />
+                                                <SortedAscendingHeaderStyle BackColor="#B95C30" />
+                                                <SortedDescendingCellStyle BackColor="#F1E5CE" />
+                                                <SortedDescendingHeaderStyle BackColor="#93451F" />
+                                            </asp:GridView>
+                                        </div>
+
+                                        <div class="table table-responsive">
+                                            <asp:GridView ID="gvIngredience" runat="server" AutoGenerateColumns="False" CssClass="mydatagrid"
+                                                HeaderStyle-CssClass="gvheader" RowStyle-CssClass="gvrows" PagerStyle-CssClass="gvpager" BorderStyle="None" BorderWidth="1px" CellPadding="2" CellSpacing="1"
+                                                DataKeyNames="RowNo" Width="100%" OnRowDeleting="gvIngredience_RowDeleting"
+                                                OnRowDataBound="gvIngredience_RowDataBound">
+                                                <Columns>
+                                      <asp:TemplateField HeaderText="">
+                                            <HeaderTemplate >
+                                                <asp:CheckBox ID="chkAll" runat="server" onclick="SelectAllCheckboxesgvIngredience(this)" ToolTip="Check to Select All Item" />
+                                            </HeaderTemplate>
+                                            <ItemTemplate >
+                                                <asp:CheckBox ID="chkChallan" runat="server"/>
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                                    <asp:BoundField HeaderText="Category" DataField="CategoryName" HeaderStyle-ForeColor="white" />
+                                                    <asp:BoundField HeaderText="Sub Category" DataField="SubCategoryName" HeaderStyle-ForeColor="white" />
+                                                    <asp:BoundField HeaderText="Item" DataField="ItemName" HeaderStyle-ForeColor="white" />
+                                                    <asp:BoundField HeaderText="Unit" DataField="UnitName" HeaderStyle-ForeColor="white" />
+                                                    <asp:BoundField HeaderText="Per Quantity" DataField="PreQuantity" HeaderStyle-ForeColor="white" />
+                                                    <asp:TemplateField HeaderText="Total Quantity" HeaderStyle-ForeColor="white">
+                                                        <ItemTemplate>
+                                                            <asp:TextBox ID="received_quantity" runat="server" Text='<%# Eval("Quantity") %>'></asp:TextBox>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                     <asp:BoundField HeaderText="Unit(Total Quantity)" DataField="TotUnitName" HeaderStyle-ForeColor="white"/>
+                                                    <asp:BoundField HeaderText="Price" DataField="Price" HeaderStyle-ForeColor="white"  DataFormatString="{0:n2}"/>
+                                                    <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Images/Trash.gif" ShowDeleteButton="True"/>
+                                                    <asp:TemplateField>
+                                                        <ItemTemplate>
+                                                            <asp:HiddenField ID="item_id" Value='<%# Eval("Item_id") %>' runat="server" />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField>
+                                                        <ItemTemplate>
+                                                            <asp:HiddenField ID="unit_id" Value='<%# Eval("Unit_id") %>' runat="server" />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField>
+                                                        <ItemTemplate>
+                                                            <asp:HiddenField ID="property_id1" Value='<%# Eval("Property_id1") %>' runat="server" />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField>
+                                                        <ItemTemplate>
+                                                            <asp:HiddenField ID="property_id2" Value='<%# Eval("Property_id2") %>' runat="server" />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField>
+                                                        <ItemTemplate>
+                                                            <asp:HiddenField ID="property_id3" Value='<%# Eval("Property_id3") %>' runat="server" />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField>
+                                                        <ItemTemplate>
+                                                            <asp:HiddenField ID="property_id4" Value='<%# Eval("Property_id4") %>' runat="server" />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+                                                    <asp:TemplateField>
+                                                        <ItemTemplate>
+                                                            <asp:HiddenField ID="property_id5" Value='<%# Eval("Property_id5") %>' runat="server" />
+                                                        </ItemTemplate>
+                                                    </asp:TemplateField>
+
+                                                </Columns>
+                                                <FooterStyle BackColor="#F7DFB5" ForeColor="#29a531" />
+                                                <HeaderStyle Height="25px" BackColor="#29a531" Font-Bold="True" ForeColor="White" />
+                                                <PagerStyle ForeColor="#29a531" HorizontalAlign="Center" />
+                                                <RowStyle BorderStyle="Solid" BorderWidth="1px" BackColor="#FFF7E7" ForeColor="#29a531" />
+                                                <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
+                                                <SortedAscendingCellStyle BackColor="#FFF1D4" />
+                                                <SortedAscendingHeaderStyle BackColor="#B95C30" />
+                                                <SortedDescendingCellStyle BackColor="#F1E5CE" />
+                                                <SortedDescendingHeaderStyle BackColor="#93451F" />
+                                            </asp:GridView>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          <%--  <uc2:MsgBox ID="msgBox" runat="server" />--%>
+                            <uc1:MsgBoxs runat="server" ID="msgBox" />
+
+                        </div>
+                    </div>
+                </div>
+                 <div style="font-size:16px">
+                <div id="cpPrint" class="container-fluid" style="margin-top: 2%;font-family:Nikosh" runat="server" visible="true">
+                    <div class="row">
+    <table style="border:none;width: 100%;">
+                <tr>
+                    <th colspan="2" scope="colgroup" style="text-align: center; border:none"
+                    </th>
+                </tr>
+         <tr>
+        <td> <img src="../../Images/bdlogo.png" style="height:50px;margin-left:80px;" ></img></td>
+         <td>
+               <div class="row" style=" font-size: 16px;">
+                         <p style="text-align: center">             
+                         <p><b>Issue / চুক্তিভিত্তিক উৎপাদনের চালানপত্র </b> </p>  
+                         <p> <strong style="text-align: center; border: 1px solid gray; float: right;font-size:20px">মূসক-৬.৪</strong> </p>  
+                         <p>  [বিধি ৪০ এর উপ-বিধি (১) এর দফা (ঘ) দ্রষ্টব্য]</p>         
+               </div>    
+          </td>
+    
+        </table>
+                       
+                          
+                          
+                        
+                          
+                    </div>
+                    <div style="font-size:12px">
+                    <div class="row" style="margin-top: 4%">
+                        <p style="margin-left: 35%">নিবন্ধিত ব্যাক্তির নাম :<asp:Label runat="server" ID="OrgName" /></p>
+                         <p style="margin-left: 35%">নিবন্ধিত ব্যাক্তির বিআইএন :<asp:Label runat="server" ID="OrgBIN" /></p>
+                         <p style="margin-left: 35%">চালান ইস্যুর ঠিকানা :<asp:Label runat="server" ID="OrgAddress" /></p>
+                       <%-- <p style="margin-left: 35%">করদাতা সনাক্তকরণ সংখ্যা :<asp:Label runat="server" ID="OrgBIN" Visible="false" /></p>--%>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6" style="width: 50%; float: left">
+                            <p>
+                               <%-- উৎপাদনকারী প্রতিষ্ঠানের নাম :--%>
+                                পণ্য গ্রহিতার নাম :
+                                <asp:Label runat="server" ID="PartyName" /></p>
+                            
+                            <p>
+                               <%-- করদাতা সনাক্তকরণ সংখ্যা :--%>
+                                গ্রহীতার বিআইএন :
+                                <asp:Label runat="server" ID="PartyBIN" /></p>
+                           
+                            <p>
+                              <%--  ঠিকানা :--%>
+                                গন্তব্যস্থল :
+                                <asp:Label runat="server" ID="PartyAddress" /></p>
+                             <p style="display:none;">যানবাহনের প্রকৃতি ও নম্বর :
+                                <asp:Label runat="server" ID="vehicleType" /></p>
+                        </div>
+                        <div class="col-sm-6" style="width: 49%; float: left">
+                           <%-- <p>চালান পত্রের ক্রমিক সংখ্যা :--%>
+                             <p>চালানপত্র নম্বর :
+                                <asp:Label runat="server" ID="ChallanNo" /></p>
+                            <p>
+                               <%-- চালানপত্র প্রদানের তারিখ :--%>
+                                ইস্যুর তারিখ :
+                                <asp:Label runat="server" ID="ChallanIssueDate" /></p>
+                            <p>
+                               <%-- চালানপত্র প্রদানের সময় :--%>
+                                ইস্যুর সময় :
+                                <asp:Label runat="server" ID="ChallanIssueTime" /></p>
+                            <p style="display:none;">উপকরণ অপসারণের প্রকৃত তারিখ ও সময় :
+                                <asp:Label runat="server" ID="ChallanDeliverDate" /></p>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 3%">
+                        <table class="table table-bordered" style="width: 100%; text-align: center; background: none; border-collapse: collapse">
+                            <tr>
+                                <td style="border: 1px solid gray">ক্রমিক নং
+                                </td>
+                               <%-- <td style="border: 1px solid gray">সরবরাহকৃত উপকরণ নাম ও বিবরণ
+                                </td>--%>
+                                 <td style="border: 1px solid gray">  প্রকৃতি (উপকরণ বা উৎপাদিত পণ্য)
+                                </td>
+                               <td style="border: 1px solid gray">  পণ্যের বিবরণ
+                                </td>
+                                <td style="border: 1px solid gray">পরিমাণ
+                                </td>
+                                <%--<td style="border: 1px solid gray">মূল্য (করসহ) 
+                                </td>--%>
+                                <td style="border: 1px solid gray">মন্তব্য
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid gray">(১)
+                                </td>
+                                <td style="border: 1px solid gray">(২)
+                                </td>
+                                <td style="border: 1px solid gray">(৩)
+                                </td>
+                                <td style="border: 1px solid gray">(৪)
+                                </td>
+                                <td style="border: 1px solid gray">(৫)
+                                </td>
+                            </tr>
+                            <tr>
+                                <asp:Label runat="server" ID="HaiMan"></asp:Label>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="row" style="margin-top: 10px">
+                        <p>
+                           <%-- সত্ত্বাধিকারী/ব্যবস্থাপনা কর্তৃপক্ষের স্বাক্ষর--%>
+                            দায়িত্বপ্রাপ্ত কর্মকর্তার স্বাক্ষর
+                        </p>
+                        <p>
+                            নাম : 
+                            <asp:Label runat="server" ID="lblDutyOfficer" />
+                        </p>
+                    </div>
+                          <div style="text-align:right;font-size:11px;">
+                          System Generated (VATPROMPT)
+                      </div>
+                </div>
+                    </div>
+                     </div>
+                <asp:Button ID="btnPrintReport" runat="server" CssClass="btn btn-info" Style="float: right"
+                    Text="Print" OnClientClick="return PrintPanel();" Visible="false" />
+            </ContentTemplate>
+        </asp:UpdatePanel>
+
+    </div>
+
+    <!-- eita -->
+    <script language="javascript">
+        Sys.UI.Point = function Sys$UI$Point(x, y) {
+
+            x = Math.round(x);
+            y = Math.round(y);
+
+            var e = Function._validateParams(arguments, [
+                {name: "x", type: Number, integer: true},
+                {name: "y", type: Number, integer: true}
+            ]);
+            if (e) throw e;
+            this.x = x;
+            this.y = y;
+        }
+    </script>
+</asp:Content>

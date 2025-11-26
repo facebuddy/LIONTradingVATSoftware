@@ -1,0 +1,149 @@
+﻿body
+{
+}
+
+.MainTitle
+{
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto; /* Or auto */
+    padding: 0 0 0 0; /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    color: Orange;
+    margin: 0 auto;
+    font-size: 10px;
+}
+
+.MainTable
+{
+    border: 0px;
+    cellpadding: 0px;
+    cellspacing: 0px;
+    width: 100%;
+}
+
+.HeaderRow
+{
+    width: 100%;
+    height: 50px;
+}
+.DataRow
+{
+    height: 20px;
+}
+
+.HeaderTD
+{
+    width: 16.66%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    border-style: solid;
+    border-width: 2px;
+    color: #F7F7F7;
+    background-color: #5295C0;
+}
+
+.ChartDropDown
+{
+    width: 50%;
+    text-align: left;
+    font-size: 15px;
+    font-weight: bold;
+    border-style: solid;
+
+}
+.HeaderTDBackup
+{
+    width: 20%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    border-style: solid;
+    border-width: 2px;
+    color: #F7F7F7;
+    background-color: #5295C0;
+}
+
+.DataTD
+{
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    width: 16.66%;
+}
+
+.DataTDForChart
+{
+    
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    width: 100%;
+    height : 200px"
+}
+
+.DataTDBackup
+{
+    border-style: solid;
+    border-width: 1px;
+    text-align: center;
+    width: 20%;
+}
+
+legend.scheduler-borderBold
+{
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto; /* Or auto */
+    padding: 0 0 0 0; /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    color: Orange;
+    margin: 0 auto;
+    font-size: 18px;
+}
+
+
+
+legend.scheduler-border
+{
+    font-size: 1em !important;
+    font-weight: bold !important;
+    text-align: left !important;
+    width: auto; /* Or auto */
+    padding: 0 0 0 0; /* To give a bit of padding on the left and right */
+    border-bottom: none;
+    color: Orange;
+    margin: 0 auto;
+}
+
+fieldset.scheduler-border
+{
+    border: 2px groove #F8DEBD !important;
+    padding: 0em 0em 0.4em 0em !important;
+    margin: 1em 01em 0 01em !important;
+    -webkit-box-shadow: 0px 0px 0px 0px #000;
+    box-shadow: 0px 0px 0px 0px #000;
+    margin-right: 2px;
+    margin-left: 2px;
+}
+
+.color_code
+{
+    color: #FFFFFF;
+}
+
+.blink {
+  color: #FF0000;
+  animation: blinker 1s linear infinite;
+}
+
+.blink>td:nth-child(1) {
+  background-color: #080;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}

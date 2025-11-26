@@ -1,0 +1,439 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Drawing.Printing;
+using System.Drawing;
+using System.IO;
+using System.Web.UI.HtmlControls;
+using System.Text;
+using System.Drawing;
+using System.Drawing.Imaging;
+
+
+
+
+
+public partial class Reports_Mushok_1 : System.Web.UI.Page
+{
+
+    #region Declare
+
+    PriceDeclaretionBLL objPDBll = new PriceDeclaretionBLL();
+    PriceDeclaretionDAO objPDDao = new PriceDeclaretionDAO();
+    PriceDeclaretionRawDAO objPDRDao = new PriceDeclaretionRawDAO();
+    PriceDeclaretionValueAdditionDAO objPDVADao = new PriceDeclaretionValueAdditionDAO();
+    SetItemBLL ItemBll = new SetItemBLL();
+    SetItemBLL objSIBll = new SetItemBLL();
+    int flag = 0;
+
+
+
+
+
+    #endregion
+
+    #region Constructor
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+        MQMM.LoginCheckForUser();
+        if (!IsPostBack)
+        {
+            loadDeclaretionNo();
+            lblPrintDateTime.Text = DateTime.Now.ToString("dd-MMM-yyyy hh:mm:ss tt");
+            lblUser.Text = Session["employee_name"].ToString();
+
+        }
+
+    }
+
+    #endregion
+
+    #region Methods
+
+    private void loadDeclaretionNo()
+    {
+        DataTable dt = objPDBll.getValueDeclaretionNumber();
+        drpDeclaretionNo.DataSource = dt;
+        drpDeclaretionNo.DataTextField = "price_declaration_no";
+        drpDeclaretionNo.DataValueField = "price_id";
+        drpDeclaretionNo.DataBind();
+
+
+        ListItem li = new ListItem("-- Select --", "-99");
+        drpDeclaretionNo.Items.Insert(0, li);
+    }
+
+    private void LoadFullReport()
+    {
+        string displayHtml = "";
+        Int16 id = Convert.ToInt16(drpDeclaretionNo.SelectedItem.Value.ToString());
+        DataTable dt = objPDBll.getprice_raw_item_ForCostSheet(id);
+        //DataTable dtImport = objPDBll.getprice_raw_item_ForCostSheet_Import(id);//03.08.2019
+        string totalSUM = string.Empty;
+        decimal finalTotalPrice = 0;
+
+        if (dt != null && dt.Rows.Count > 0)
+        {
+            displayHtml = "";
+            string item_name = string.Empty;
+            string quantity_total = string.Empty;
+            string unit_code = string.Empty;
+            string wastageparcent = string.Empty;
+            string wastage_quantity = string.Empty;
+            string quantity = string.Empty;
+            //string challanprice = string.Empty;
+            decimal challanprice = 0;
+            string challan_quantity = string.Empty;
+            string productionquantity = string.Empty;
+            string txtquantityprice = string.Empty;
+
+            //03 - Aug - 2019 start
+            string strItemId = string.Empty;
+            string strReference = string.Empty;
+            int challanId = 0;
+            //03-Aug-2019 end
+            //1-9-19
+            decimal pquantity = 0;
+            decimal strCD = 0;
+            decimal strRD = 0;
+            decimal strOtherCost = 0;
+            decimal totalPrice = 0;
+            string purchaseType = string.Empty;
+            decimal unitPrice = 0;
+
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                decimal landingprice = 0;
+                //decimal incurense = 0;
+                decimal AssesedValue = 0;
+                decimal importedValue = 0;
+                item_name = dt.Rows[i]["item_name"].ToString();
+                quantity_total = dt.Rows[i]["quantity_total"].ToString();
+                unit_code = dt.Rows[i]["unit_code"].ToString();
+                wastageparcent = dt.Rows[i]["wastageparcent"].ToString();
+                wastage_quantity = dt.Rows[i]["wastage_quantity"].ToString();
+                quantity = dt.Rows[i]["quantity"].ToString();
+                challanprice = Convert.ToDecimal(dt.Rows[i]["challanprice"].ToString());
+                challan_quantity = dt.Rows[i]["challan_quantity"].ToString();
+                productionquantity = dt.Rows[i]["productionquantity"].ToString();
+                txtquantityprice = dt.Rows[i]["txtquantityprice"].ToString();
+                //ehsan1/9/19
+                strCD = Convert.ToDecimal(dt.Rows[i]["cd"].ToString());
+                strRD = Convert.ToDecimal(dt.Rows[i]["rd"].ToString());
+                strOtherCost = Convert.ToDecimal(dt.Rows[i]["other_cost"]);
+                purchaseType = dt.Rows[i]["purchase_type"].ToString();
+                unitPrice = Convert.ToDecimal(dt.Rows[i]["purchase_unit_price"].ToString());
+                pquantity = Convert.ToDecimal(dt.Rows[i]["challan_quantity"]);
+                //03-Aug-2019 start
+                strItemId = dt.Rows[i]["item_id"].ToString();
+                strReference = dt.Rows[i]["reference"].ToString();
+                challanId = objPDBll.GetChallanId(strReference);
+                //03-Aug-2019 end
+                if (purchaseType == "I")
+                {
+                    importedValue = pquantity * unitPrice;
+                    landingprice = importedValue + (importedValue * Convert.ToDecimal(0.01));
+                    AssesedValue = landingprice + (landingprice * Convert.ToDecimal(0.01));
+                }
+                else
+                {
+                    AssesedValue = pquantity * unitPrice;
+                }
+
+
+                displayHtml += "<tr style = 'background-color: White'>";
+                displayHtml += "<td class='style10' align='left' style='width: 10% ;border-style:solid;border-width:1px'>" + item_name + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challan_quantity + "</td>";
+                displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + AssesedValue + "</td>";
+                //displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + quantity_total + "</td>";
+
+                //CD,RD value from purchase tables (03-Aug-2019) start
+                //decimal strCD = 0;
+                //decimal strRD = 0;
+                //decimal strOtherCost = 0;
+                //decimal totalPrice = 0;
+                //DataTable dtImport = objPDBll.getprice_raw_item_ForCostSheet_Import(Convert.ToInt32(strItemId), challanId);//03.08.2019
+                //if(dtImport.Rows.Count>0)
+                //{
+                //    strCD= Convert.ToDecimal(dtImport.Rows[0]["cd"].ToString());
+                //    strRD = Convert.ToDecimal(dtImport.Rows[0]["rd"].ToString());
+                //    strOtherCost= Convert.ToDecimal(dtImport.Rows[0]["other_cost"].ToString()); 
+                //}
+                //else
+                //{
+                //    strCD = 0;
+                //    strRD = 0;
+                //    strOtherCost = 0;
+                //}
+                //totalPrice = challanprice + strCD + strRD + strOtherCost;
+                totalPrice = AssesedValue + strCD + strRD + strOtherCost;
+                finalTotalPrice += totalPrice;
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + strCD + "</td>";
+                displayHtml += "<td class='style13' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + strRD + "</td>";
+                displayHtml += "<td class='style15' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + strOtherCost + "</td>";
+                displayHtml += "<td class='style10' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + totalPrice + "</td>";
+                //CD,RD value from purchase tables (03-Aug-2019) end
+
+
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + unit_code + "</td>";
+                //displayHtml += "<td class='style13' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + wastageparcent + "</td>";
+                //displayHtml += "<td class='style15' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + wastage_quantity + "</td>";
+                //displayHtml += "<td class='style10' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + quantity + "</td>";
+                displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + quantity_total + "</td>";
+                //displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challanprice + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challan_quantity + "</td>";
+                //displayHtml += "<td class='style13' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + productionquantity + "</td>";
+                displayHtml += "<td class='style15' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + txtquantityprice + "</td>";
+                displayHtml += "</tr>";
+                //lblInfoShow.Text = displayHtml;
+            }
+
+        }
+
+
+
+        DataTable dtValueAdded = objPDBll.getValueAdded(id);
+        if (dtValueAdded != null && dtValueAdded.Rows.Count > 0)
+        {
+            //string displayHtml = "";
+            string item_name = string.Empty;
+            string quantity_total = string.Empty;
+            string unit_code = string.Empty;
+            string wastageparcent = string.Empty;
+            string wastage_quantity = string.Empty;
+            string quantity = string.Empty;
+            string challanprice = string.Empty;
+            string challan_quantity = string.Empty;
+            string productionquantity = string.Empty;
+            string txtquantityprice = string.Empty;
+
+            for (int i = 0; i < dtValueAdded.Rows.Count; i++)
+            {
+                item_name = dtValueAdded.Rows[i]["item_name"].ToString();
+                quantity_total = dtValueAdded.Rows[i]["quantity_total"].ToString();
+                unit_code = dtValueAdded.Rows[i]["unit_code"].ToString();
+                wastageparcent = dtValueAdded.Rows[i]["wastageparcent"].ToString();
+                wastage_quantity = dtValueAdded.Rows[i]["wastage_quantity"].ToString();
+                quantity = dtValueAdded.Rows[i]["quantity"].ToString();//
+                challanprice = dtValueAdded.Rows[i]["challanprice"].ToString();
+                challan_quantity = dtValueAdded.Rows[i]["challan_quantity"].ToString();
+                productionquantity = dtValueAdded.Rows[i]["productionquantity"].ToString();
+                txtquantityprice = dtValueAdded.Rows[i]["txtquantityprice"].ToString();
+
+
+                displayHtml += "<tr style = 'background-color: White'>";
+                displayHtml += "<td class='style10' align='left' style='width: 10% ;border-style:solid;border-width:1px'>" + item_name + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challan_quantity + "</td>";
+                displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challanprice + "</td>";
+                displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + quantity_total + "</td>";
+                displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + unit_code + "</td>";
+                displayHtml += "<td class='style13' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + wastageparcent + "</td>";
+                displayHtml += "<td class='style15' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + wastage_quantity + "</td>";
+                displayHtml += "<td class='style10' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + quantity + "</td>";
+                //displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challanprice + "</td>";
+                //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challan_quantity + "</td>";
+                //displayHtml += "<td class='style13' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + productionquantity + "</td>";
+                displayHtml += "<td class='style15' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + txtquantityprice + "</td>";
+                displayHtml += "</tr>";
+                //lblInfoShow.Text = displayHtml;
+            }
+
+        }
+
+
+
+        DataTable dtTotalPrice = objPDBll.getTotalQuantityPrice(id);
+        DataTable dt1stAddition = objPDBll.get1stAddition(id);
+        DataTable dt2ndAddition = objPDBll.get2ndAddition(id);
+
+        string get1stAddition = dt1stAddition.Rows[0]["item_value"].ToString();
+        if (get1stAddition.Length == 0)
+        {
+            get1stAddition = Convert.ToString(0);
+        }
+        string dt2ndAdd = dt2ndAddition.Rows[0]["item_value"].ToString();
+        if (dt2ndAdd.Length == 0)
+        {
+            dt2ndAdd = Convert.ToString(0);
+        }
+        string GTotalPrice = dtTotalPrice.Rows[0]["txtquantityprice"].ToString();
+        if (GTotalPrice.Length > 0)
+        {
+            totalSUM = Convert.ToString(Convert.ToDecimal(GTotalPrice) + Convert.ToDecimal(get1stAddition) + Convert.ToDecimal(dt2ndAdd));
+        }
+
+        DataTable dtTotatValuesALL = objPDBll.GetTotatValuesALL(id);
+
+
+
+        string item_name1 = "মোট মূল্য ";
+        // string quantity_total1 = dtTotatValuesALL.Rows[0]["quantity_total_sum"].ToString();
+        string quantity_total1 = "--";
+        string unit_code1 = "--";
+
+        string wastageparcent1 = "--";
+        // string wastage_quantity1 = dtTotatValuesALL.Rows[0]["wastage_quantity_sum"].ToString();
+        string wastage_quantity1 = "--";
+        string quantity1 = dtTotatValuesALL.Rows[0]["quantity_sum"].ToString();
+
+        string challanprice1 = "--";
+
+        string challan_quantity1 = "--";
+
+        string productionquantity1 = "--";
+        string txtquantityprice1 = totalSUM;
+
+
+        displayHtml += "<tr style = 'background-color: White'>";
+        displayHtml += "<td class='style10' align='right' style='width: 10% ;border-style:solid;border-width:1px'>" + item_name1 + "</td>";
+        displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challan_quantity1 + "</td>";
+        displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challanprice1 + "</td>";
+        displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: antiquewhite'>" + quantity_total1 + "</td>";
+        displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + unit_code1 + "</td>";
+        displayHtml += "<td class='style13' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + wastageparcent1 + "</td>";
+        displayHtml += "<td class='style15' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: antiquewhite'>" + finalTotalPrice + "</td>";
+        displayHtml += "<td class='style10' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: antiquewhite'>" + quantity1 + "</td>";
+        //displayHtml += "<td class='style11' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challanprice1 + "</td>";
+        //displayHtml += "<td class='style14' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + challan_quantity1 + "</td>";
+        //displayHtml += "<td class='style13' align='center' style='width: 10% ;border-style:solid;border-width:1px'>" + productionquantity1 + "</td>";
+        displayHtml += "<td class='style15' align='center' style='width: 10% ;border-style:solid;border-width:1px; background-color: antiquewhite'>" + txtquantityprice1 + "</td>";
+        displayHtml += "</tr>";
+        lblInfoShow.Text = displayHtml;
+        Session["DISPLAYHTML"] = displayHtml;
+    }
+
+    #endregion
+
+    #region Events
+
+    protected void btnReport_Click(object sender, EventArgs e)
+    {
+        if (drpDeclaretionNo.SelectedValue == "-99")
+        {
+            //ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "err_msg", "alert('Please select first.');", true);
+            msgBox.AddMessage("Information: " + AllConstraint.strNoRecord, MsgBoxs.enmMessageType.Error);
+            drpDeclaretionNo.Focus();
+            lblInfoShow.Text = string.Empty;
+            return;
+        }
+        else
+        {
+            LoadFullReport();
+        }
+    }
+
+    #endregion
+
+    //protected void btnPrint_Click(object sender, EventArgs e)
+    //{
+
+    //    DataTable dt = objPDBll.GetReportStatus();
+
+
+    //    if (dt != null && dt.Rows.Count > 0)
+    //    {
+
+
+    //        if (dt.Rows[0]["is_printed"].ToString() == "False")
+    //        {
+
+    //            System.Drawing.Printing.PageSettings a = new PageSettings();
+    //            a.PrinterSettings.Copies = 3;
+
+
+    //            Page.ClientScript.RegisterStartupScript(this.GetType(), "alert", "PrintPanel();", true);
+
+    //            bool RESULT = objPDBll.updateReportStatus();
+
+    //            if (RESULT == true)
+    //            {
+    //                btnPrint.Enabled = false;
+    //            }
+    //            else
+    //            {
+    //                btnPrint.Enabled = true;
+    //            }
+    //        }
+
+    //        else
+    //        {
+    //            btnPrint.Enabled = false;
+    //        }
+    //    }
+    //}
+
+    #region Silent Print
+    //private void printDocument1_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+    //{
+
+    //    Graphics g = e.Graphics;
+    //    SolidBrush Brush = new SolidBrush(Color.Black);
+
+
+    //    //string printText = TextBox1.Text;
+    //    //g.DrawString(printText, new Font("arial", 12), Brush, 10, 10);
+
+    //}
+
+    //protected void testPrint_Click(object sender, EventArgs e)
+    //{
+    //    try
+    //    {
+    //        string Time = DateTime.Now.ToString("yymmddHHMM");
+    //        System.Drawing.Printing.PrinterSettings ps = new System.Drawing.Printing.PrinterSettings();
+    //        System.Drawing.Printing.PageSettings a = new PageSettings();
+    //        a.PrinterSettings.Copies = 3;
+
+    //        ps.PrintToFile = true;
+    //        // ps.PrintFileName = "D:\\PRINT\\Print_"+Time+".oxps"; /* you can save file here */
+
+
+    //        //Page.ClientScript.RegisterStartupScript(this.GetType(), "noalert", "PrintPanel();", true);
+    //        System.Drawing.Printing.PrintDocument pd = new System.Drawing.Printing.PrintDocument();
+    //        pd.PrintPage += new PrintPageEventHandler(printDocument1_PrintPage);
+    //        System.Drawing.Printing.StandardPrintController printControl = new System.Drawing.Printing.StandardPrintController();
+    //        pd.PrintController = printControl;
+    //        pd.DefaultPageSettings.Landscape = true;
+    //        pd.PrinterSettings = ps;
+
+    //        pd.Print();
+
+
+    //        ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('Printed Successfully.Check: Drive D')", true);
+
+
+    //    }
+    //    catch (Exception ex)
+    //    {
+
+    //    }
+
+
+    //}
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    protected void testPrint_Click(object sender, EventArgs e)
+    {
+
+    }
+}
