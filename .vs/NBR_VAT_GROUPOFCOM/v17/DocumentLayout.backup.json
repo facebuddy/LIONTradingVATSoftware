@@ -3,16 +3,36 @@
   "WorkspaceRootPath": "E:\\LIONTradingVATSoftware\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|e:\\liontradingvatsoftware\\nbr_vat_groupofcom\\bll\\workorderbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|e:\\liontradingvatsoftware\\nbr_vat_groupofcom\\reports\\destroy_inputs_form27.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\reports\\destroy_inputs_form27.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|e:\\liontradingvatsoftware\\nbr_vat_groupofcom\\reports\\destroy_inputs_form27.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\reports\\destroy_inputs_form27.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\reports\\challan_form11s.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\reports\\challan_form11s.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\reports\\challan_form11s.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
+      "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\reports\\challan_form11s.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\dashboardvtr.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}",
+      "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\dashboardvtr.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\reports\\dispose_inputs_form26s.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\reports\\dispose_inputs_form26s.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\bll\\workorderbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\bll\\workorderbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\reports\\periodicstockreportsnew.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\reports\\periodicstockreportsnew.aspx.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|e:\\liontradingvatsoftware\\nbr_vat_groupofcom\\reports\\destroy_inputs_form27.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}",
-      "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\reports\\destroy_inputs_form27.aspx||{57312C73-6202-49E9-B1E1-40EA1A6DC1F6}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\web.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
@@ -21,10 +41,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\bll\\periodicreportbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\bll\\periodicreportbll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|E:\\LIONTradingVATSoftware\\nbr_vat_groupofcom\\dashboardvtr.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}",
-      "RelativeMoniker": "D:0:0:{9CB037B7-B5A3-4F7E-985F-05E6B997DD8B}|NBR_VAT_GROUPOFCOM\\NBR_VAT_GROUPOFCOM.csproj|solutionrelative:nbr_vat_groupofcom\\dashboardvtr.master||{B30AFBFF-D992-43B7-B62D-2642580A2883}"
     }
   ],
   "DocumentGroupContainers": [
@@ -43,6 +59,31 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "Destroy_Inputs_Form27.aspx.cs",
+              "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Destroy_Inputs_Form27.aspx.cs",
+              "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\Reports\\Destroy_Inputs_Form27.aspx.cs",
+              "ToolTip": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Destroy_Inputs_Form27.aspx.cs",
+              "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\Reports\\Destroy_Inputs_Form27.aspx.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T21:08:11.9Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Challan_Form11s.aspx",
+              "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Challan_Form11s.aspx",
+              "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\Reports\\Challan_Form11s.aspx",
+              "ToolTip": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Challan_Form11s.aspx",
+              "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\Reports\\Challan_Form11s.aspx",
+              "LogicalView": "7651a703-06e5-11d1-8ebd-00a0c90f26ea",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
+              "WhenOpened": "2025-11-27T20:44:17.458Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
               "Title": "WorkOrderBLL.cs",
               "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\BLL\\WorkOrderBLL.cs",
               "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\BLL\\WorkOrderBLL.cs",
@@ -50,25 +91,11 @@
               "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\BLL\\WorkOrderBLL.cs",
               "ViewState": "AgIAAAkAAAAAAAAAAAAnwBkAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-27T18:54:01.31Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-27T18:54:01.31Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PeriodicReportBLL.cs",
-              "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\BLL\\PeriodicReportBLL.cs",
-              "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\BLL\\PeriodicReportBLL.cs",
-              "ToolTip": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\BLL\\PeriodicReportBLL.cs",
-              "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\BLL\\PeriodicReportBLL.cs",
-              "ViewState": "AgIAAB0CAAAAAAAAAAAnwC0CAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T18:06:25.262Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 8,
               "Title": "Web.config",
               "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Web.config",
               "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\Web.config",
@@ -81,7 +108,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 4,
               "Title": "DashboardVTR.Master",
               "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\DashboardVTR.Master",
               "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\DashboardVTR.Master",
@@ -95,19 +122,6 @@
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "PeriodicStockReportsNew.aspx.cs",
-              "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\PeriodicStockReportsNew.aspx.cs",
-              "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\Reports\\PeriodicStockReportsNew.aspx.cs",
-              "ToolTip": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\PeriodicStockReportsNew.aspx.cs",
-              "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\Reports\\PeriodicStockReportsNew.aspx.cs",
-              "ViewState": "AgIAAEsFAAAAAAAAAAAnwFsFAAAQAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-26T09:34:11.538Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "Destroy_Inputs_Form27.aspx",
               "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Destroy_Inputs_Form27.aspx",
               "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\Reports\\Destroy_Inputs_Form27.aspx",
@@ -117,6 +131,54 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000195|",
               "WhenOpened": "2025-11-26T18:30:52.161Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Challan_Form11s.aspx.cs",
+              "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Challan_Form11s.aspx.cs",
+              "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\Reports\\Challan_Form11s.aspx.cs",
+              "ToolTip": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Challan_Form11s.aspx.cs",
+              "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\Reports\\Challan_Form11s.aspx.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T20:44:54.295Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Dispose_Inputs_Form26s.aspx.cs",
+              "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Dispose_Inputs_Form26s.aspx.cs",
+              "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\Reports\\Dispose_Inputs_Form26s.aspx.cs",
+              "ToolTip": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\Dispose_Inputs_Form26s.aspx.cs",
+              "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\Reports\\Dispose_Inputs_Form26s.aspx.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T20:25:56.927Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "PeriodicReportBLL.cs",
+              "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\BLL\\PeriodicReportBLL.cs",
+              "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\BLL\\PeriodicReportBLL.cs",
+              "ToolTip": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\BLL\\PeriodicReportBLL.cs",
+              "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\BLL\\PeriodicReportBLL.cs",
+              "ViewState": "AgIAAB0CAAAAAAAAAAAnwC0CAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T18:06:25.262Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PeriodicStockReportsNew.aspx.cs",
+              "DocumentMoniker": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\PeriodicStockReportsNew.aspx.cs",
+              "RelativeDocumentMoniker": "NBR_VAT_GROUPOFCOM\\Reports\\PeriodicStockReportsNew.aspx.cs",
+              "ToolTip": "E:\\LIONTradingVATSoftware\\NBR_VAT_GROUPOFCOM\\Reports\\PeriodicStockReportsNew.aspx.cs",
+              "RelativeToolTip": "NBR_VAT_GROUPOFCOM\\Reports\\PeriodicStockReportsNew.aspx.cs",
+              "ViewState": "AgIAAFgFAAAAAAAAAAAnwFwFAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-26T09:34:11.538Z"
             }
           ]
         }
