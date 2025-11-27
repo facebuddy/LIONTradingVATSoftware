@@ -267,6 +267,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
             try
             {
                 int num = (!string.IsNullOrWhiteSpace(this.precisionTxtBox.Text) ? (int)Convert.ToInt16(this.precisionTxtBox.Text) : -1);
+                string zeroDisplay = this.GetZeroDisplay(num);
                 IRow rows = sheet.CreateRow(rowIndex);
                 this.excelUtility.CreateCell(rows, 0, string.Concat(i + 1), headerStyle);
                 this.excelUtility.CreateCell(rows, 1, dt.Rows[i]["item"].ToString() ?? "", headerStyle);
@@ -280,8 +281,8 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 3, "-", headerStyle);
-                        this.excelUtility.CreateCell(rows, 4, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 3, zeroDisplay, headerStyle);
+                        this.excelUtility.CreateCell(rows, 4, zeroDisplay, headerStyle);
                     }
                 }
                 if (this.chk2.Checked)
@@ -292,7 +293,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 5, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 5, zeroDisplay, headerStyle);
                     }
                     if (PurPrice != new decimal(0))
                     {
@@ -300,7 +301,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 6, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 6, zeroDisplay, headerStyle);
                     }
                     if (PurSD != new decimal(0))
                     {
@@ -308,7 +309,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 7, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 7, zeroDisplay, headerStyle);
                     }
                     if (PurVat != new decimal(0))
                     {
@@ -316,7 +317,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 8, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 8, zeroDisplay, headerStyle);
                     }
                 }
                 if (this.chk3.Checked)
@@ -327,7 +328,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 9, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 9, zeroDisplay, headerStyle);
                     }
                     if (ProductionPrice != new decimal(0))
                     {
@@ -335,7 +336,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 10, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 10, zeroDisplay, headerStyle);
                     }
                     if (ProductionSD != new decimal(0))
                     {
@@ -343,7 +344,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 11, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 11, zeroDisplay, headerStyle);
                     }
                     if (ProductionVat != new decimal(0))
                     {
@@ -351,7 +352,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 12, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 12, zeroDisplay, headerStyle);
                     }
                 }
                 if (this.chk4.Checked)
@@ -362,7 +363,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 13, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 13, zeroDisplay, headerStyle);
                     }
                     if (SalePrice != new decimal(0))
                     {
@@ -370,7 +371,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 14, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 14, zeroDisplay, headerStyle);
                     }
                     if (SaleSD != new decimal(0))
                     {
@@ -378,7 +379,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 15, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 15, zeroDisplay, headerStyle);
                     }
                     if (SaleVat != new decimal(0))
                     {
@@ -386,7 +387,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 16, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 16, zeroDisplay, headerStyle);
                     }
                 }
                 if (this.chk5.Checked)
@@ -397,7 +398,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 17, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 17, zeroDisplay, headerStyle);
                     }
                     if (ExtPrice != new decimal(0))
                     {
@@ -405,7 +406,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 18, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 18, zeroDisplay, headerStyle);
                     }
                 }
                 if (this.chk6.Checked)
@@ -417,7 +418,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        this.excelUtility.CreateCell(rows, 19, "-", headerStyle);
+                        this.excelUtility.CreateCell(rows, 19, zeroDisplay, headerStyle);
                     }
                 }
             }
@@ -442,9 +443,21 @@ namespace NBR_VAT_GROUPOFCOM.Reports
             return new decimal(0);
         }
 
+        private string GetZeroDisplay(int precision)
+        {
+            string formattedZero = Utilities.RoundUpToWithString(new decimal(0), precision);
+            if (string.IsNullOrWhiteSpace(formattedZero))
+            {
+                formattedZero = "0";
+            }
+
+            return formattedZero;
+        }
+
         private string GetDataHtml(string displayHTML, int i, DataTable dt, decimal PreQuantity, long item_iddt, string sPreQty, decimal PrePrice, decimal PurQuantity, string sPurQty, decimal PurPrice, decimal PurSD, decimal PurVat, decimal ProductionQuantity, string sProductionQty, decimal ProductionPrice, decimal ProductionSD, decimal ProductionVat, decimal SaleQuantity, string sSaleQty, decimal SalePrice, decimal SaleSD, decimal SaleVat, decimal ExtQuantity, string sExtQty, decimal ExtPrice, decimal weightQuantity)
         {
             int num = (!string.IsNullOrWhiteSpace(this.precisionTxtBox.Text) ? (int)Convert.ToInt16(this.precisionTxtBox.Text) : -1);
+            string zeroDisplay = this.GetZeroDisplay(num);
             displayHTML = string.Concat(displayHTML, "<tr>");
             object obj = displayHTML;
             object[] objArray = new object[] { obj, "<td style='text-align:left;padding:5px'>", i + 1, "</td>" };
@@ -471,10 +484,10 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj2 = displayHTML;
-                    object[] objArray1 = new object[] { obj2, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray1 = new object[] { obj2, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray1);
                     object obj3 = displayHTML;
-                    object[] objArray2 = new object[] { obj3, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray2 = new object[] { obj3, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray2);
                 }
             }
@@ -498,7 +511,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj4 = displayHTML;
-                    object[] objArray3 = new object[] { obj4, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray3 = new object[] { obj4, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray3);
                 }
                 if (PurPrice != new decimal(0))
@@ -508,7 +521,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj5 = displayHTML;
-                    object[] objArray4 = new object[] { obj5, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray4 = new object[] { obj5, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray4);
                 }
                 if (PurSD != new decimal(0))
@@ -518,7 +531,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj6 = displayHTML;
-                    object[] objArray5 = new object[] { obj6, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray5 = new object[] { obj6, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray5);
                 }
                 if (PurVat != new decimal(0))
@@ -528,7 +541,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj7 = displayHTML;
-                    object[] objArray6 = new object[] { obj7, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray6 = new object[] { obj7, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray6);
                 }
             }
@@ -560,7 +573,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj8 = displayHTML;
-                    object[] objArray7 = new object[] { obj8, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray7 = new object[] { obj8, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray7);
                 }
                 if (ProductionPrice != new decimal(0))
@@ -570,7 +583,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj9 = displayHTML;
-                    object[] objArray8 = new object[] { obj9, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray8 = new object[] { obj9, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray8);
                 }
                 if (ProductionSD != new decimal(0))
@@ -580,7 +593,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj10 = displayHTML;
-                    object[] objArray9 = new object[] { obj10, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray9 = new object[] { obj10, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray9);
                 }
                 if (ProductionVat != new decimal(0))
@@ -590,7 +603,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj11 = displayHTML;
-                    object[] objArray10 = new object[] { obj11, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray10 = new object[] { obj11, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray10);
                 }
             }
@@ -630,7 +643,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj12 = displayHTML;
-                    object[] objArray11 = new object[] { obj12, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray11 = new object[] { obj12, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray11);
                 }
                 if (SalePrice != new decimal(0))
@@ -640,7 +653,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj13 = displayHTML;
-                    object[] objArray12 = new object[] { obj13, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray12 = new object[] { obj13, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray12);
                 }
                 if (SaleSD != new decimal(0))
@@ -650,7 +663,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj14 = displayHTML;
-                    object[] objArray13 = new object[] { obj14, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray13 = new object[] { obj14, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray13);
                 }
                 if (SaleVat != new decimal(0))
@@ -660,7 +673,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj15 = displayHTML;
-                    object[] objArray14 = new object[] { obj15, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray14 = new object[] { obj15, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray14);
                 }
             }
@@ -708,7 +721,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj17 = displayHTML;
-                    object[] objArray15 = new object[] { obj17, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray15 = new object[] { obj17, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray15);
                 }
                 if (ExtPrice != new decimal(0))
@@ -718,7 +731,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj18 = displayHTML;
-                    object[] objArray16 = new object[] { obj18, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray16 = new object[] { obj18, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray16);
                 }
             }
@@ -773,7 +786,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                 else
                 {
                     object obj19 = displayHTML;
-                    object[] objArray17 = new object[] { obj19, "<td style='text-align:right;padding:5px'>", '-', "</td>" };
+                    object[] objArray17 = new object[] { obj19, "<td style='text-align:right;padding:5px'>", zeroDisplay, "</td>" };
                     displayHTML = string.Concat(objArray17);
                 }
             }
@@ -1316,7 +1329,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     str11 = Utilities.formatFraction(num8);
                     if (str11 == "0")
                     {
-                        str11 = "-";
+                        str11 = this.GetZeroDisplay(num15);
                     }
                     num9 = Convert.ToDecimal(saleInformationByItemId.Rows[l]["price"]);
                     num10 = Convert.ToDecimal(saleInformationByItemId.Rows[l]["vat"]);
