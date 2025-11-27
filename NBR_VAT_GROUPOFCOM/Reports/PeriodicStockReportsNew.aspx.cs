@@ -1643,8 +1643,30 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             {
                                 num11 = (num35 != new decimal(0) ? num35 * num10 : Convert.ToDecimal(dataTable.Rows[i]["openpuramount"]) + Convert.ToDecimal(dataTable.Rows[i]["preQntAmount"]));
                             }
+
                             num14 = Convert.ToDecimal(dataTable.Rows[i]["purqnt"].ToString());
                             num17 = Convert.ToDecimal(dataTable.Rows[i]["puramount"].ToString());
+                            if (num10 > new decimal(0) && num11 == new decimal(0))
+                            {
+                                decimal fallbackRate = new decimal(0);
+                                if (openingAmount > new decimal(0) && openingQuantity > new decimal(0))
+                                {
+                                    fallbackRate = openingAmount / openingQuantity;
+                                }
+                                else if (num14 > new decimal(0) && num17 > new decimal(0))
+                                {
+                                    fallbackRate = num17 / num14;
+                                }
+                                else if (num35 > new decimal(0))
+                                {
+                                    fallbackRate = num35;
+                                }
+
+                                if (fallbackRate > new decimal(0))
+                                {
+                                    num11 = fallbackRate * num10;
+                                }
+                            }
                             if (this.drpProductType.SelectedValue == "R" && (num10 + num14) > new decimal(0))
                             {
                                 decimal num38 = (num11 + num17) / (num10 + num14);
@@ -1702,6 +1724,23 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                     else
                                     {
                                         num13 = Math.Max(new decimal(0), (num11 + num17) - (num25 + num23));
+                                    }
+                                }
+
+                                if (num12 > new decimal(0) && num13 == new decimal(0))
+                                {
+                                    decimal totalQuantity = num10 + num14;
+                                    decimal totalAmount = num11 + num17;
+                                    decimal averageRate = (totalQuantity > new decimal(0) ? totalAmount / totalQuantity : new decimal(0));
+
+                                    if (averageRate == new decimal(0) && num35 > new decimal(0))
+                                    {
+                                        averageRate = num35;
+                                    }
+
+                                    if (averageRate > new decimal(0))
+                                    {
+                                        num13 = averageRate * num12;
                                     }
                                 }
                             }
