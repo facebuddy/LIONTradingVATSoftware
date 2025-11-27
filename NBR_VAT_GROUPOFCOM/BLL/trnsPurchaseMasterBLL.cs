@@ -108,13 +108,23 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return this.DBUtil.GetDataTable(str);
         }
 
-        public DataTable GetEarlyAvailableStocOpening(DateTime fDate, long itemID)
+        public DataTable GetEarlyAvailableStocOpening(DateTime fDate, long itemID, string branchIds)
         {
-            int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
-            int num1 = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"]);
-            object[] objArray = new object[] { "select item_qty ,item_value,opening_balance_date from opening_balance where item_id=", itemID, "  AND  organization_id= ", num, " AND org_branch_reg_id = ", num1, " and CAST(opening_balance_date AS DATE)<= to_date('", fDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')" };
-            string str = string.Concat(objArray);
-            return this.DBUtil.GetDataTable(str);
+            int organizationId = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+            string branchFilter = (!string.IsNullOrWhiteSpace(branchIds) ? branchIds : HttpContext.Current.Session["ORGBRANCHID"].ToString());
+            string query = string.Concat(new object[]
+            {
+                "select coalesce(sum(item_qty),0) item_qty, coalesce(sum(item_value),0) item_value, max(opening_balance_date) opening_balance_date from opening_balance where item_id=",
+                itemID,
+                "  AND  organization_id= ",
+                organizationId,
+                " AND org_branch_reg_id in (",
+                branchFilter,
+                ") and CAST(opening_balance_date AS DATE)<= to_date('",
+                fDate.ToString("dd/MM/yyyy"),
+                "','dd/MM/yyyy')"
+            });
+            return this.DBUtil.GetDataTable(query);
         }
 
         //public DataTable PurchaseAccountingBookPrevious(DateTime fromDate, long itemID, string branchIds)
