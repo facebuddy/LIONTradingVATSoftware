@@ -1713,7 +1713,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                     str5 = Utilities.formatFraction(num12);
                                     decimal totalQuantity = num10 + num14;
                                     decimal averageRate = (totalQuantity > new decimal(0) ? (num11 + num17) / totalQuantity : new decimal(0));
-                                    if (closingAmount > new decimal(0))
+                                    if (closingAmount != new decimal(0))
                                     {
                                         num13 = closingAmount;
                                     }
@@ -1731,6 +1731,15 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                 {
                                     decimal totalQuantity = num10 + num14;
                                     decimal totalAmount = num11 + num17;
+                                    decimal netQuantity = (num10 + num14) - (num24 + num28);
+                                    decimal netAmount = (num11 + num17) - (num25 + num23);
+
+                                    if (netQuantity > new decimal(0))
+                                    {
+                                        totalQuantity = netQuantity;
+                                        totalAmount = netAmount;
+                                    }
+
                                     decimal averageRate = (totalQuantity > new decimal(0) ? totalAmount / totalQuantity : new decimal(0));
 
                                     if (averageRate == new decimal(0) && num35 > new decimal(0))
