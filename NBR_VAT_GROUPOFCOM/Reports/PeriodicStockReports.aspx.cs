@@ -319,18 +319,18 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                         this.excelUtility.CreateCell(rows, 18, "-", headerStyle);
                     }
                 }
-                if (this.chk6.Checked)
+            if (this.chk6.Checked)
+            {
+                weightQuantity = ExtQuantity * Convert.ToDecimal(dt.Rows[i]["weight"].ToString());
+                if (weightQuantity != new decimal(0))
                 {
-                    weightQuantity = ExtQuantity * Convert.ToDecimal(dt.Rows[i]["weight"].ToString());
-                    if (weightQuantity != new decimal(0))
-                    {
-                        this.excelUtility.CreateCell(rows, 18, string.Concat(Utilities.RoundUpToWithString(weightQuantity, num), " (", dt.Rows[i]["unit_codei"].ToString(), ")"), headerStyle);
-                    }
-                    else
-                    {
-                        this.excelUtility.CreateCell(rows, 19, "-", headerStyle);
-                    }
+                    this.excelUtility.CreateCell(rows, 19, string.Concat(Utilities.RoundUpToWithString(weightQuantity, num), " (", dt.Rows[i]["unit_codei"].ToString(), ")"), headerStyle);
                 }
+                else
+                {
+                    this.excelUtility.CreateCell(rows, 19, "-", headerStyle);
+                }
+            }
             }
             catch (Exception exception)
             {
