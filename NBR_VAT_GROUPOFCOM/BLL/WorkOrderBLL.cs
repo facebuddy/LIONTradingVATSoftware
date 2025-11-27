@@ -87,7 +87,7 @@ from
             inner join trns_sale_master m on d.challan_id = m.challan_id
             where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and d.item_id = mqmm.item_id
-              and d.installment_status = false
+              and coalesce(d.installment_status, false) = false
               and m.challan_type <> 'D'
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
@@ -99,7 +99,7 @@ from
             inner join trns_sale_master m on d.challan_id = m.challan_id
             where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and d.item_id = mqmm.item_id
-              and d.installment_status = false
+              and coalesce(d.installment_status, false) = false
               and m.challan_type = 'D'
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
@@ -157,7 +157,7 @@ from
             inner join trns_sale_master m on d.challan_id = m.challan_id
             where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and d.item_id = mqmm.item_id
-              and d.installment_status = false
+              and coalesce(d.installment_status, false) = false
               and m.challan_type <> 'D'
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
@@ -169,7 +169,7 @@ from
             inner join trns_sale_master m on d.challan_id = m.challan_id
             where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and d.item_id = mqmm.item_id
-              and d.installment_status = false
+              and coalesce(d.installment_status, false) = false
               and m.challan_type = 'D'
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
@@ -452,7 +452,7 @@ from
         where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
-          and d.installment_status = false
+          and coalesce(d.installment_status, false) = false
           and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
@@ -464,7 +464,7 @@ from
         where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
-          and d.installment_status = false
+          and coalesce(d.installment_status, false) = false
           and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
@@ -476,7 +476,7 @@ from
         where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
-          and d.installment_status = false
+          and coalesce(d.installment_status, false) = false
           and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
@@ -488,7 +488,7 @@ from
         where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
-          and d.installment_status = false
+          and coalesce(d.installment_status, false) = false
           and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
@@ -500,7 +500,7 @@ from
         where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
-          and d.installment_status = false
+          and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
@@ -512,7 +512,7 @@ from
         where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
-          and d.installment_status = false
+          and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
@@ -524,7 +524,7 @@ from
         where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
-          and d.installment_status = false
+          and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
@@ -536,7 +536,7 @@ from
         where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
-          and d.installment_status = false
+          and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
@@ -1395,15 +1395,15 @@ order by item_id;";
                 to_char(tpm.date_challan,'dd-MON-yyyy')      as date_challan,
                 tpd.item_id,
                 i.item_name,
-                case 
-                    when installment_status = false then tpd.quantity 
-                    else 0 
+                case
+                    when coalesce(installment_status, false) = false then tpd.quantity
+                    else 0
                 end                                          as quantity,
                 (tpd.quantity * tpd.actual_price)            as price,
                 vat,
                 sd,
-                case 
-                    when tpm.challan_type = 'D' then 'Dispose'
+                case
+                    when tpm.challan_type = 'D' then 'Will be disposed'
                     else 'Sale'
                 end                                          as remarks,
                 tpm.date_challan                             as orderDate
