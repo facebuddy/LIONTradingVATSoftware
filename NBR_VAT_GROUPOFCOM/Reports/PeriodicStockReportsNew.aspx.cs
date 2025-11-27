@@ -836,7 +836,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             decimal num24 = new decimal(0);
                             decimal num25 = new decimal(0);
                             string str = "0";
-                            DataTable earlyAvailableStocOpening = _trnsPurchaseMasterBLL.GetEarlyAvailableStocOpening(date.AddDays(-1), itemId);
+                            DataTable earlyAvailableStocOpening = _trnsPurchaseMasterBLL.GetEarlyAvailableStocOpening(date.AddDays(-1), itemId, branchIds);
                             if (earlyAvailableStocOpening.Rows.Count > 0)
                             {
                                 num7 = Convert.ToDecimal(earlyAvailableStocOpening.Rows[0]["item_qty"]);
