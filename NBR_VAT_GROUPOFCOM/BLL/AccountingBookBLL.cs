@@ -17,10 +17,6 @@ namespace NBR_VAT_GROUPOFCOM.BLL
         {
         }
 
-        public DataTable GetAllFinishProduct()
-        {
-            return this.connDB.GetDataTable("select distinct i.item_id, i.item_name\r\n                            from trns_purchase_detail as tpd\r\n                            inner join item as i  on i.item_id = tpd.item_id\r\n                            where tpd.is_deleted = false and i.product_type = 'C'");
-        }
 
 
         public DataTable LastProductionAccountingBook(DateTime fDate, long itemId, int branchID)
@@ -41,6 +37,12 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             object[] objArray = new object[] { "select distinct 'S' status,m.trns_status challan_type,m.org_branch_reg_id, m.batch_no challan_no, \r\n                            to_char(m.date_production,'dd/MM/yyyy') challan_date ,m.date_production clDate, o.organization_name , o.registration_no ,\r\n                            to_char(d.Date_insert,'dd/MM/yyyy') as Date, 0 AS Quantity,m.production_quantity as utpadon_poriman,0 QuantityAct,\r\n                            i.item_name,0 vat,0 sd,i.item_type,    i.product_type,                        \r\n                            m.Remarks  Remarks , \r\n                            tp.party_name ,  tp.party_address ,d.Date_insert ,tp.party_bin ,\r\n                            m.unit_price as unit_price,(m.unit_price*m.quantity) as kor_batito_mullo, 0 vat_rate, 0 sd_rate\r\n                            ,tp.reg_type,tp.national_id_no,0 property_quantity,iu.unit_code\r\n                            from trns_production_master m\r\n                            inner join org_registration_info o on m.Organization_id = o.Organization_id\r\n                            inner join trns_production_detail d on d.production_id = m.production_id\r\n                            inner join Item i on i.item_id = m.finish_product_id\r\n                            left join trns_party tp on tp.party_id = m.party_id\r\n                            inner join item_unit iu on iu.unit_id = m.production_unit\r\n                            where m.trns_status='R' and  cast(m.date_production as DATE) <=TO_DATE('", fDate.ToString("MM/dd/yyyy"), "','MM/dd/yyyy') AND m.finish_product_id =", itemId, " AND m.organization_id= ", num4, " AND m.org_branch_reg_id = ", num3, "  AND d.Is_deleted = false  order by m.date_production desc" };
             str = string.Concat(objArray);
             return this.connDB.GetDataTable(str);
+        }
+
+
+        public DataTable GetAllFinishProduct()
+        {
+            return this.connDB.GetDataTable("select distinct i.item_id, i.item_name\r\n                            from trns_purchase_detail as tpd\r\n                            inner join item as i  on i.item_id = tpd.item_id\r\n                            where tpd.is_deleted = false and i.product_type = 'C'");
         }
 
         public DataTable GetAllFinishProductByDate(DateTime fDate, DateTime tDate)

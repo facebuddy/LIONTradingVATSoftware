@@ -22,94 +22,224 @@ namespace NBR_VAT_GROUPOFCOM.BLL
 
 
 
-
         public DataTable GetPreodicStockReportData(DateTime fDate, DateTime tDate, long itemId, string branchIds, string productType)
         {
-            int num = Convert.ToInt32(HttpContext.Current.Session["organization_id"]);
-            string empty = string.Empty;
-            string str = "";
+            int orgId = Convert.ToInt32(HttpContext.Current.Session["organization_id"]);
+            string filterItem = string.Empty;
             DataTable dataTable = new DataTable();
+
             try
             {
-                if (itemId != (long)-99)
+                if (itemId != -99)
                 {
-                    str = string.Concat("and item_id = ", itemId);
+                    filterItem = $" and item_id = {itemId}";
                 }
-                object[] objArray = new object[] {
-    "\r\n select item_id, product_type, weight, weight_unit_id, unit_codei, max(item_name) item, max(unit_id) unit_id, max(unit_code) unit, \r\n" +
-    "max(preQuantity) preQuantity, max(preQntAmount) preQntAmount, max(proq) proq, max(prot) prot,\r\n" +
-    "(max(pq)-max(dpq)) purqnt, (max(pt)-max(dpt)) puramount, (max(pv)-max(dpv)) purvat, (max(psd)-max(dpsd)) pursd,\r\n" +
-    "max(productionpq) productionqnt, max(productionpt) productionpuramount, max(productionpv) productionpurvat, max(productionpsd) productionpursd,\r\n" +
-    "max(openpq) openpurqnt, max(openpt) openpuramount, max(openpv) openpurvat, max(opensd) openpursd,\r\n" +
-    "(max(sq)+max(trnsisuueq)+max(gq)-max(cpq)) salqnt, (max(st1)+max(st)+max(trnsissueprice)+max(gp)-max(cpt)) salamount, \r\n" +
-    "(max(sv1)+max(sv)+max(trnsissuevat)+max(gv)-max(cpv)) salvat, (max(ssd1)+max(ssd)+max(trnsissuesd)+max(gs)-max(cpsd)) salsd\r\n" +
-    "from (\r\n" +
-    "select item_id, item_name, unit_id, unit_code, product_type, weight, weight_unit_id, unit_codei,\r\n" +
-    "(\r\n" +
-    "--purchase\r\n" +
-    "(select coalesce(sum(d.quantity),0) from trns_purchase_detail as d \r\n" +
-    "inner join trns_purchase_master as m on d.challan_id = m.challan_id \r\n" +
-    "where CAST(m.date_challan AS DATE) < to_date('", fDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') \r\n" +
-    "AND d.item_id = mqmm.item_id and M.is_trns_accepted=true and challan_type not in ('D','Cr','T') \r\n" +
-    "AND m.organization_id= ", num, " and m.org_branch_reg_id in(", branchIds, "))\r\n" +
-    "-\r\n" +
-    "--sale\r\n" +
-    "(select coalesce(sum(d.quantity),0) from trns_sale_detail as d \r\n" +
-    "inner join trns_sale_master as m on d.challan_id = m.challan_id\r\n" +
-    "where CAST(m.date_challan AS DATE) < to_date('", fDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') \r\n" +
-    "AND d.item_id = mqmm.item_id and d.installment_status=false AND m.organization_id= ", num, " \r\n" +
-    "AND m.org_branch_reg_id in(", branchIds, "))\r\n" +
-    ") preQuantity,\r\n" +
-    "(\r\n" +
-    "(select coalesce(sum(d.quantity*d.purchase_unit_price),0) from trns_purchase_detail as d \r\n" +
-    "inner join trns_purchase_master as m on d.challan_id = m.challan_id \r\n" +
-    "where CAST(m.date_challan AS DATE) < to_date('", fDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') \r\n" +
-    "AND d.item_id = mqmm.item_id and M.is_trns_accepted=true and challan_type not in ('D','Cr','T') \r\n" +
-    "AND m.organization_id= ", num, " and m.org_branch_reg_id in(", branchIds, "))\r\n" +
-    "-\r\n" +
-    "(select coalesce(sum(d.quantity*d.actual_price),0) from trns_sale_detail as d \r\n" +
-    "inner join trns_sale_master as m on d.challan_id = m.challan_id\r\n" +
-    "where CAST(m.date_challan AS DATE) < to_date('", fDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') \r\n" +
-    "AND d.item_id = mqmm.item_id and d.installment_status=false AND m.organization_id= ", num, " \r\n" +
-    "AND m.org_branch_reg_id in(", branchIds, "))\r\n" +
-    ") preQntAmount\r\n" + // Fixed Column Name Here
-    "from (\r\n" +
-    "select tpd.item_id, i.item_name, tpd.unit_id, iu.unit_code, i.product_type, i.weight, i.weight_unit_id, iuu.unit_code unit_codei\r\n" +
-    "from trns_purchase_master tpm\r\n" +
-    "inner join trns_purchase_detail tpd on tpm.challan_id = tpd.challan_id\r\n" +
-    "inner join item i on tpd.item_id = i.item_id\r\n" +
-    "left join item_unit iu on tpd.unit_id = iu.unit_id\r\n" +
-    "left join item_unit iuu on i.weight_unit_id = iuu.unit_id\r\n" +
-    "where tpm.organization_id = ", num, " AND tpm.org_branch_reg_id in(", branchIds, ") and tpm.is_deleted = false and tpm.is_trns_accepted=true\r\n" +
-    "UNION \r\n" +
-    "select tsd.item_id, i.item_name, tsd.unit_id, iu.unit_code, i.product_type, i.weight, i.weight_unit_id, iuu.unit_code\r\n" +
-    "from trns_sale_master tsm\r\n" +
-    "inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id\r\n" +
-    "left join item i on tsd.item_id = i.item_id\r\n" +
-    "left join item_unit iu on tsd.unit_id = iu.unit_id\r\n" +
-    "left join item_unit iuu on i.weight_unit_id = iuu.unit_id\r\n" +
-    "where tsm.is_deleted=false AND tsm.organization_id = ", num, " AND tsm.org_branch_reg_id in(", branchIds, ")) mqmm\r\n" +
-    ") mqmm2\r\n" +
-    "where product_type='", productType, "' ", str, "\r\n" +
-    "group by item_id, product_type, weight, unit_codei, weight_unit_id\r\n" +
-    "order by item_id"
-};
 
+                string query = $@"
+ select item_id, product_type, weight, weight_unit_id, unit_codei,
+        max(item_name) item,
+        max(unit_id) unit_id,
+        max(unit_code) unit,
+        max(preQuantity) preQuantity,
+        max(preQntAmount) preQntAmount,
+        max(proq) proq,
+        max(prot) prot,
+        (max(pq) - max(dpq)) purqnt,
+        (max(pt) - max(dpt)) puramount,
+        (max(pv) - max(dpv)) purvat,
+        (max(psd) - max(dpsd)) pursd,
+        max(productionpq)  productionqnt,
+        max(productionpt)  productionpuramount,
+        max(productionpv)  productionpurvat,
+        max(productionpsd) productionpursd,
+        max(openpq) openpurqnt,
+        max(openpt) openpuramount,
+        max(openpv) openpurvat,
+        max(opensd) openpursd,
+        (max(sq) + max(trnsisuueq) + max(gq) - max(cpq)) salqnt,
+        (max(st1) + max(st) + max(trnsissueprice) + max(gp) - max(cpt)) salamount,
+        (max(sv1) + max(sv) + max(trnsissuevat) + max(gv) - max(cpv)) salvat,
+        (max(ssd1) + max(ssd) + max(trnsissuesd) + max(gs) - max(cpsd)) salsd
+from
+(
+    select item_id, item_name, unit_id, unit_code, product_type, weight, weight_unit_id, unit_codei,
+    (
+        -- Opening Qty (Purchase - Sale)
+        (
+            select coalesce(sum(d.quantity), 0)
+            from trns_purchase_detail d
+            inner join trns_purchase_master m on d.challan_id = m.challan_id
+            where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and d.item_id = mqmm.item_id
+              and m.is_trns_accepted = true
+              and challan_type not in ('D','Cr')
+              and m.organization_id = {orgId}
+              and m.org_branch_reg_id in({branchIds})
+        )
+        -
+        (
+            select coalesce(sum(d.quantity), 0)
+            from trns_sale_detail d
+            inner join trns_sale_master m on d.challan_id = m.challan_id
+            where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and d.item_id = mqmm.item_id
+              and d.installment_status = false
+              and m.organization_id = {orgId}
+              and m.org_branch_reg_id in({branchIds})
+        )
+    ) preQuantity,
+    (
+        -- Opening Amount (Purchase - Sale)
+        (
+            select coalesce(sum(d.quantity * d.purchase_unit_price), 0)
+            from trns_purchase_detail d
+            inner join trns_purchase_master m on d.challan_id = m.challan_id
+            where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and d.item_id = mqmm.item_id
+              and m.is_trns_accepted = true
+              and challan_type not in ('D','Cr')
+              and m.organization_id = {orgId}
+              and m.org_branch_reg_id in({branchIds})
+        )
+        -
+        (
+            select coalesce(sum(d.quantity * d.actual_price), 0)
+            from trns_sale_detail d
+            inner join trns_sale_master m on d.challan_id = m.challan_id
+            where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and d.item_id = mqmm.item_id
+              and d.installment_status = false
+              and m.organization_id = {orgId}
+              and m.org_branch_reg_id in({branchIds})
+        )
+    ) preQntAmount,
+    (
+        -- Production Qty in period
+        select cast(coalesce(sum(d.quantity), 0) as decimal(18,2))
+        from trns_production_detail d
+        inner join trns_production_master m on d.production_id = m.production_id
+        where d.item_id = mqmm.item_id
+          and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy')
+              >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy')
+              <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.status = 'R'
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) proq,
+    (
+        -- Production Amount in period
+        select cast(
+            coalesce(
+                sum(
+                    d.quantity *
+                    (
+                        select coalesce(
+                                   case
+                                       when max(purchase_unit_price) = 0
+                                           then max(total_price / quantity)
+                                       else max(purchase_unit_price)
+                                   end,
+                                   0
+                               )
+                        from trns_purchase_detail
+                        where item_id = mqmm.item_id
+                          and quantity != 0
+                    )
+                ), 0
+            ) as decimal(18,2)
+        )
+        from trns_production_detail d
+        inner join trns_production_master m on d.production_id = m.production_id
+        where d.item_id = mqmm.item_id
+          and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy')
+              >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy')
+              <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.status = 'R'
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) prot,
+    0 pq, 0 pt, 0 pv, 0 psd,
+    0 cpq, 0 cpt, 0 cpv, 0 cpsd,
+    0 dpq, 0 dpt, 0 dpv, 0 dpsd,
+    0 productionpq, 0 productionpt, 0 productionpv, 0 productionpsd,
+    0 openpq, 0 openpt, 0 openpv, 0 opensd,
+    0 sq, 0 st, 0 sv, 0 ssd,
+    0 trnsisuueq, 0 trnsissueprice, 0 trnsissuevat, 0 trnsissuesd,
+    0 sq1, 0 st1, 0 sv1, 0 ssd1,
+    0 gq, 0 gp, 0 gv, 0 gs
+    from
+    (
+        select tpd.item_id,
+               i.item_name,
+               tpd.unit_id,
+               iu.unit_code,
+               i.product_type,
+               i.weight,
+               i.weight_unit_id,
+               iuu.unit_code unit_codei
+        from trns_purchase_master tpm
+        inner join trns_purchase_detail tpd on tpm.challan_id = tpd.challan_id
+        inner join item i on tpd.item_id = i.item_id
+        left join item_unit iu  on tpd.unit_id      = iu.unit_id
+        left join item_unit iuu on i.weight_unit_id = iuu.unit_id
+        where tpm.organization_id = {orgId}
+          and tpm.org_branch_reg_id in({branchIds})
+          and tpm.is_deleted = false
+          and tpm.is_trns_accepted = true
 
+        UNION
 
-                // string empty = string.Concat(objArray);
+        select tsd.item_id,
+               i.item_name,
+               tsd.unit_id,
+               iu.unit_code,
+               i.product_type,
+               i.weight,
+               i.weight_unit_id,
+               iuu.unit_code
+        from trns_sale_master tsm
+        inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id
+        left join item i       on tsd.item_id = i.item_id
+        left join item_unit iu on tsd.unit_id = iu.unit_id
+        left join item_unit iuu on i.weight_unit_id = iuu.unit_id
+        where tsm.is_deleted = false
+          and tsm.organization_id = {orgId}
+          and tsm.org_branch_reg_id in({branchIds})
+    ) mqmm
+) mqmm2
+where product_type = '{productType}'
+      {filterItem}
+group by item_id, product_type, weight, unit_codei, weight_unit_id
+order by item_id;";
 
-                empty = string.Concat(objArray);
-                dataTable = this.db.GetDataTable(empty);
+                dataTable = db.GetDataTable(query);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                throw new Exception(exception.ToString());
+                throw new Exception(ex.ToString());
             }
+
             return dataTable;
         }
 
-
+        public DataTable GetProductionInformationByItemId(DateTime fDate, DateTime tDate, long Item_id, string branchIds)
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+                object[] itemId = new object[] { " select d.item_id,i.item_name,d.quantity,0 purchase_vat,0 purchase_sd, to_char(m.date_production,'dd-MON-yyyy') date_production,m.date_production dtc,\r\n\r\n\r\ncast(coalesce((d.quantity * (select coalesce(case when d.unit_price!=0 then d.unit_price/d.quantity  when max(purchase_unit_price)=0 then (max(total_price/quantity)) else max(purchase_unit_price) end,0)  from trns_purchase_detail where item_id = ", Item_id, " and quantity!=0)),0) as decimal(18,2)) price,\r\n'Received' remarks,d.unit_price\r\n\t\t                from trns_production_detail d\r\n                                inner join trns_production_master m on d.production_id = m.production_id\r\n                                inner join item i on d.item_id = i.item_id\r\n                      where cast (m.Date_Production as Date) >= TO_DATE('", fDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy') AND cast (m.Date_Production as Date) <= TO_DATE('", tDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                                       AND d.item_id =  ", Item_id, "  AND d.Is_deleted = false AND d.status = 'R' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ") order by m.Date_Production" };
+                string str = string.Concat(itemId);
+                dataTable = this.db.GetDataTable(str);
+            }
+            catch (Exception exception)
+            {
+                ReallySimpleLog.WriteLog(exception);
+            }
+            return dataTable;
+        }
 
         public DataTable GetTaxRateByItemId(long Item_id)
         {
@@ -126,11 +256,6 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             }
             return dataTable;
         }
-
-
-
-
-
 
 
         private ArrayList AddDeailInsertSQL(ArrayList arrDetailList, ArrayList arrDeailDAO, int ChallanID, string GRN, string Voucher)
@@ -173,24 +298,6 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return arrDetailList;
         }
 
-        public DataTable GetSaleInformationByItemId(DateTime fDate, DateTime tDate, long Item_id, string branchIds)
-        {
-            DataTable dataTable = new DataTable();
-            try
-            {
-                int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
-                object[] itemId = new object[] { "select to_char(tpm.date_challan,'dd-MON-yyyy') date_challan,tpd.item_id,i.item_name,case when installment_status=false then tpd.quantity else 0 end quantity,(tpd.quantity*tpd.actual_price) price,\r\n                      vat,sd ,CASE WHEN tpm.CHALLAN_TYPE='D' THEN 'Dispose' ELSE 'Sale' END as remarks, tpm.date_challan orderDate\r\n                from trns_sale_master tpm\r\n                inner join trns_sale_detail tpd on tpm.challan_id = tpd.challan_id\r\n                inner join item i on tpd.item_id = i.item_id\r\n                where i.item_id=", Item_id, "  and  tpm.organization_id=", num, " and tpm.org_branch_reg_id in(", branchIds, ") and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tpm.approver_stage='F'\r\n                \r\n                union ALL\r\n\r\n                select to_char(tnm.date_note,'dd-MON-yyyy') date_challan,tnd.item_id,i.item_name,tnd.quantity,(tnd.quantity*tnd.actual_price) price,\r\n                tnd.return_vat,tnd.return_sd ,'Credit' remarks , tnm.date_note orderDate\r\n                from trns_note_master tnm\r\n                inner join trns_note_detail tnd on tnm.note_id = tnd.note_id\r\n                inner join item i on tnd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and tnm.organization_id=", num, " and tnm.org_branch_reg_id in(", branchIds, ") and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tnd.status!='O' and tnm.note_type='C'\r\n           \r\n                union ALL\r\n\r\n                 select to_char(tnm.issues_date,'dd-MON-yyyy') date_challan,tnd.item_id,i.item_name,tnd.quantity,(tnd.quantity*tnd.unit_price) price,\r\n                tnd.vat_amount,tnd.sd_amount ,'Transfer Receive' remarks , tnm.issues_date orderDate\r\n                from trns_transfer_master tnm\r\n                inner join trns_transfer_detail tnd on tnm.transfer_id = tnd.transfer_id\r\n                inner join item i on tnd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and tnm.organization_id=", num, " and tnm.issuing_branch_id in(", branchIds, ") \r\n                and cast(tnm.issues_date as date) >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and cast(tnm.issues_date as date) <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tnm.transfer_status = 'I'\r\n                \r\n                union ALL\r\n\r\n                select to_char(gd.date_consumable_challan ,'dd-MON-yyyy') date_challan,gd.item_id,i.item_name,gd.quantity,gd.price,\r\n                gd.discounted_vat vat_amount,gd.discounted_sd sd_amount ,case when gd.remarks='' then 'Gift' else gd.remarks end remarks, gd.date_consumable_challan orderDate\r\n                from gift_items_detail gd               \r\n                inner join item i on gd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and gd.organization_id=", num, " and gd.org_branch_id in(", branchIds, ")  \r\n                and cast(gd.date_consumable_challan as date) >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and cast(gd.date_consumable_challan as date) <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n\r\n                order by orderDate desc" };
-                string str = string.Concat(itemId);
-                dataTable = this.db.GetDataTable(str);
-            }
-            catch (Exception exception)
-            {
-                ReallySimpleLog.WriteLog(exception);
-            }
-            return dataTable;
-        }
-
-
         public decimal AdjustTransferredPreodicStockReportData(DateTime fDate, DateTime tDate, int itemId, decimal stockQnt)
         {
             decimal num = stockQnt;
@@ -215,41 +322,6 @@ namespace NBR_VAT_GROUPOFCOM.BLL
                 num += num2;
             }
             return num;
-        }
-
-        public DataTable GetProductionInformationByItemId(DateTime fDate, DateTime tDate, long Item_id, string branchIds)
-        {
-            DataTable dataTable = new DataTable();
-            try
-            {
-                int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
-                object[] itemId = new object[] { " select d.item_id,i.item_name,d.quantity,0 purchase_vat,0 purchase_sd, to_char(m.date_production,'dd-MON-yyyy') date_production,m.date_production dtc,\r\n\r\n\r\ncast(coalesce((d.quantity * (select coalesce(case when d.unit_price!=0 then d.unit_price/d.quantity  when max(purchase_unit_price)=0 then (max(total_price/quantity)) else max(purchase_unit_price) end,0)  from trns_purchase_detail where item_id = ", Item_id, " and quantity!=0)),0) as decimal(18,2)) price,\r\n'Received' remarks,d.unit_price\r\n\t\t                from trns_production_detail d\r\n                                inner join trns_production_master m on d.production_id = m.production_id\r\n                                inner join item i on d.item_id = i.item_id\r\n                      where cast (m.Date_Production as Date) >= TO_DATE('", fDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy') AND cast (m.Date_Production as Date) <= TO_DATE('", tDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                                       AND d.item_id =  ", Item_id, "  AND d.Is_deleted = false AND d.status = 'R' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ") order by m.Date_Production" };
-                string str = string.Concat(itemId);
-                dataTable = this.db.GetDataTable(str);
-            }
-            catch (Exception exception)
-            {
-                ReallySimpleLog.WriteLog(exception);
-            }
-            return dataTable;
-        }
-
-
-        public DataTable GetPurchaseInformationByItemId(DateTime fDate, DateTime tDate, long Item_id, string branchIds)
-        {
-            DataTable dataTable = new DataTable();
-            try
-            {
-                int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
-                object[] itemId = new object[] { "select to_char(tpm.date_challan,'dd-MON-yyyy') date_challan,tpd.item_id,i.item_name,tpd.quantity,(tpd.quantity*tpd.purchase_unit_price) price,\r\n                       purchase_vat,purchase_sd,\r\n                       case when  tpm.challan_type='P' then 'Purchase' \r\n                       when tpm.challan_type='O' then 'Opening Balance'\r\n                       when tpm.challan_type='T' then 'Transfer Receive'\r\n                       when tpm.challan_type='D' then 'Debit' end remarks \r\n                       from trns_purchase_master tpm\r\n                       inner join trns_purchase_detail tpd on tpm.challan_id = tpd.challan_id\r\n                       inner join item i on tpd.item_id = i.item_id\r\n                       where i.item_id=", Item_id, " and tpm.organization_id=", num, " and tpm.org_branch_reg_id in(", branchIds, ") and tpm.is_trns_accepted=true  and tpm.approver_stage='F'\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tpd.quantity !=0 and tpm.challan_type in ('P','D','O','T')" };
-                string str = string.Concat(itemId);
-                dataTable = this.db.GetDataTable(str);
-            }
-            catch (Exception exception)
-            {
-                ReallySimpleLog.WriteLog(exception);
-            }
-            return dataTable;
         }
 
         public bool DeleteTemplate(int tempID)
@@ -697,7 +769,7 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return dataTable;
         }
 
-        public DataTable GetProductionInformationByItemId(DateTime fDate, DateTime tDate, long Item_id)
+        public DataTable GetProductionInformationByItemId(DateTime fDate, DateTime tDate, int Item_id)
         {
             DataTable dataTable = new DataTable();
             try
@@ -729,14 +801,83 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             string str = string.Concat(strArrays);
             return this.db.GetDataTable(str);
         }
+        //public DataTable GetPurchaseInformationByItemId(DateTime fDate, DateTime tDate, long Item_id, string branchIds)
+        //{
+        //    DataTable dataTable = new DataTable();
+        //    try
+        //    {
+        //        int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+        //        object[] itemId = new object[] { "select to_char(tpm.date_challan,'dd-MON-yyyy') date_challan,tpd.item_id,i.item_name,tpd.quantity,(tpd.quantity*tpd.purchase_unit_price) price,\r\n                       purchase_vat,purchase_sd,\r\n                       case when  tpm.challan_type='P' then 'Purchase' \r\n                       when tpm.challan_type='O' then 'Opening Balance'\r\n                       when tpm.challan_type='T' then 'Transfer Receive'\r\n                       when tpm.challan_type='D' then 'Debit' end remarks \r\n                       from trns_purchase_master tpm\r\n                       inner join trns_purchase_detail tpd on tpm.challan_id = tpd.challan_id\r\n                       inner join item i on tpd.item_id = i.item_id\r\n                       where i.item_id=", Item_id, " and tpm.organization_id=", num, " and tpm.org_branch_reg_id in(", branchIds, ") and tpm.is_trns_accepted=true  and tpm.approver_stage='F'\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tpd.quantity !=0 and tpm.challan_type in ('P','D','O','T')" };
+        //        string str = string.Concat(itemId);
+        //        dataTable = this.db.GetDataTable(str);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        ReallySimpleLog.WriteLog(exception);
+        //    }
+        //    return dataTable;
+        //}
 
-        public DataTable GetPurchaseInformationByItemId(DateTime fDate, DateTime tDate, int Item_id)
+        public DataTable GetPurchaseInformationByItemId(DateTime fDate, DateTime tDate, long itemId, string branchIds)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                int orgId = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
+
+                // PostgreSQL তারিখ compare করার জন্য YYYY-MM-DD ফরম্যাট নেয়া ভালো
+                string fromDate = fDate.ToString("yyyy-MM-dd");
+                string toDate = tDate.ToString("yyyy-MM-dd");
+
+                string query = $@"
+            select 
+                to_char(tpm.date_challan,'dd-MON-yyyy') as date_challan,
+                tpd.item_id,
+                i.item_name,
+                tpd.quantity,
+                (tpd.quantity * tpd.purchase_unit_price) as price,
+                tpd.purchase_vat,
+                tpd.purchase_sd,
+                case 
+                    when tpm.challan_type = 'P' then 'Purchase'
+                    when tpm.challan_type = 'O' then 'Opening Balance'
+                    when tpm.challan_type = 'T' then 'Transfer Receive'
+                    when tpm.challan_type = 'D' then 'Debit'
+                end as remarks
+            from trns_purchase_master tpm
+            inner join trns_purchase_detail tpd on tpm.challan_id = tpd.challan_id
+            inner join item i on tpd.item_id = i.item_id
+            where tpd.item_id = {itemId}
+              and tpm.organization_id = {orgId}
+              and tpm.org_branch_reg_id in ({branchIds})
+              and tpm.is_trns_accepted = true
+              -- approver_stage কলাম না থাকায় এটা সরানো হয়েছে:
+              -- and tpm.approver_stage = 'F'
+              and tpm.date_challan::date >= '{fromDate}'::date
+              and tpm.date_challan::date <= '{toDate}'::date
+              and tpd.quantity <> 0
+              and tpm.challan_type in ('P','D','O','T');
+        ";
+
+                dataTable = this.db.GetDataTable(query);
+            }
+            catch (Exception ex)
+            {
+                ReallySimpleLog.WriteLog(ex);
+            }
+
+            return dataTable;
+        }
+
+
+        public DataTable GetPurchaseInformationByItemId(DateTime fDate, DateTime tDate, long Item_id)
         {
             DataTable dataTable = new DataTable();
             try
             {
-                int num = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"].ToString());
-                int num1 = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+                long num = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"].ToString());
+                long num1 = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
                 object[] itemId = new object[] { "select to_char(tpm.date_challan,'dd-MON-yyyy') date_challan,tpd.item_id,i.item_name,tpd.quantity,(tpd.quantity*tpd.purchase_unit_price) price,\r\n                       purchase_vat,purchase_sd,\r\n                       case when  tpm.challan_type='P' then 'Purchase' \r\n                       when tpm.challan_type='O' then 'Opening Balance'\r\n                       when tpm.challan_type='T' then 'Transfer Receive'\r\n                       when tpm.challan_type='D' then 'Debit' end remarks \r\n                       from trns_purchase_master tpm\r\n                       inner join trns_purchase_detail tpd on tpm.challan_id = tpd.challan_id\r\n                       inner join item i on tpd.item_id = i.item_id\r\n                       where i.item_id=", Item_id, " and tpm.organization_id=", num1, " and tpm.org_branch_reg_id=", num, " and tpm.is_trns_accepted=true  and tpd.approver_stage='F'\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tpd.quantity !=0 and tpm.challan_type in ('P','D','O','T')" };
                 string str = string.Concat(itemId);
                 dataTable = this.db.GetDataTable(str);
@@ -748,7 +889,7 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return dataTable;
         }
 
-        public DataTable GetSaleInformationByItemId(DateTime fDate, DateTime tDate, int Item_id)
+        public DataTable GetSaleInformationByItemId(DateTime fDate, DateTime tDate, long Item_id)
         {
             DataTable dataTable = new DataTable();
             try
@@ -765,6 +906,149 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             }
             return dataTable;
         }
+
+        //public DataTable GetSaleInformationByItemId(DateTime fDate, DateTime tDate, long Item_id, string branchIds)
+        //{
+        //    DataTable dataTable = new DataTable();
+        //    try
+        //    {
+        //        int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+        //        object[] itemId = new object[] { "select to_char(tpm.date_challan,'dd-MON-yyyy') date_challan,tpd.item_id,i.item_name,case when installment_status=false then tpd.quantity else 0 end quantity,(tpd.quantity*tpd.actual_price) price,\r\n                      vat,sd ,CASE WHEN tpm.CHALLAN_TYPE='D' THEN 'Dispose' ELSE 'Sale' END as remarks, tpm.date_challan orderDate\r\n                from trns_sale_master tpm\r\n                inner join trns_sale_detail tpd on tpm.challan_id = tpd.challan_id\r\n                inner join item i on tpd.item_id = i.item_id\r\n                where i.item_id=", Item_id, "  and  tpm.organization_id=", num, " and tpm.org_branch_reg_id in(", branchIds, ") and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tpm.approver_stage='F'\r\n                \r\n                union ALL\r\n\r\n                select to_char(tnm.date_note,'dd-MON-yyyy') date_challan,tnd.item_id,i.item_name,tnd.quantity,(tnd.quantity*tnd.actual_price) price,\r\n                tnd.return_vat,tnd.return_sd ,'Credit' remarks , tnm.date_note orderDate\r\n                from trns_note_master tnm\r\n                inner join trns_note_detail tnd on tnm.note_id = tnd.note_id\r\n                inner join item i on tnd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and tnm.organization_id=", num, " and tnm.org_branch_reg_id in(", branchIds, ") and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tnd.status!='O' and tnm.note_type='C'\r\n           \r\n                union ALL\r\n\r\n                 select to_char(tnm.issues_date,'dd-MON-yyyy') date_challan,tnd.item_id,i.item_name,tnd.quantity,(tnd.quantity*tnd.unit_price) price,\r\n                tnd.vat_amount,tnd.sd_amount ,'Transfer Receive' remarks , tnm.issues_date orderDate\r\n                from trns_transfer_master tnm\r\n                inner join trns_transfer_detail tnd on tnm.transfer_id = tnd.transfer_id\r\n                inner join item i on tnd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and tnm.organization_id=", num, " and tnm.issuing_branch_id in(", branchIds, ") \r\n                and cast(tnm.issues_date as date) >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and cast(tnm.issues_date as date) <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tnm.transfer_status = 'I'\r\n                \r\n                union ALL\r\n\r\n                select to_char(gd.date_consumable_challan ,'dd-MON-yyyy') date_challan,gd.item_id,i.item_name,gd.quantity,gd.price,\r\n                gd.discounted_vat vat_amount,gd.discounted_sd sd_amount ,case when gd.remarks='' then 'Gift' else gd.remarks end remarks, gd.date_consumable_challan orderDate\r\n                from gift_items_detail gd               \r\n                inner join item i on gd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and gd.organization_id=", num, " and gd.org_branch_id in(", branchIds, ")  \r\n                and cast(gd.date_consumable_challan as date) >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and cast(gd.date_consumable_challan as date) <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n\r\n                order by orderDate desc" };
+        //        string str = string.Concat(itemId);
+        //        dataTable = this.db.GetDataTable(str);
+        //    }
+        //    catch (Exception exception)
+        //    {
+        //        ReallySimpleLog.WriteLog(exception);
+        //    }
+        //    return dataTable;
+        //}
+
+        public DataTable GetSaleInformationByItemId(DateTime fDate, DateTime tDate, long itemId, string branchIds)
+        {
+            DataTable dataTable = new DataTable();
+
+            try
+            {
+                int orgId = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
+
+                // PostgreSQL-এর জন্য yyyy-MM-dd ফরম্যাট ব্যবহার করাই সহজ
+                string fromDate = fDate.ToString("yyyy-MM-dd");
+                string toDate = tDate.ToString("yyyy-MM-dd");
+
+                string query = $@"
+            -- 1) Sale / Dispose
+            select 
+                to_char(tpm.date_challan,'dd-MON-yyyy')      as date_challan,
+                tpd.item_id,
+                i.item_name,
+                case 
+                    when installment_status = false then tpd.quantity 
+                    else 0 
+                end                                          as quantity,
+                (tpd.quantity * tpd.actual_price)            as price,
+                vat,
+                sd,
+                case 
+                    when tpm.challan_type = 'D' then 'Dispose'
+                    else 'Sale'
+                end                                          as remarks,
+                tpm.date_challan                             as orderDate
+            from trns_sale_master tpm
+            inner join trns_sale_detail tpd on tpm.challan_id = tpd.challan_id
+            inner join item i              on tpd.item_id     = i.item_id
+            where tpd.item_id         = {itemId}
+              and tpm.organization_id = {orgId}
+              and tpm.org_branch_reg_id in ({branchIds})
+              and tpm.date_challan::date >= '{fromDate}'::date
+              and tpm.date_challan::date <= '{toDate}'::date
+              -- আগের মতো approver_stage ফিল্টার দরকার হলে, আগে টেবিলে কলাম আছে কিনা নিশ্চিত হয়ে তারপর আবার যোগ করবেন
+              -- and tpm.approver_stage = 'F'
+
+            union all
+
+            -- 2) Credit Note
+            select 
+                to_char(tnm.date_note,'dd-MON-yyyy')         as date_challan,
+                tnd.item_id,
+                i.item_name,
+                tnd.quantity,
+                (tnd.quantity * tnd.actual_price)            as price,
+                tnd.return_vat,
+                tnd.return_sd,
+                'Credit'                                     as remarks,
+                tnm.date_note                                as orderDate
+            from trns_note_master tnm
+            inner join trns_note_detail tnd on tnm.note_id = tnd.note_id
+            inner join item i              on tnd.item_id = i.item_id
+            where tnd.item_id         = {itemId}
+              and tnm.organization_id = {orgId}
+              and tnm.org_branch_reg_id in ({branchIds})
+              and tnm.date_note::date >= '{fromDate}'::date
+              and tnm.date_note::date <= '{toDate}'::date
+              and tnd.status <> 'O'
+              and tnm.note_type = 'C'
+
+            union all
+
+            -- 3) Transfer Receive
+            select 
+                to_char(tnm.issues_date,'dd-MON-yyyy')       as date_challan,
+                tnd.item_id,
+                i.item_name,
+                tnd.quantity,
+                (tnd.quantity * tnd.unit_price)              as price,
+                tnd.vat_amount,
+                tnd.sd_amount,
+                'Transfer Receive'                           as remarks,
+                tnm.issues_date                              as orderDate
+            from trns_transfer_master tnm
+            inner join trns_transfer_detail tnd on tnm.transfer_id = tnd.transfer_id
+            inner join item i                on tnd.item_id    = i.item_id
+            where tnd.item_id           = {itemId}
+              and tnm.organization_id   = {orgId}
+              and tnm.issuing_branch_id in ({branchIds})
+              and tnm.issues_date::date >= '{fromDate}'::date
+              and tnm.issues_date::date <= '{toDate}'::date
+              and tnm.transfer_status = 'I'
+
+            union all
+
+            -- 4) Gift / Consumable
+            select 
+                to_char(gd.date_consumable_challan,'dd-MON-yyyy') as date_challan,
+                gd.item_id,
+                i.item_name,
+                gd.quantity,
+                gd.price,
+                gd.discounted_vat                             as vat_amount,
+                gd.discounted_sd                              as sd_amount,
+                case 
+                    when gd.remarks = '' then 'Gift'
+                    else gd.remarks
+                end                                           as remarks,
+                gd.date_consumable_challan                    as orderDate
+            from gift_items_detail gd
+            inner join item i on gd.item_id = i.item_id
+            where gd.item_id          = {itemId}
+              and gd.organization_id  = {orgId}
+              and gd.org_branch_id in ({branchIds})
+              and gd.date_consumable_challan::date >= '{fromDate}'::date
+              and gd.date_consumable_challan::date <= '{toDate}'::date
+
+            order by orderDate desc;
+        ";
+
+                dataTable = this.db.GetDataTable(query);
+            }
+            catch (Exception ex)
+            {
+                ReallySimpleLog.WriteLog(ex);
+            }
+
+            return dataTable;
+        }
+
 
         public DataTable GetSubCategoryWithItem(int item_id)
         {

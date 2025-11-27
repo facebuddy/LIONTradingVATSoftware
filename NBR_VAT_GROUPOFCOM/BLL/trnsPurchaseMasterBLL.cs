@@ -14,7 +14,6 @@ namespace NBR_VAT_GROUPOFCOM.BLL
         {
         }
 
-
         public DataTable GetLastPurchase_unitId(DateTime fromDate, DateTime toDate, long itemID, int branchID)
         {
             string str = "";
@@ -44,37 +43,6 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             string str2 = string.Concat(strArrays);
             return Convert.ToInt64(this.DBUtil.GetSingleValue(str2));
         }
-
-
-        public DataTable GetEarlyAvailableStocOpening(DateTime fDate, long itemID)
-        {
-            int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
-            int num1 = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"]);
-            object[] objArray = new object[] { "select item_qty ,item_value,opening_balance_date from opening_balance where item_id=", itemID, "  AND  organization_id= ", num, " AND org_branch_reg_id = ", num1, " and CAST(opening_balance_date AS DATE)<= to_date('", fDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')" };
-            string str = string.Concat(objArray);
-            return this.DBUtil.GetDataTable(str);
-        }
-
-        public DataTable PurchaseAccountingBookPrevious(DateTime fromDate, long itemID, string branchIds)
-        {
-            string str = "";
-            string str1 = "";
-            if (itemID > (long)0)
-            {
-                str = string.Concat(" AND d.item_id = '", itemID, "'");
-            }
-            int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
-            object[] objArray = new object[] { "select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no, o.organization_name , o.registration_no ,case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy') else  to_char(m.ref_challan_date, 'dd/MM/yyyy') end  as Date, d.Quantity,\r\n\t           d.lot_no,m.Date_CHALLAN challan_date, d.quantity* d.purchase_unit_price price, d.purchase_sd sd, d.purchase_vat vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                                0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,d.Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                                tp.party_address,i.item_name,iu.unit_code\r\n                                from trns_purchase_master m\r\n                                inner join org_registration_info o on m.Organization_id = o.Organization_id\r\n                                inner join trns_purchase_detail d on d.Challan_id = m.Challan_id\r\n                                inner join Item i on i.item_id = d.item_id \r\n                                inner join item_unit iu on iu.unit_id=i.unit_id                   \r\n                                left join trns_party tp on tp.party_id = m.party_id\r\n                                where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                                ", str, "    AND d.Is_deleted = false and m.approver_stage='F' and m.challan_type='P' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n \r\n                  UNION ALL\r\n                            select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no , '--' organization_name ,'--' registration_no ,case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy') else  to_char(m.Date_CHALLAN, 'dd/MM/yyyy') end  as Date, d.Quantity,\r\n\t                        d.lot_no,m.Date_CHALLAN challan_date, d.quantity* d.purchase_unit_price price, d.purchase_sd sd, d.purchase_vat vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,d.Quantity debit_quantity, d.quantity* d.purchase_unit_price debit_price,\r\n                            0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,'Debit' Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                            tp.party_address,i.item_name,iu.unit_code\r\n                            from trns_purchase_master m                           \r\n                            inner join trns_purchase_detail d on d.Challan_id = m.Challan_id\r\n                            inner join Item i on i.item_id = d.item_id\r\n                            inner join item_unit iu on iu.unit_id=i.unit_id\r\n                            left join trns_party tp on tp.party_id = m.party_id\r\n                            where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                             ", str, "    AND d.Is_deleted = false and m.challan_type ='D'  and m.approver_stage='F' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n\r\n          UNION ALL\r\n                            select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no , '--' organization_name ,'--' registration_no ,case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy') else  to_char(m.Date_CHALLAN, 'dd/MM/yyyy') end  as Date, d.Quantity,\r\n\t                        d.lot_no,m.Date_CHALLAN challan_date, d.quantity* d.purchase_unit_price price, d.purchase_sd sd, d.purchase_vat vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,d.Quantity debit_quantity, d.quantity* d.purchase_unit_price debit_price,\r\n                            0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,'Credit' Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                            tp.party_address,i.item_name,iu.unit_code\r\n                            from trns_purchase_master m                           \r\n                            inner join trns_purchase_detail d on d.Challan_id = m.Challan_id\r\n                            inner join Item i on i.item_id = d.item_id\r\n                            inner join item_unit iu on iu.unit_id=i.unit_id\r\n                            left join trns_party tp on tp.party_id = m.party_id\r\n                            where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                             ", str, "    AND d.Is_deleted = false and m.challan_type ='Cr'  and m.approver_stage='F' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n\r\n                 UNION ALL\r\n                             select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no,'--' organization_name ,'--' registration_no ,  to_char(m.Date_CHALLAN, 'dd/MM/yyyy') as Date, d.Quantity,\r\n                             0 lot_no,m.Date_CHALLAN challan_date,d.quantity* d.current_price  price, 0 sd, 0 vat,d.quantity dispose_quantity,d.quantity* d.current_price dispose_price, d.sd dispose_sd, d.vat dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                             0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,(select code_name from app_code_detail where m.challan_page_discard_reason_m=code_id_m and m.challan_page_discard_reason_d=code_id_d)as Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                             tp.party_address,i.item_name,iu.unit_code\r\n                             from trns_sale_master m\r\n                             inner join trns_sale_detail d on d.Challan_id = m.Challan_id\r\n                             inner join Item i on i.item_id = d.item_id\r\n                             inner join item_unit iu on iu.unit_id=i.unit_id\r\n                             left join trns_party tp on tp.party_id = m.party_id\r\n                             where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                            ", str, "    AND d.Is_deleted = false  and m.approver_stage='F' and m.challan_type='D' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n\r\nUNION ALL\r\n                             select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no,'--' organization_name ,'--' registration_no ,  to_char(m.Date_CHALLAN, 'dd/MM/yyyy') as Date, d.Quantity,\r\n                             0 lot_no,m.Date_CHALLAN challan_date,d.quantity* d.actual_price  price,  d.sd, d.vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                             0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,'Direct Sale' as Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                             tp.party_address,i.item_name,iu.unit_code\r\n                             from trns_sale_master m\r\n                             inner join trns_sale_detail d on d.Challan_id = m.Challan_id\r\n                             inner join Item i on i.item_id = d.item_id\r\n                             inner join item_unit iu on iu.unit_id=i.unit_id\r\n                             left join trns_party tp on tp.party_id = m.party_id\r\n                             where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                            ", str, "    AND d.Is_deleted = false  and m.approver_stage='F' and m.challan_type='S' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n\r\n\r\n                UNION ALL\r\n                            (select 'P' status,d.production_id,0 org_branch_reg_id, '--' challan_no,'--' organization_name ,'--' registration_no , to_char(m.Date_Production, 'dd/MM/yyyy') as Date,0 Quantity,0 lot_no,m.Date_Production challan_date,\r\n\t                        0 price,0 sd, 0 vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n\t                        COALESCE(d.Quantity, '0') as production_Qty,\t          \r\n\t       \t               -- (select purchase_unit_price from trns_purchase_detail pd where pd.item_id= ", itemID, " limit 1) \r\n                            d.unit_price purchase_unit_price, d.unit_id,\r\n\t                        to_char(d.date_insert, 'dd/MM/yyyy') as prdDate,\r\n                            '--' Remarks,'--' party_name ,'--' party_bin ,d.Date_insert, '--'party_address,'--'item_name,iu.unit_code\r\n                            from trns_production_detail d              \r\n                            inner join trns_production_master m on d.production_id = m.production_id     \r\n                            inner join Item i on i.item_id = d.item_id\r\n                            inner join item_unit iu on iu.unit_id=i.unit_id\r\n                            where cast (m.Date_Production as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                                         ", str, "  AND d.Is_deleted = false AND d.status = 'R' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ") order by m.Date_Production) \r\n             UNION ALL\r\n                             \r\n                            (select 'P' status,0 production_id,0 org_branch_reg_id, '--' challan_no,'--' organization_name ,'--' registration_no , to_char(d.date_consumable_challan, 'dd/MM/yyyy') as Date,0 Quantity,0 lot_no,d.date_consumable_challan challan_date,\r\n\t                        0 price,0 sd, 0 vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n\t                        COALESCE(d.Quantity, '0') as production_Qty,\t          \r\n\t       \t               -- (select purchase_unit_price from trns_purchase_detail pd where pd.item_id= 2702 limit 1) \r\n                            d.price/d.quantity purchase_unit_price, d.unit_id,\r\n\t                        to_char(d.date_insert, 'dd/MM/yyyy') as prdDate,\r\n                            d.remarks Remarks,'--' party_name ,'--' party_bin ,d.Date_insert, '--'party_address,'--'item_name,iu.unit_code\r\n                            from gift_items_detail d   \r\n                            inner join Item i on i.item_id = d.item_id\r\n                            inner join item_unit iu on iu.unit_id=i.unit_id\r\n                            where cast (d.date_consumable_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                            ", str, "  AND d.Is_deleted = false AND d.organization_id= ", num, " AND d.org_branch_id in(", branchIds, "))\r\n\r\n            union All \r\n                            select 'P' status,0 production_id,m.receiving_branch_id, m.challan_no As challan_no, o.organization_name , o.registration_no ,\r\n                            to_char(issues_date, 'dd/MM/yyyy')  as Date, d.Quantity,\r\n\t                          0 lot_no,m.issues_date challan_date, d.quantity* d.unit_price price, coalesce(d.sd_amount,0) sd, coalesce(d.vat_amount,0) vat,0 dispose_quantity,0 dispose_price, \r\n\t                         0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                                0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,d.Remarks,\r\n                                branch_unit_name party_name ,ob.branch_unit_bin party_bin ,d.Date_insert,\r\n                                ob.org_branch_address party_address,i.item_name,iu.unit_code\r\n                                from trns_transfer_master m\r\n                                inner join org_registration_info o on m.Organization_id = o.Organization_id\r\n                                inner join org_branch_reg_info ob on m.receiving_branch_id = ob.org_branch_reg_id\r\n                                inner join trns_transfer_detail d on d.transfer_id = m.transfer_id\r\n                                inner join Item i on i.item_id = d.item_id \r\n                                inner join item_unit iu on iu.unit_id=i.unit_id                   \r\n                                \r\n                                 where  m.transfer_status='R' ", str, " AND m.organization_id= ", num, " AND m.receiving_branch_id in(", branchIds, ")\r\n                            and CAST(m.issues_date AS DATE) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n\r\n\r\n            union All \r\n                            select 'P' status,0 production_id,m.issuing_branch_id, m.challan_no As challan_no, o.organization_name , o.registration_no ,\r\n                                to_char(issues_date, 'dd/MM/yyyy')  as Date, 0 Quantity,\r\n\t                           0 lot_no,m.issues_date challan_date, 0 price, 0 sd, 0 vat,0 dispose_quantity,0 dispose_price, \r\n\t                         0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                               d.Quantity production_Qty,d.quantity* d.unit_price price ,0 unit_id,'--' prdDate,d.Remarks,\r\n                                branch_unit_name party_name ,ob.branch_unit_bin party_bin ,d.Date_insert,\r\n                                ob.org_branch_address party_address,i.item_name,iu.unit_code\r\n                                from trns_transfer_master m\r\n                                inner join org_registration_info o on m.Organization_id = o.Organization_id\r\n                                inner join org_branch_reg_info ob on m.issuing_branch_id = ob.org_branch_reg_id\r\n                                inner join trns_transfer_detail d on d.transfer_id = m.transfer_id\r\n                                inner join Item i on i.item_id = d.item_id \r\n                                inner join item_unit iu on iu.unit_id=i.unit_id                   \r\n                                \r\n                                 where m.transfer_status='I' ", str, " AND m.organization_id= ", num, " AND m.issuing_branch_id in(", branchIds, ")\r\n                            and CAST(m.issues_date AS DATE) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n\r\n                            order by challan_date" };
-            str1 = string.Concat(objArray);
-            return this.DBUtil.GetDataTable(str1);
-        }
-
-
-
-
-
-
-
 
         public decimal GetEarlyAvailableStock621(string fromDate, int itemID, int branchID)
         {
@@ -139,6 +107,418 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             string str = string.Concat("select unit_id,quantity,available_qnt,lot_no,lot_no_status,purchase_unit_price\r\n                     from trns_purchase_detail where item_id=", itemID, " ORDER BY lot_no desc");
             return this.DBUtil.GetDataTable(str);
         }
+
+        public DataTable GetEarlyAvailableStocOpening(DateTime fDate, long itemID)
+        {
+            int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+            int num1 = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"]);
+            object[] objArray = new object[] { "select item_qty ,item_value,opening_balance_date from opening_balance where item_id=", itemID, "  AND  organization_id= ", num, " AND org_branch_reg_id = ", num1, " and CAST(opening_balance_date AS DATE)<= to_date('", fDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')" };
+            string str = string.Concat(objArray);
+            return this.DBUtil.GetDataTable(str);
+        }
+
+        //public DataTable PurchaseAccountingBookPrevious(DateTime fromDate, long itemID, string branchIds)
+        //{
+        //    string str = "";
+        //    string str1 = "";
+        //    if (itemID > (long)0)
+        //    {
+        //        str = string.Concat(" AND d.item_id = '", itemID, "'");
+        //    }
+        //    int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+        //    object[] objArray = new object[] { "select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no, o.organization_name , o.registration_no ,case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy') else  to_char(m.ref_challan_date, 'dd/MM/yyyy') end  as Date, d.Quantity,\r\n\t           d.lot_no,m.Date_CHALLAN challan_date, d.quantity* d.purchase_unit_price price, d.purchase_sd sd, d.purchase_vat vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                                0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,d.Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                                tp.party_address,i.item_name,iu.unit_code\r\n                                from trns_purchase_master m\r\n                                inner join org_registration_info o on m.Organization_id = o.Organization_id\r\n                                inner join trns_purchase_detail d on d.Challan_id = m.Challan_id\r\n                                inner join Item i on i.item_id = d.item_id \r\n                                inner join item_unit iu on iu.unit_id=i.unit_id                   \r\n                                left join trns_party tp on tp.party_id = m.party_id\r\n                                where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                                ", str, "    AND d.Is_deleted = false and m.approver_stage='F' and m.challan_type='P' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n \r\n                  UNION ALL\r\n                            select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no , '--' organization_name ,'--' registration_no ,case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy') else  to_char(m.Date_CHALLAN, 'dd/MM/yyyy') end  as Date, d.Quantity,\r\n\t                        d.lot_no,m.Date_CHALLAN challan_date, d.quantity* d.purchase_unit_price price, d.purchase_sd sd, d.purchase_vat vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,d.Quantity debit_quantity, d.quantity* d.purchase_unit_price debit_price,\r\n                            0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,'Debit' Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                            tp.party_address,i.item_name,iu.unit_code\r\n                            from trns_purchase_master m                           \r\n                            inner join trns_purchase_detail d on d.Challan_id = m.Challan_id\r\n                            inner join Item i on i.item_id = d.item_id\r\n                            inner join item_unit iu on iu.unit_id=i.unit_id\r\n                            left join trns_party tp on tp.party_id = m.party_id\r\n                            where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                             ", str, "    AND d.Is_deleted = false and m.challan_type ='D'  and m.approver_stage='F' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n\r\n          UNION ALL\r\n                            select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no , '--' organization_name ,'--' registration_no ,case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy') else  to_char(m.Date_CHALLAN, 'dd/MM/yyyy') end  as Date, d.Quantity,\r\n\t                        d.lot_no,m.Date_CHALLAN challan_date, d.quantity* d.purchase_unit_price price, d.purchase_sd sd, d.purchase_vat vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,d.Quantity debit_quantity, d.quantity* d.purchase_unit_price debit_price,\r\n                            0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,'Credit' Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                            tp.party_address,i.item_name,iu.unit_code\r\n                            from trns_purchase_master m                           \r\n                            inner join trns_purchase_detail d on d.Challan_id = m.Challan_id\r\n                            inner join Item i on i.item_id = d.item_id\r\n                            inner join item_unit iu on iu.unit_id=i.unit_id\r\n                            left join trns_party tp on tp.party_id = m.party_id\r\n                            where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                             ", str, "    AND d.Is_deleted = false and m.challan_type ='Cr'  and m.approver_stage='F' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n\r\n                 UNION ALL\r\n                             select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no,'--' organization_name ,'--' registration_no ,  to_char(m.Date_CHALLAN, 'dd/MM/yyyy') as Date, d.Quantity,\r\n                             0 lot_no,m.Date_CHALLAN challan_date,d.quantity* d.current_price  price, 0 sd, 0 vat,d.quantity dispose_quantity,d.quantity* d.current_price dispose_price, d.sd dispose_sd, d.vat dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                             0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,(select code_name from app_code_detail where m.challan_page_discard_reason_m=code_id_m and m.challan_page_discard_reason_d=code_id_d)as Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                             tp.party_address,i.item_name,iu.unit_code\r\n                             from trns_sale_master m\r\n                             inner join trns_sale_detail d on d.Challan_id = m.Challan_id\r\n                             inner join Item i on i.item_id = d.item_id\r\n                             inner join item_unit iu on iu.unit_id=i.unit_id\r\n                             left join trns_party tp on tp.party_id = m.party_id\r\n                             where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                            ", str, "    AND d.Is_deleted = false  and m.approver_stage='F' and m.challan_type='D' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n\r\nUNION ALL\r\n                             select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no,'--' organization_name ,'--' registration_no ,  to_char(m.Date_CHALLAN, 'dd/MM/yyyy') as Date, d.Quantity,\r\n                             0 lot_no,m.Date_CHALLAN challan_date,d.quantity* d.actual_price  price,  d.sd, d.vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                             0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,'Direct Sale' as Remarks,tp.party_name , tp.party_bin ,d.Date_insert,\r\n                             tp.party_address,i.item_name,iu.unit_code\r\n                             from trns_sale_master m\r\n                             inner join trns_sale_detail d on d.Challan_id = m.Challan_id\r\n                             inner join Item i on i.item_id = d.item_id\r\n                             inner join item_unit iu on iu.unit_id=i.unit_id\r\n                             left join trns_party tp on tp.party_id = m.party_id\r\n                             where cast (m.date_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                            ", str, "    AND d.Is_deleted = false  and m.approver_stage='F' and m.challan_type='S' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ")\r\n\r\n\r\n                UNION ALL\r\n                            (select 'P' status,d.production_id,0 org_branch_reg_id, '--' challan_no,'--' organization_name ,'--' registration_no , to_char(m.Date_Production, 'dd/MM/yyyy') as Date,0 Quantity,0 lot_no,m.Date_Production challan_date,\r\n\t                        0 price,0 sd, 0 vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n\t                        COALESCE(d.Quantity, '0') as production_Qty,\t          \r\n\t       \t               -- (select purchase_unit_price from trns_purchase_detail pd where pd.item_id= ", itemID, " limit 1) \r\n                            d.unit_price purchase_unit_price, d.unit_id,\r\n\t                        to_char(d.date_insert, 'dd/MM/yyyy') as prdDate,\r\n                            '--' Remarks,'--' party_name ,'--' party_bin ,d.Date_insert, '--'party_address,'--'item_name,iu.unit_code\r\n                            from trns_production_detail d              \r\n                            inner join trns_production_master m on d.production_id = m.production_id     \r\n                            inner join Item i on i.item_id = d.item_id\r\n                            inner join item_unit iu on iu.unit_id=i.unit_id\r\n                            where cast (m.Date_Production as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                                         ", str, "  AND d.Is_deleted = false AND d.status = 'R' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ") order by m.Date_Production) \r\n             UNION ALL\r\n                             \r\n                            (select 'P' status,0 production_id,0 org_branch_reg_id, '--' challan_no,'--' organization_name ,'--' registration_no , to_char(d.date_consumable_challan, 'dd/MM/yyyy') as Date,0 Quantity,0 lot_no,d.date_consumable_challan challan_date,\r\n\t                        0 price,0 sd, 0 vat,0 dispose_quantity,0 dispose_price, 0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n\t                        COALESCE(d.Quantity, '0') as production_Qty,\t          \r\n\t       \t               -- (select purchase_unit_price from trns_purchase_detail pd where pd.item_id= 2702 limit 1) \r\n                            d.price/d.quantity purchase_unit_price, d.unit_id,\r\n\t                        to_char(d.date_insert, 'dd/MM/yyyy') as prdDate,\r\n                            d.remarks Remarks,'--' party_name ,'--' party_bin ,d.Date_insert, '--'party_address,'--'item_name,iu.unit_code\r\n                            from gift_items_detail d   \r\n                            inner join Item i on i.item_id = d.item_id\r\n                            inner join item_unit iu on iu.unit_id=i.unit_id\r\n                            where cast (d.date_consumable_challan as Date) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                            ", str, "  AND d.Is_deleted = false AND d.organization_id= ", num, " AND d.org_branch_id in(", branchIds, "))\r\n\r\n            union All \r\n                            select 'P' status,0 production_id,m.receiving_branch_id, m.challan_no As challan_no, o.organization_name , o.registration_no ,\r\n                            to_char(issues_date, 'dd/MM/yyyy')  as Date, d.Quantity,\r\n\t                          0 lot_no,m.issues_date challan_date, d.quantity* d.unit_price price, coalesce(d.sd_amount,0) sd, coalesce(d.vat_amount,0) vat,0 dispose_quantity,0 dispose_price, \r\n\t                         0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                                0 production_Qty,0 purchase_unit_price,0 unit_id,'--' prdDate,d.Remarks,\r\n                                branch_unit_name party_name ,ob.branch_unit_bin party_bin ,d.Date_insert,\r\n                                ob.org_branch_address party_address,i.item_name,iu.unit_code\r\n                                from trns_transfer_master m\r\n                                inner join org_registration_info o on m.Organization_id = o.Organization_id\r\n                                inner join org_branch_reg_info ob on m.receiving_branch_id = ob.org_branch_reg_id\r\n                                inner join trns_transfer_detail d on d.transfer_id = m.transfer_id\r\n                                inner join Item i on i.item_id = d.item_id \r\n                                inner join item_unit iu on iu.unit_id=i.unit_id                   \r\n                                \r\n                                 where  m.transfer_status='R' ", str, " AND m.organization_id= ", num, " AND m.receiving_branch_id in(", branchIds, ")\r\n                            and CAST(m.issues_date AS DATE) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n\r\n\r\n            union All \r\n                            select 'P' status,0 production_id,m.issuing_branch_id, m.challan_no As challan_no, o.organization_name , o.registration_no ,\r\n                                to_char(issues_date, 'dd/MM/yyyy')  as Date, 0 Quantity,\r\n\t                           0 lot_no,m.issues_date challan_date, 0 price, 0 sd, 0 vat,0 dispose_quantity,0 dispose_price, \r\n\t                         0 dispose_sd, 0 dispose_sd_vat,0 debit_quantity,0 debit_price,\r\n                               d.Quantity production_Qty,d.quantity* d.unit_price price ,0 unit_id,'--' prdDate,d.Remarks,\r\n                                branch_unit_name party_name ,ob.branch_unit_bin party_bin ,d.Date_insert,\r\n                                ob.org_branch_address party_address,i.item_name,iu.unit_code\r\n                                from trns_transfer_master m\r\n                                inner join org_registration_info o on m.Organization_id = o.Organization_id\r\n                                inner join org_branch_reg_info ob on m.issuing_branch_id = ob.org_branch_reg_id\r\n                                inner join trns_transfer_detail d on d.transfer_id = m.transfer_id\r\n                                inner join Item i on i.item_id = d.item_id \r\n                                inner join item_unit iu on iu.unit_id=i.unit_id                   \r\n                                \r\n                                 where m.transfer_status='I' ", str, " AND m.organization_id= ", num, " AND m.issuing_branch_id in(", branchIds, ")\r\n                            and CAST(m.issues_date AS DATE) <= TO_DATE('", fromDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n\r\n                            order by challan_date" };
+        //    str1 = string.Concat(objArray);
+        //    return this.DBUtil.GetDataTable(str1);
+        //}
+
+
+        public DataTable PurchaseAccountingBookPrevious(DateTime fromDate, long itemID, string branchIds)
+        {
+            string query;
+            string itemFilter = "";
+
+            if (itemID > 0)
+            {
+                // item_id numeric, তাই কোটেশন ছাড়াই ব্যবহার করা নিরাপদ
+                itemFilter = $" AND d.item_id = {itemID}";
+            }
+
+            int orgId = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+            string dateStr = fromDate.ToString("dd/MM/yyyy");
+
+            query = $@"
+select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no, 
+       o.organization_name , o.registration_no ,
+       case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy') 
+            else to_char(m.ref_challan_date, 'dd/MM/yyyy') end as Date,
+       d.Quantity,
+       d.lot_no,
+       m.date_challan challan_date,
+       d.quantity * d.purchase_unit_price price,
+       d.purchase_sd sd,
+       d.purchase_vat vat,
+       0 dispose_quantity,
+       0 dispose_price,
+       0 dispose_sd,
+       0 dispose_sd_vat,
+       0 debit_quantity,
+       0 debit_price,
+       0 production_Qty,
+       0 purchase_unit_price,
+       0 unit_id,
+       '--' prdDate,
+       d.Remarks,
+       tp.party_name,
+       tp.party_bin,
+       d.date_insert,
+       tp.party_address,
+       i.item_name,
+       iu.unit_code
+from trns_purchase_master m
+inner join org_registration_info o on m.organization_id = o.organization_id
+inner join trns_purchase_detail d on d.challan_id = m.challan_id
+inner join item i on i.item_id = d.item_id
+inner join item_unit iu on iu.unit_id = i.unit_id
+left  join trns_party tp on tp.party_id = m.party_id
+where cast(m.date_challan as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+      {itemFilter}
+      AND d.is_deleted = false 
+      and m.challan_type = 'P'
+      AND m.organization_id = {orgId}
+      AND m.org_branch_reg_id in ({branchIds})
+
+UNION ALL
+
+select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no, 
+       '--' organization_name ,'--' registration_no ,
+       case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy')
+            else to_char(m.date_challan, 'dd/MM/yyyy') end as Date,
+       d.Quantity,
+       d.lot_no,
+       m.date_challan challan_date,
+       d.quantity * d.purchase_unit_price price,
+       d.purchase_sd sd,
+       d.purchase_vat vat,
+       0 dispose_quantity,
+       0 dispose_price,
+       0 dispose_sd,
+       0 dispose_sd_vat,
+       d.quantity debit_quantity,
+       d.quantity * d.purchase_unit_price debit_price,
+       0 production_Qty,
+       0 purchase_unit_price,
+       0 unit_id,
+       '--' prdDate,
+       'Debit' Remarks,
+       tp.party_name,
+       tp.party_bin,
+       d.date_insert,
+       tp.party_address,
+       i.item_name,
+       iu.unit_code
+from trns_purchase_master m
+inner join trns_purchase_detail d on d.challan_id = m.challan_id
+inner join item i on i.item_id = d.item_id
+inner join item_unit iu on iu.unit_id = i.unit_id
+left  join trns_party tp on tp.party_id = m.party_id
+where cast(m.date_challan as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+      {itemFilter}
+      AND d.is_deleted = false 
+      and m.challan_type = 'D'
+      AND m.organization_id = {orgId}
+      AND m.org_branch_reg_id in ({branchIds})
+
+UNION ALL
+
+select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no, 
+       '--' organization_name ,'--' registration_no ,
+       case when m.purchase_type ='I' then to_char(m.bl_date, 'dd/MM/yyyy')
+            else to_char(m.date_challan, 'dd/MM/yyyy') end as Date,
+       d.Quantity,
+       d.lot_no,
+       m.date_challan challan_date,
+       d.quantity * d.purchase_unit_price price,
+       d.purchase_sd sd,
+       d.purchase_vat vat,
+       0 dispose_quantity,
+       0 dispose_price,
+       0 dispose_sd,
+       0 dispose_sd_vat,
+       d.quantity debit_quantity,
+       d.quantity * d.purchase_unit_price debit_price,
+       0 production_Qty,
+       0 purchase_unit_price,
+       0 unit_id,
+       '--' prdDate,
+       'Credit' Remarks,
+       tp.party_name,
+       tp.party_bin,
+       d.date_insert,
+       tp.party_address,
+       i.item_name,
+       iu.unit_code
+from trns_purchase_master m
+inner join trns_purchase_detail d on d.challan_id = m.challan_id
+inner join item i on i.item_id = d.item_id
+inner join item_unit iu on iu.unit_id = i.unit_id
+left  join trns_party tp on tp.party_id = m.party_id
+where cast(m.date_challan as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+      {itemFilter}
+      AND d.is_deleted = false 
+      and m.challan_type = 'Cr'
+      AND m.organization_id = {orgId}
+      AND m.org_branch_reg_id in ({branchIds})
+
+UNION ALL
+
+select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no,
+       '--' organization_name ,'--' registration_no,
+       to_char(m.date_challan, 'dd/MM/yyyy') as Date,
+       d.Quantity,
+       0 lot_no,
+       m.date_challan challan_date,
+       d.quantity * d.current_price price,
+       0 sd,
+       0 vat,
+       d.quantity dispose_quantity,
+       d.quantity * d.current_price dispose_price,
+       d.sd dispose_sd,
+       d.vat dispose_sd_vat,
+       0 debit_quantity,
+       0 debit_price,
+       0 production_Qty,
+       0 purchase_unit_price,
+       0 unit_id,
+       '--' prdDate,
+       (select code_name 
+        from app_code_detail 
+        where m.challan_page_discard_reason_m = code_id_m 
+          and m.challan_page_discard_reason_d = code_id_d) as Remarks,
+       tp.party_name,
+       tp.party_bin,
+       d.date_insert,
+       tp.party_address,
+       i.item_name,
+       iu.unit_code
+from trns_sale_master m
+inner join trns_sale_detail d on d.challan_id = m.challan_id
+inner join item i on i.item_id = d.item_id
+inner join item_unit iu on iu.unit_id = i.unit_id
+left  join trns_party tp on tp.party_id = m.party_id
+where cast(m.date_challan as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+      {itemFilter}
+      AND d.is_deleted = false  
+      and m.challan_type = 'D'
+      AND m.organization_id = {orgId}
+      AND m.org_branch_reg_id in ({branchIds})
+
+UNION ALL
+
+select 'P' status,0 production_id,m.org_branch_reg_id, m.challan_no As challan_no,
+       '--' organization_name ,'--' registration_no,
+       to_char(m.date_challan, 'dd/MM/yyyy') as Date,
+       d.Quantity,
+       0 lot_no,
+       m.date_challan challan_date,
+       d.quantity * d.actual_price price,
+       d.sd,
+       d.vat,
+       0 dispose_quantity,
+       0 dispose_price,
+       0 dispose_sd,
+       0 dispose_sd_vat,
+       0 debit_quantity,
+       0 debit_price,
+       0 production_Qty,
+       0 purchase_unit_price,
+       0 unit_id,
+       '--' prdDate,
+       'Direct Sale' as Remarks,
+       tp.party_name,
+       tp.party_bin,
+       d.date_insert,
+       tp.party_address,
+       i.item_name,
+       iu.unit_code
+from trns_sale_master m
+inner join trns_sale_detail d on d.challan_id = m.challan_id
+inner join item i on i.item_id = d.item_id
+inner join item_unit iu on iu.unit_id = i.unit_id
+left  join trns_party tp on tp.party_id = m.party_id
+where cast(m.date_challan as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+      {itemFilter}
+      AND d.is_deleted = false  
+      and m.challan_type = 'S'
+      AND m.organization_id = {orgId}
+      AND m.org_branch_reg_id in ({branchIds})
+
+UNION ALL
+
+(
+    select 'P' status,d.production_id,0 org_branch_reg_id, '--' challan_no,
+           '--' organization_name ,'--' registration_no,
+           to_char(m.date_production, 'dd/MM/yyyy') as Date,
+           0 Quantity,
+           0 lot_no,
+           m.date_production challan_date,
+           0 price,
+           0 sd,
+           0 vat,
+           0 dispose_quantity,
+           0 dispose_price,
+           0 dispose_sd,
+           0 dispose_sd_vat,
+           0 debit_quantity,
+           0 debit_price,
+           COALESCE(d.quantity, 0) as production_Qty,
+           d.unit_price purchase_unit_price,
+           d.unit_id,
+           to_char(d.date_insert, 'dd/MM/yyyy') as prdDate,
+           '--' Remarks,
+           '--' party_name,
+           '--' party_bin,
+           d.date_insert,
+           '--' party_address,
+           '--' item_name,
+           iu.unit_code
+    from trns_production_detail d
+    inner join trns_production_master m on d.production_id = m.production_id
+    inner join item i on i.item_id = d.item_id
+    inner join item_unit iu on iu.unit_id = i.unit_id
+    where cast(m.date_production as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+          {itemFilter}
+          AND d.is_deleted = false 
+          AND d.status = 'R'
+          AND m.organization_id = {orgId}
+          AND m.org_branch_reg_id in ({branchIds})
+    order by m.date_production
+)
+
+UNION ALL
+
+(
+    select 'P' status,0 production_id,0 org_branch_reg_id, '--' challan_no,
+           '--' organization_name ,'--' registration_no,
+           to_char(d.date_consumable_challan, 'dd/MM/yyyy') as Date,
+           0 Quantity,
+           0 lot_no,
+           d.date_consumable_challan challan_date,
+           0 price,
+           0 sd,
+           0 vat,
+           0 dispose_quantity,
+           0 dispose_price,
+           0 dispose_sd,
+           0 dispose_sd_vat,
+           0 debit_quantity,
+           0 debit_price,
+           COALESCE(d.quantity, 0) as production_Qty,
+           d.price / d.quantity purchase_unit_price,
+           d.unit_id,
+           to_char(d.date_insert, 'dd/MM/yyyy') as prdDate,
+           d.remarks Remarks,
+           '--' party_name,
+           '--' party_bin,
+           d.date_insert,
+           '--' party_address,
+           '--' item_name,
+           iu.unit_code
+    from gift_items_detail d
+    inner join item i on i.item_id = d.item_id
+    inner join item_unit iu on iu.unit_id = i.unit_id
+    where cast(d.date_consumable_challan as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+          {itemFilter}
+          AND d.is_deleted = false 
+          AND d.organization_id = {orgId}
+          AND d.org_branch_id in ({branchIds})
+)
+
+UNION ALL
+
+select 'P' status,0 production_id,m.receiving_branch_id, m.challan_no As challan_no,
+       o.organization_name , o.registration_no,
+       to_char(m.issues_date, 'dd/MM/yyyy') as Date,
+       d.Quantity,
+       0 lot_no,
+       m.issues_date challan_date,
+       d.quantity * d.unit_price price,
+       coalesce(d.sd_amount,0) sd,
+       coalesce(d.vat_amount,0) vat,
+       0 dispose_quantity,
+       0 dispose_price,
+       0 dispose_sd,
+       0 dispose_sd_vat,
+       0 debit_quantity,
+       0 debit_price,
+       0 production_Qty,
+       0 purchase_unit_price,
+       0 unit_id,
+       '--' prdDate,
+       d.Remarks,
+       ob.branch_unit_name party_name,
+       ob.branch_unit_bin party_bin,
+       d.date_insert,
+       ob.org_branch_address party_address,
+       i.item_name,
+       iu.unit_code
+from trns_transfer_master m
+inner join org_registration_info o  on m.organization_id   = o.organization_id
+inner join org_branch_reg_info ob   on m.receiving_branch_id = ob.org_branch_reg_id
+inner join trns_transfer_detail d   on d.transfer_id       = m.transfer_id
+inner join item i                   on i.item_id           = d.item_id
+inner join item_unit iu             on iu.unit_id          = i.unit_id
+where m.transfer_status = 'R'
+      {itemFilter}
+      AND m.organization_id = {orgId}
+      AND m.receiving_branch_id in ({branchIds})
+      and cast(m.issues_date as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+
+UNION ALL
+
+select 'P' status,0 production_id,m.issuing_branch_id, m.challan_no As challan_no,
+       o.organization_name , o.registration_no,
+       to_char(m.issues_date, 'dd/MM/yyyy') as Date,
+       0 Quantity,
+       0 lot_no,
+       m.issues_date challan_date,
+       0 price,
+       0 sd,
+       0 vat,
+       0 dispose_quantity,
+       0 dispose_price,
+       0 dispose_sd,
+       0 dispose_sd_vat,
+       0 debit_quantity,
+       0 debit_price,
+       d.quantity production_Qty,
+       d.quantity * d.unit_price price,
+       0 unit_id,
+       '--' prdDate,
+       d.Remarks,
+       ob.branch_unit_name party_name,
+       ob.branch_unit_bin party_bin,
+       d.date_insert,
+       ob.org_branch_address party_address,
+       i.item_name,
+       iu.unit_code
+from trns_transfer_master m
+inner join org_registration_info o  on m.organization_id   = o.organization_id
+inner join org_branch_reg_info ob   on m.issuing_branch_id = ob.org_branch_reg_id
+inner join trns_transfer_detail d   on d.transfer_id       = m.transfer_id
+inner join item i                   on i.item_id           = d.item_id
+inner join item_unit iu             on iu.unit_id          = i.unit_id
+where m.transfer_status = 'I'
+      {itemFilter}
+      AND m.organization_id = {orgId}
+      AND m.issuing_branch_id in ({branchIds})
+      and cast(m.issues_date as date) <= to_date('{dateStr}', 'dd/MM/yyyy')
+
+order by challan_date";
+
+            return this.DBUtil.GetDataTable(query);
+        }
+
+
 
         public DataTable GetItemLotInfo(long itemID)
         {
