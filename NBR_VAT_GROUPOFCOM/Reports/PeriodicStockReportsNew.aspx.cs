@@ -1680,23 +1680,28 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             if (this.drpProductType.SelectedValue == "R")
                             {
                                 num12 = (closingQuantity > new decimal(0) ? closingQuantity : (num10 + num14) - (num24 + num28));
-                                str5 = Utilities.formatFraction(num12);
-                                if (closingAmount != new decimal(0))
+                                if (num12 <= new decimal(0))
                                 {
-                                    num13 = (closingAmount > new decimal(0) ? closingAmount : new decimal(0));
+                                    num12 = new decimal(0);
+                                    str5 = Utilities.formatFraction(num12);
+                                    num13 = new decimal(0);
                                 }
                                 else
                                 {
-                                    num13 = (num11 + num17) - (num25 + num23);
-                                }
-
-                                if (num12 > new decimal(0) && num13 < new decimal(1))
-                                {
+                                    str5 = Utilities.formatFraction(num12);
                                     decimal totalQuantity = num10 + num14;
-                                    if (totalQuantity > new decimal(0))
+                                    decimal averageRate = (totalQuantity > new decimal(0) ? (num11 + num17) / totalQuantity : new decimal(0));
+                                    if (closingAmount > new decimal(0))
                                     {
-                                        decimal averageRate = (num11 + num17) / totalQuantity;
+                                        num13 = closingAmount;
+                                    }
+                                    else if (averageRate > new decimal(0))
+                                    {
                                         num13 = averageRate * num12;
+                                    }
+                                    else
+                                    {
+                                        num13 = Math.Max(new decimal(0), (num11 + num17) - (num25 + num23));
                                     }
                                 }
                             }
