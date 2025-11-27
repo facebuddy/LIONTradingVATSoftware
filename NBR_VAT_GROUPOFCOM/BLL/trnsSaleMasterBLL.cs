@@ -391,5 +391,10 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             string str2 = string.Concat(startDate);
             return this.DBUtil.GetDataSet(str2, "Disposal_of_UnusedUnfit_Inputs_Form_26");
         }
+        public DataTable rptChallanForm112(trnsSaleMasterDAO objtrnsSaleMasterDAO)
+        {
+            return this.rptChallanForm11(objtrnsSaleMasterDAO);
+        }
+
     }
 }
