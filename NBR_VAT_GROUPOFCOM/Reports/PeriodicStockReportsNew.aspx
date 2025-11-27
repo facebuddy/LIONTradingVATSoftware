@@ -75,6 +75,18 @@
                 transform: rotate(360deg);
             }
         }
+
+        /* Keep the form aligned with the page chrome */
+        .report-container {
+            padding-left: 0;
+            padding-right: 0;
+        }
+
+        /* Prevent the wide report table from breaking the layout */
+        .report-table-wrapper {
+            overflow-x: auto;
+            width: 100%;
+        }
     </style>
 
 </asp:Content>
@@ -86,7 +98,7 @@
                 <div class="spinner"></div>
                 Loading, please wait...
             </div>
-            <div class="container-fluid">
+            <div class="container-fluid report-container">
                 <div class="panel panel-group">
                     <div class="panel panel-primary">
                         <div class="panel-heading" style="text-align: center; font-family: Tahoma; font-size: 18px; font-weight: bold; height: 25px; padding-top: 0px">Periodic Stock Report</div>
@@ -218,7 +230,7 @@
                                             <asp:Label runat="server" class="control-label text-center" ID="lblToDate"></asp:Label>
                                         </div>
                                     </div>
-                                    <div>
+                                    <div class="report-table-wrapper">
                                         <table border="1" class="allSolid" style="width: 100%; border-collapse: collapse; border: 1px solid #000000">
                                             <thead style="text-align: center; font-weight: bold">
                                                 <tr>
