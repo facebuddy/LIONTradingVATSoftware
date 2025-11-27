@@ -1763,6 +1763,23 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                 num13 = (num35 <= new decimal(0) ? num12 * (num17 == new decimal(0) || num14 == new decimal(0) ? new decimal(0) : num17 / num14) : num12 * num35);
                             }
 
+                            if (num12 > new decimal(0) && num13 == new decimal(0))
+                            {
+                                decimal totalQuantity = (num10 + num14) + num18;
+                                decimal totalAmount = (num11 + num17) + num19;
+                                decimal averageRate = (totalQuantity > new decimal(0) ? totalAmount / totalQuantity : new decimal(0));
+
+                                if (averageRate == new decimal(0) && num35 > new decimal(0))
+                                {
+                                    averageRate = num35;
+                                }
+
+                                if (averageRate > new decimal(0))
+                                {
+                                    num13 = averageRate * num12;
+                                }
+                            }
+
                             if (num12 <= new decimal(0))
                             {
                                 num12 = new decimal(0);
