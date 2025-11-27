@@ -84,7 +84,6 @@ from
             where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and d.item_id = mqmm.item_id
               and d.installment_status = false
-              and m.challan_type <> 'D'
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
         )
@@ -142,7 +141,6 @@ from
             where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and d.item_id = mqmm.item_id
               and d.installment_status = false
-              and m.challan_type <> 'D'
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
         )
@@ -425,7 +423,6 @@ from
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
           and d.installment_status = false
-          and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) sq,
@@ -437,7 +434,6 @@ from
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
           and d.installment_status = false
-          and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) st,
@@ -449,7 +445,6 @@ from
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
           and d.installment_status = false
-          and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) sv,
@@ -461,7 +456,6 @@ from
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
           and d.installment_status = false
-          and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) ssd,
