@@ -59,7 +59,11 @@ namespace NBR_VAT_GROUPOFCOM.BLL
         (max(sq) + max(trnsisuueq) + max(gq) - max(cpq)) salqnt,
         (max(st1) + max(st) + max(trnsissueprice) + max(gp) - max(cpt)) salamount,
         (max(sv1) + max(sv) + max(trnsissuevat) + max(gv) - max(cpv)) salvat,
-        (max(ssd1) + max(ssd) + max(trnsissuesd) + max(gs) - max(cpsd)) salsd
+        (max(ssd1) + max(ssd) + max(trnsissuesd) + max(gs) - max(cpsd)) salsd,
+        max(disposeq) disposeqnt,
+        max(disposeamount) disposeamount,
+        max(disposevat) disposevat,
+        max(disposesd) disposesd
 from
 (
     select item_id, item_name, unit_id, unit_code, product_type, weight, weight_unit_id, unit_codei,
@@ -84,6 +88,19 @@ from
             where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and d.item_id = mqmm.item_id
               and d.installment_status = false
+              and m.challan_type <> 'D'
+              and m.organization_id = {orgId}
+              and m.org_branch_reg_id in({branchIds})
+        )
+        -
+        (
+            select coalesce(sum(d.quantity), 0)
+            from trns_sale_detail d
+            inner join trns_sale_master m on d.challan_id = m.challan_id
+            where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and d.item_id = mqmm.item_id
+              and d.installment_status = false
+              and m.challan_type = 'D'
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
         )
@@ -141,6 +158,19 @@ from
             where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and d.item_id = mqmm.item_id
               and d.installment_status = false
+              and m.challan_type <> 'D'
+              and m.organization_id = {orgId}
+              and m.org_branch_reg_id in({branchIds})
+        )
+        -
+        (
+            select coalesce(sum(d.quantity * d.actual_price), 0)
+            from trns_sale_detail d
+            inner join trns_sale_master m on d.challan_id = m.challan_id
+            where CAST(m.date_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and d.item_id = mqmm.item_id
+              and d.installment_status = false
+              and m.challan_type = 'D'
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
         )
@@ -423,6 +453,7 @@ from
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
           and d.installment_status = false
+          and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) sq,
@@ -434,6 +465,7 @@ from
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
           and d.installment_status = false
+          and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) st,
@@ -445,6 +477,7 @@ from
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
           and d.installment_status = false
+          and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) sv,
@@ -456,9 +489,58 @@ from
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.item_id = mqmm.item_id
           and d.installment_status = false
+          and m.challan_type <> 'D'
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) ssd,
+    (
+        select coalesce(sum(d.quantity), 0)
+        from trns_sale_detail d
+        inner join trns_sale_master m on d.challan_id = m.challan_id
+        where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.item_id = mqmm.item_id
+          and d.installment_status = false
+          and m.challan_type = 'D'
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) disposeq,
+    (
+        select coalesce(sum(d.quantity * d.actual_price), 0)
+        from trns_sale_detail d
+        inner join trns_sale_master m on d.challan_id = m.challan_id
+        where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.item_id = mqmm.item_id
+          and d.installment_status = false
+          and m.challan_type = 'D'
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) disposeamount,
+    (
+        select coalesce(sum(d.vat), 0)
+        from trns_sale_detail d
+        inner join trns_sale_master m on d.challan_id = m.challan_id
+        where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.item_id = mqmm.item_id
+          and d.installment_status = false
+          and m.challan_type = 'D'
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) disposevat,
+    (
+        select coalesce(sum(d.sd), 0)
+        from trns_sale_detail d
+        inner join trns_sale_master m on d.challan_id = m.challan_id
+        where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.item_id = mqmm.item_id
+          and d.installment_status = false
+          and m.challan_type = 'D'
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) disposesd,
     (
         select coalesce(sum(tnd.quantity), 0)
         from trns_transfer_detail tnd
