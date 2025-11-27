@@ -1,5 +1,6 @@
 using ASP;
 using NBR_VAT_GROUPOFCOM.BLL;
+using NBR_VAT_GROUPOFCOM.UserControls;
 using System;
 using System.Data;
 using System.Globalization;
@@ -83,7 +84,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
         {
             if (this.droChallanNo.SelectedValue == "-1")
             {
-                this.msgBox.AddMessage(" Select Challan No First.", 2);
+                this.msgBox.AddMessage(" Select Challan No First.", MsgBoxs.enmMessageType.Attention);
                 return;
             }
             this.Session["Dispose_ChallanNo"] = this.droChallanNo.SelectedItem.ToString();
