@@ -22,6 +22,24 @@ namespace NBR_VAT_GROUPOFCOM.Reports
         {
         }
 
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            MQMM.LoginCheckForUser();
+            if (!base.IsPostBack)
+            {
+                Utility.fillAllItemPD(this.ddlItem);
+                this.ddlItem.Items.Insert(0, new ListItem("----Select----", "-99"));
+                this.orgName.Text = this.Session["ORGANIZATION_NAME"].ToString();
+                this.orgAddress.Text = this.Session["ORGANIZATION_ADDRESS"].ToString();
+                this.orgBIN.Text = this.Session["ORGANIZATION_BIN"].ToString();
+                Convert.ToInt32(this.Session["CIRCLE_ID"]);
+                this.fromDate.Text = DateTime.Now.ToString("01/MM/yyyy");
+                this.toDate.Text = DateTime.Now.ToString("dd/MM/yyyy");
+                this.lblPrintDateTime.Text = DateTime.Now.ToString("dd-MMM-yyyy hh:mm:ss tt");
+                this.lblUser.Text = this.Session["employee_name"].ToString();
+            }
+        }
+
         protected void btnSearch_OnClick(object sender, EventArgs e)
         {
             DateTime minValue = DateTime.MinValue;
