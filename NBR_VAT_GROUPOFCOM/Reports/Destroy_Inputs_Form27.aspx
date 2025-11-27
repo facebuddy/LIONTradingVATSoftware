@@ -1,22 +1,15 @@
-﻿<%@ page title="" language="C#" masterpagefile="~/DashboardVTR.Master" autoeventwireup="true" inherits="Reports_Destroy_Inputs_Form27, App_Web_y1tsx4fu" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/DashboardVTR.Master" AutoEventWireup="true" CodeBehind="Destroy_Inputs_Form27.aspx.cs" Inherits="NBR_VAT_GROUPOFCOM.Reports.Destroy_Inputs_Form27" %>
 
-<%@ Register Src="~/UserControls/MsgBox.ascx" TagName="MsgBox" TagPrefix="uc2" %>
+<%@ Register Src="~/UserControls/MsgBoxs.ascx" TagName="MsgBoxs" TagPrefix="uc2" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="Server">
 
-    <link rel="stylesheet" type="text/css" href="Styles/jquery-ui.css" />
-    <script type="text/javascript" src="Scripts/jquery-3.1.1.min.js"></script>
-    <script type="text/javascript" src="Scripts/jquery-ui-1.12.1.js"></script>
     <link href="../Styles/bootstrap/bootstrap.css" rel="stylesheet" />
     <link href="../Styles/Panel_Custom.css" rel="stylesheet" />
     <link href="../../Styles/Main.css" rel="stylesheet" />
     <link href="../../Styles/Box_Border.css" rel="Stylesheet" type="text/css" />
 
     <script type="text/javascript">
-        $(document).ready(function () {
-            $("#<%=fromDate.ClientID %>").datepicker({ dateFormat: "dd/mm/yy" });
-     });
-
     function PrintPanel() {
            var panel = document.getElementById("<%=print.ClientID %>");
            var printWindow = window.open('', '', 'left=1,top=0,height=auto,width=auto,toolbar=0,scrollbars=1,status=0,dir=ltr');
@@ -75,7 +68,7 @@
                                 </div>
                            </div>
 
-                         <div class="row">
+                        <div class="row">
                         <div class="col-md-12" style="text-align:right">
                             <div class="form-group form-group-sm">
                                 <asp:Button runat="server" ID="btnSearch" CssClass="btn btn-primary" Style="float: right" Text="Search" OnClick="btnSearch_OnClick" />
@@ -85,11 +78,26 @@
                         </div>
                         <div class="col-md-3">
                             <div class="form-group form-group-sm">
-                              
+
                             </div>
 
                         </div>
 
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group form-group-sm">
+                                <label class="col-sm-5 control-label">Challan No :</label>
+                                <div class="col-sm-7">
+                                    <asp:DropDownList ID="droChallanNo" runat="server" CssClass="form-control"></asp:DropDownList>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8" style="text-align:right">
+                            <div class="form-group form-group-sm">
+                                <asp:Button ID="btnApplication" runat="server" Text="Application" CssClass="btn btn-success" OnClick="btnShowApplication_OnClick" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -222,5 +230,5 @@
                 </div>
             </div>
               </div>
-    <uc2:MsgBox ID="msgBox" runat="server" />
+    <uc2:MsgBoxs ID="msgBox" runat="server" />
 </asp:Content>

@@ -533,6 +533,8 @@
 
                         <li><a href="/Reports/QuantityWiseSaleReports.aspx"><i class="bx bx-right-arrow-alt"></i>  Sale Sub Report</a>
                         </li>
+                        <li><a href="/Reports/Destroy_Inputs_Form27.aspx"><i class="bx bx-right-arrow-alt"></i> দুর্ঘটনায় ক্ষতিগ্রস্ত বা ধ্বংসপ্রাপ্ত পণ্য নিষ্পত্তির আবেদনপত্র (মূসক-৪.৫)</a>
+                        </li>
                           <li><a href="/Reports/DailySaleReports.aspx"><i class="bx bx-right-arrow-alt"></i> Monthly Sales-Purchase Summary Report (Day Basis)</a>
                         </li>
 
