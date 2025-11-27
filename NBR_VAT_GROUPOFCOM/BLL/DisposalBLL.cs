@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Data;
+
 namespace NBR_VAT_GROUPOFCOM.BLL
 {
-
     public class DisposalBLL
     {
         private DBUtility DBUtil = new DBUtility();
@@ -50,23 +50,23 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return this.DBUtil.GetDataTable("select * from app_code_detail where  Is_deleted=false");
         }
 
-        public DataTable getChallanNoByItemIdAndOrganizationId(int intItemId, int intOrgId)
+        public DataTable getChallanNoByItemIdAndOrganizationId(long intItemId, int intOrgId)
         {
             string str = string.Concat("select Distinct pm.Challan_id, pm.challan_no AS Challan_No from trns_purchase_master pm,trns_purchase_detail pd where pm.Challan_id=pd.Challan_id and Item_id='", intItemId, "' order by  pm.challan_no");
             return this.DBUtil.GetDataTable(str);
         }
 
-        public DataTable GetDamagedDataForReport(DateTime fDate, DateTime tDate, int itemId)
+        public DataTable GetDamagedDataForReport(DateTime fDate, DateTime tDate, long itemId)
         {
             DataTable dataTable = new DataTable();
             try
             {
                 string str = "";
-                if (itemId != -99)
+                if (itemId != (long)-99)
                 {
                     str = string.Concat(str, "and i.item_id=", itemId);
                 }
-                string[] strArrays = new string[] { "select i.item_id,i.hs_code, i.item_name,m.challan_id, m.challan_no,m.date_challan,d.quantity,\r\n                            d.quantity*d.actual_price prev_amount,d.vat,d.Remarks,d.quantity*d.current_price pre_amount,iu.unit_code \r\n                            from trns_sale_master m\r\n                            inner join trns_sale_detail d on m.challan_id = d.challan_id\r\n                            inner join item i on d.item_id = i.item_id\r\n                            inner join item_unit iu on iu.unit_id=d.unit_id\r\n                            where m.challan_type = 'D'\r\n                            and m.m_no = 27\r\n                            and m.date_challan >= to_date('", fDate.ToString("MM/dd/yyyy"), "','MM/dd/yyyy')\r\n                            and m.date_challan <= to_date('", tDate.ToString("MM/dd/yyyy"), "','MM/dd/yyyy')\r\n                            and m.is_deleted = false ", str, " " };
+                string[] strArrays = new string[] { "select i.item_id,i.hs_code, i.item_name,m.challan_id, m.challan_no,m.date_challan,d.quantity,\r\n                            d.quantity*d.actual_price prev_amount,d.vat,d.Remarks,d.quantity*d.current_price pre_amount,iu.unit_code \r\n                            from trns_sale_master m\r\n                            inner join trns_sale_detail d on m.challan_id = d.challan_id\r\n                            inner join item i on d.item_id = i.item_id\r\n                            inner join item_unit iu on iu.unit_id=d.unit_id\r\n                            where m.challan_type = 'D'\r\n                            and m.m_no = 27 and\r\n                            to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') \r\n                            and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')  \r\n                            and m.is_deleted = false ", str, " " };
                 string str1 = string.Concat(strArrays);
                 dataTable = this.DBUtil.GetDataTable(str1);
             }
@@ -83,13 +83,28 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             try
             {
                 string str = "";
-                if (itemId != -99)
+                if (itemId != (long)-99)
                 {
                     str = string.Concat(str, "and i.item_id=", itemId);
                 }
-                string[] strArrays = new string[] { "select i.item_id,i.hs_code, i.item_name,m.challan_id, m.challan_no,m.date_challan,d.quantity,\r\n                            d.quantity*d.actual_price prev_amount,d.vat,d.Remarks,d.quantity*d.current_price pre_amount,iu.unit_code,\r\n                            (select td.row_no from trns_purchase_master tm inner join trns_purchase_detail td on td.challan_id=tm.challan_id where tm.challan_no=m.challan_no limit 1) purchaseSl\r\n                            from trns_sale_master m\r\n                            inner join trns_sale_detail d on m.challan_id = d.challan_id\r\n                            inner join item i on d.item_id = i.item_id\r\n                            inner join item_unit iu on iu.unit_id=d.unit_id\r\n                            where m.challan_type = 'D'\r\n                            and m.m_no = 26\r\n                            and m.date_challan >= to_date('", fDate.ToString("MM/dd/yyyy"), "','MM/dd/yyyy')\r\n                            and m.date_challan <= to_date('", tDate.ToString("MM/dd/yyyy"), "','MM/dd/yyyy')\r\n                            and m.is_deleted = false ", str };
+                string[] strArrays = new string[] { "select i.item_id,i.hs_code, i.item_name,m.challan_id, m.challan_no,m.date_challan,d.quantity,\r\n                            d.quantity*d.actual_price prev_amount,d.vat,d.Remarks,d.quantity*d.current_price pre_amount,iu.unit_code,\r\n                            (select td.row_no from trns_purchase_master tm inner join trns_purchase_detail td on td.challan_id=tm.challan_id where tm.challan_no=m.challan_no limit 1) purchaseSl\r\n                            from trns_sale_master m\r\n                            inner join trns_sale_detail d on m.challan_id = d.challan_id\r\n                            inner join item i on d.item_id = i.item_id\r\n                            inner join item_unit iu on iu.unit_id=d.unit_id\r\n                            where m.challan_type = 'D'\r\n                            and m.m_no = 26 and\r\n                            to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') \r\n                            and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')                           \r\n                            and m.is_deleted = false ", str };
                 string str1 = string.Concat(strArrays);
                 dataTable = this.DBUtil.GetDataTable(str1);
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.ToString());
+            }
+            return dataTable;
+        }
+
+        public DataTable GetDisposalDataForReportByChallanNo(string challanNo)
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                string str = string.Concat("select i.item_id,i.hs_code, i.item_name,m.challan_id, m.challan_no,m.date_challan,d.quantity,\r\n                            d.quantity*d.actual_price prev_amount,d.vat,d.Remarks,d.quantity*d.current_price pre_amount,iu.unit_code,\r\n                            (select td.row_no from trns_purchase_master tm inner join trns_purchase_detail td on td.challan_id=tm.challan_id where tm.challan_no=m.challan_no limit 1) purchaseSl\r\n                            from trns_sale_master m\r\n                            inner join trns_sale_detail d on m.challan_id = d.challan_id\r\n                            inner join item i on d.item_id = i.item_id\r\n                            inner join item_unit iu on iu.unit_id=d.unit_id\r\n                            where m.challan_type = 'D' and\r\n                            m.challan_no='", challanNo, "'                          \r\n                            and m.is_deleted = false ", "");
+                dataTable = this.DBUtil.GetDataTable(str);
             }
             catch (Exception exception)
             {
@@ -104,7 +119,7 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return this.DBUtil.GetDataTable(str);
         }
 
-        public DataTable GetStockByChallanAndItem(int intItemId, int challanId, DateTime stockDate)
+        public DataTable GetStockByChallanAndItem(long intItemId, int challanId, DateTime stockDate)
         {
             object[] str = new object[] { "SELECT RD.Challan_id,RD.DETAIL_ID,RD.LOT_NO,\r\n                        RD.actual_price UNIT_PRICE, RD.QUANTITY, RD.unit_id, RD.price_id, RD.SD_rate, RD,vat_rate,Rd.Sd, Rd.Vat,\r\n                        (RD.QUANTITY - coalesce((SELECT SUM(ID.QUANTITY) FROM TRNS_SALE_DETAIL ID INNER JOIN\r\n\t\t\t            TRNS_SALE_MASTER IM ON IM.Challan_id = ID.Challan_id AND IM.CHALLAN_TYPE in ('S','R', 'D', 'L')\r\n                                    AND ID.DETAIL_ID=RD.DETAIL_ID and im.Challan_id <> 0\r\n                    AND IM.IS_DELETED = FALSE \r\n                                    ),0.00) + \r\n\t            coalesce((SELECT SUM(ND.QUANTITY) FROM TRNS_NOTE_DETAIL ND INNER JOIN\r\n\t\t\t            TRNS_NOTE_MASTER NM ON NM.NOTE_ID = ND.NOTE_ID AND NM.note_type in ('C')\r\n                                    AND ND.ITEM_ID = RD.ITEM_ID and ND.DETAIL_ID = RD.DETAIL_ID AND NM.IS_DELETED = FALSE \r\n                AND TO_DATE(TO_CHAR(NM.DATE_NOTE, 'MM/dd/yyyy'), 'MM/dd/yyyy') <= TO_DATE('", stockDate.ToString("MM/dd/yyyy"), "','MM/dd/yyyy')  \r\n                                    ),0.00) )\r\n                                    AVAIL_QTY\r\n                                    FROM TRNS_PURCHASE_MASTER RM, TRNS_PURCHASE_DETAIL RD left outer join price_item pr on pr.price_id = Rd.price_id\r\n\t\t\t            WHERE RM.IS_DELETED = FALSE AND RM.Challan_id =RD.Challan_id AND RM.CHALLAN_TYPE in ('P', 'F', 'R')\r\n                    AND TO_DATE(TO_CHAR(RM.DATE_CHALLAN, 'MM/dd/yyyy'), 'MM/dd/yyyy') <= TO_DATE('", stockDate.ToString("MM/dd/yyyy"), "','MM/dd/yyyy') \r\n                    and RD.ITEM_ID = ", intItemId, " and rm.Challan_id =", challanId, "\r\n                    GROUP BY RD.Challan_id,RD.DETAIL_ID,RD.LOT_NO,RD.ITEM_ID,\r\n                                RD.actual_price, RD.QUANTITY ,RD.unit_id, RD.price_id, RD.SD_rate, RD,vat_rate, Rd.Sd, Rd.Vat\r\n                               HAVING  (RD.QUANTITY - coalesce((SELECT SUM(ID.QUANTITY) FROM TRNS_SALE_DETAIL ID INNER JOIN\r\n\t\t\t            TRNS_SALE_MASTER IM ON IM.Challan_id = ID.Challan_id AND IM.CHALLAN_TYPE in ('S','R', 'D', 'L')\r\n                                    AND ID.DETAIL_ID=RD.DETAIL_ID and im.Challan_id <> 0\r\n                    AND IM.IS_DELETED = FALSE \r\n                                    ),0.00) + \r\n\t            coalesce((SELECT SUM(ND.QUANTITY) FROM TRNS_NOTE_DETAIL ND INNER JOIN\r\n\t\t\t            TRNS_NOTE_MASTER NM ON NM.NOTE_ID = ND.NOTE_ID AND NM.note_type in ('C')\r\n                                    AND ND.ITEM_ID = RD.ITEM_ID and ND.Challan_id = RD.CHALLAN_ID AND NM.IS_DELETED = FALSE \r\n                AND TO_DATE(TO_CHAR(NM.DATE_NOTE, 'MM/dd/yyyy'), 'MM/dd/yyyy') <= TO_DATE('", stockDate.ToString("MM/dd/yyyy"), "','MM/dd/yyyy')  \r\n                                    ),0.00) ) > 0 \r\n                         ORDER BY RD.DETAIL_ID" };
             string str1 = string.Concat(str);
