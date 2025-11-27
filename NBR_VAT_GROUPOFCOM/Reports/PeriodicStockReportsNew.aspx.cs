@@ -1708,7 +1708,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             disposeAmount = Convert.ToDecimal(dataTable.Rows[i]["disposeamount"].ToString());
                             if (this.drpProductType.SelectedValue == "R")
                             {
-                                decimal num39 = (num10 + num14) - (num24 + num28 + disposeQuantity);
+                                decimal num39 = (num10 + num14) - (num24 + num28);
                                 if (num39 > new decimal(0))
                                 {
                                     decimal num40 = num32 / num39;
@@ -1722,7 +1722,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             }
                             if (this.drpProductType.SelectedValue == "R")
                             {
-                                num12 = (closingQuantity > new decimal(0) ? closingQuantity : (num10 + num14) - (num24 + num28 + disposeQuantity));
+                                num12 = (closingQuantity > new decimal(0) ? closingQuantity : (num10 + num14) - (num24 + num28));
                                 if (num12 <= new decimal(0))
                                 {
                                     num12 = new decimal(0);
@@ -1744,7 +1744,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                     }
                                     else
                                     {
-                                        num13 = Math.Max(new decimal(0), (num11 + num17) - (num25 + num23 + disposeAmount));
+                                        num13 = Math.Max(new decimal(0), (num11 + num17) - (num25 + num23));
                                     }
                                 }
 
@@ -1752,8 +1752,8 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                 {
                                     decimal totalQuantity = num10 + num14;
                                     decimal totalAmount = num11 + num17;
-                                    decimal netQuantity = (num10 + num14) - (num24 + num28 + disposeQuantity);
-                                    decimal netAmount = (num11 + num17) - (num25 + num23 + disposeAmount);
+                                    decimal netQuantity = (num10 + num14) - (num24 + num28);
+                                    decimal netAmount = (num11 + num17) - (num25 + num23);
 
                                     if (netQuantity > new decimal(0))
                                     {
@@ -1776,19 +1776,19 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             }
                             else if (this.drpProductType.SelectedValue == "C")
                             {
-                                num12 = ((num10 + num14) + num18) - (num24 + disposeQuantity);
+                                num12 = ((num10 + num14) + num18) - num24;
                                 str5 = Utilities.formatFraction(num12);
-                                num13 = (num34 != new decimal(0) ? num34 * num12 : ((num11 + num17) + num23) - (num25 + disposeAmount));
+                                num13 = (num34 != new decimal(0) ? num34 * num12 : ((num11 + num17) + num23) - num25);
                             }
                             else if (this.drpProductType.SelectedValue != "F")
                             {
-                                num12 = ((num10 + num14) + num18) - (num24 + disposeQuantity);
+                                num12 = ((num10 + num14) + num18) - num24;
                                 str5 = Utilities.formatFraction(num12);
-                                num13 = ((num11 + num17) + num19) - (num25 + disposeAmount);
+                                num13 = ((num11 + num17) + num19) - num25;
                             }
                             else
                             {
-                                num12 = ((num10 + num14) + num18) - (num24 + disposeQuantity);
+                                num12 = ((num10 + num14) + num18) - num24;
                                 str5 = Utilities.formatFraction(num12);
                                 num13 = (num35 <= new decimal(0) ? num12 * (num17 == new decimal(0) || num14 == new decimal(0) ? new decimal(0) : num17 / num14) : num12 * num35);
                             }
