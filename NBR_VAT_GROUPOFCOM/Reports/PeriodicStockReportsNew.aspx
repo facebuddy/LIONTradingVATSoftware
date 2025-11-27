@@ -87,6 +87,24 @@
             overflow-x: auto;
             width: 100%;
         }
+
+        .compact-report-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 11px;
+        }
+
+        .compact-report-table td,
+        .compact-report-table th {
+            padding: 2px 4px !important;
+            border: 1px solid #000;
+            vertical-align: middle;
+        }
+
+        .compact-report-table thead td {
+            font-weight: 600;
+            text-align: center;
+        }
     </style>
 
 </asp:Content>
@@ -231,7 +249,7 @@
                                         </div>
                                     </div>
                                     <div class="report-table-wrapper">
-                                        <table border="1" class="allSolid" style="width: 100%; border-collapse: collapse; border: 1px solid #000000">
+                                        <table border="1" class="allSolid compact-report-table" style="width: 100%; border-collapse: collapse; border: 1px solid #000000">
                                             <thead style="text-align: center; font-weight: bold">
                                                 <tr>
                                                     <td rowspan="2">S/N</td>
