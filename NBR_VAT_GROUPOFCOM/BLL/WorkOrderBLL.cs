@@ -224,15 +224,322 @@ from
           and m.organization_id = {orgId}
           and m.org_branch_reg_id in({branchIds})
     ) prot,
-    0 pq, 0 pt, 0 pv, 0 psd,
-    0 cpq, 0 cpt, 0 cpv, 0 cpsd,
-    0 dpq, 0 dpt, 0 dpv, 0 dpsd,
-    0 productionpq, 0 productionpt, 0 productionpv, 0 productionpsd,
+    (
+        select coalesce(sum(d.quantity), 0)
+        from trns_purchase_detail d
+        inner join trns_purchase_master m on d.challan_id = m.challan_id
+        where m.is_trns_accepted = true
+          and d.approver_stage = 'F'
+          and d.item_id = mqmm.item_id
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+          and m.challan_type in ('P','D','O','T')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) pq,
+    (
+        select coalesce(sum(d.quantity * d.purchase_unit_price), 0)
+        from trns_purchase_detail d
+        inner join trns_purchase_master m on d.challan_id = m.challan_id
+        where m.is_trns_accepted = true
+          and d.approver_stage = 'F'
+          and d.item_id = mqmm.item_id
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+          and m.challan_type in ('P','D','O','T')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) pt,
+    (
+        select coalesce(sum(d.purchase_vat), 0)
+        from trns_purchase_detail d
+        inner join trns_purchase_master m on d.challan_id = m.challan_id
+        where m.is_trns_accepted = true
+          and d.approver_stage = 'F'
+          and d.item_id = mqmm.item_id
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+          and m.challan_type in ('P','D','O','T')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) pv,
+    (
+        select coalesce(sum(d.purchase_sd), 0)
+        from trns_purchase_detail d
+        inner join trns_purchase_master m on d.challan_id = m.challan_id
+        where m.is_trns_accepted = true
+          and d.approver_stage = 'F'
+          and d.item_id = mqmm.item_id
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+          and m.challan_type in ('P','D','O','T')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) psd,
+    (
+        select coalesce(sum(tnd.quantity), 0)
+        from trns_note_detail tnd
+        inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+        where tnd.item_id = mqmm.item_id
+          and tnm.note_type = 'C'
+          and tnd.status <> 'O'
+          and tnm.organization_id = {orgId}
+          and tnm.org_branch_reg_id in({branchIds})
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) cpq,
+    (
+        select coalesce(sum(tnd.quantity * tnd.actual_price), 0)
+        from trns_note_detail tnd
+        inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+        where tnd.item_id = mqmm.item_id
+          and tnm.note_type = 'C'
+          and tnd.status <> 'O'
+          and tnm.organization_id = {orgId}
+          and tnm.org_branch_reg_id in({branchIds})
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) cpt,
+    (
+        select coalesce(sum(tnd.vat_amount), 0)
+        from trns_note_detail tnd
+        inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+        where tnd.item_id = mqmm.item_id
+          and tnm.note_type = 'C'
+          and tnd.status <> 'O'
+          and tnm.organization_id = {orgId}
+          and tnm.org_branch_reg_id in({branchIds})
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) cpv,
+    (
+        select coalesce(sum(tnd.return_sd), 0)
+        from trns_note_detail tnd
+        inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+        where tnd.item_id = mqmm.item_id
+          and tnm.note_type = 'C'
+          and tnd.status <> 'O'
+          and tnm.organization_id = {orgId}
+          and tnm.org_branch_reg_id in({branchIds})
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) cpsd,
+    (
+        select coalesce(sum(tnd.quantity), 0)
+        from trns_note_detail tnd
+        inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+        where tnd.item_id = mqmm.item_id
+          and tnm.note_type = 'D'
+          and tnd.status <> 'O'
+          and tnm.organization_id = {orgId}
+          and tnm.org_branch_reg_id in({branchIds})
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) dpq,
+    (
+        select coalesce(sum(tnd.quantity * tnd.actual_price), 0)
+        from trns_note_detail tnd
+        inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+        where tnd.item_id = mqmm.item_id
+          and tnm.note_type = 'D'
+          and tnd.status <> 'O'
+          and tnm.organization_id = {orgId}
+          and tnm.org_branch_reg_id in({branchIds})
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) dpt,
+    (
+        select coalesce(sum(tnd.vat_amount), 0)
+        from trns_note_detail tnd
+        inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+        where tnd.item_id = mqmm.item_id
+          and tnm.note_type = 'D'
+          and tnd.status <> 'O'
+          and tnm.organization_id = {orgId}
+          and tnm.org_branch_reg_id in({branchIds})
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) dpv,
+    (
+        select coalesce(sum(tnd.return_sd), 0)
+        from trns_note_detail tnd
+        inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+        where tnd.item_id = mqmm.item_id
+          and tnm.note_type = 'D'
+          and tnd.status <> 'O'
+          and tnm.organization_id = {orgId}
+          and tnm.org_branch_reg_id in({branchIds})
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+    ) dpsd,
+    (
+        select cast(coalesce(sum(d.quantity), 0) as decimal(18,2))
+        from trns_production_detail d
+        inner join trns_production_master m on d.production_id = m.production_id
+        where d.item_id = mqmm.item_id
+          and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.status = 'R'
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) productionpq,
+    (
+        select cast(
+            coalesce(
+                sum(
+                    d.quantity *
+                    (
+                        select coalesce(
+                                   case
+                                       when max(purchase_unit_price) = 0
+                                           then max(total_price / quantity)
+                                       else max(purchase_unit_price)
+                                   end,
+                                   0
+                               )
+                        from trns_purchase_detail
+                        where item_id = mqmm.item_id
+                          and quantity != 0
+                    )
+                ), 0
+            ) as decimal(18,2)
+        )
+        from trns_production_detail d
+        inner join trns_production_master m on d.production_id = m.production_id
+        where d.item_id = mqmm.item_id
+          and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.status = 'R'
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) productionpt,
+    0 productionpv, 0 productionpsd,
     0 openpq, 0 openpt, 0 openpv, 0 opensd,
-    0 sq, 0 st, 0 sv, 0 ssd,
-    0 trnsisuueq, 0 trnsissueprice, 0 trnsissuevat, 0 trnsissuesd,
+    (
+        select coalesce(sum(d.quantity), 0)
+        from trns_sale_detail d
+        inner join trns_sale_master m on d.challan_id = m.challan_id
+        where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.item_id = mqmm.item_id
+          and d.installment_status = false
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) sq,
+    (
+        select coalesce(sum(d.quantity * d.actual_price), 0)
+        from trns_sale_detail d
+        inner join trns_sale_master m on d.challan_id = m.challan_id
+        where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.item_id = mqmm.item_id
+          and d.installment_status = false
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) st,
+    (
+        select coalesce(sum(d.vat), 0)
+        from trns_sale_detail d
+        inner join trns_sale_master m on d.challan_id = m.challan_id
+        where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.item_id = mqmm.item_id
+          and d.installment_status = false
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) sv,
+    (
+        select coalesce(sum(d.sd), 0)
+        from trns_sale_detail d
+        inner join trns_sale_master m on d.challan_id = m.challan_id
+        where to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and d.item_id = mqmm.item_id
+          and d.installment_status = false
+          and m.organization_id = {orgId}
+          and m.org_branch_reg_id in({branchIds})
+    ) ssd,
+    (
+        select coalesce(sum(tnd.quantity), 0)
+        from trns_transfer_detail tnd
+        inner join trns_transfer_master tnm on tnd.transfer_id = tnm.transfer_id
+        where cast(tnm.issues_date as date) >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and cast(tnm.issues_date as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and tnd.item_id = mqmm.item_id
+          and tnm.transfer_status = 'I'
+          and tnm.organization_id = {orgId}
+          and tnm.issuing_branch_id in({branchIds})
+    ) trnsisuueq,
+    (
+        select coalesce(sum(tnd.quantity * tnd.unit_price), 0)
+        from trns_transfer_detail tnd
+        inner join trns_transfer_master tnm on tnd.transfer_id = tnm.transfer_id
+        where cast(tnm.issues_date as date) >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and cast(tnm.issues_date as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and tnd.item_id = mqmm.item_id
+          and tnm.transfer_status = 'I'
+          and tnm.organization_id = {orgId}
+          and tnm.issuing_branch_id in({branchIds})
+    ) trnsissueprice,
+    (
+        select coalesce(sum(tnd.vat_amount), 0)
+        from trns_transfer_detail tnd
+        inner join trns_transfer_master tnm on tnd.transfer_id = tnm.transfer_id
+        where cast(tnm.issues_date as date) >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and cast(tnm.issues_date as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and tnd.item_id = mqmm.item_id
+          and tnm.transfer_status = 'I'
+          and tnm.organization_id = {orgId}
+          and tnm.issuing_branch_id in({branchIds})
+    ) trnsissuevat,
+    (
+        select coalesce(sum(tnd.sd_amount), 0)
+        from trns_transfer_detail tnd
+        inner join trns_transfer_master tnm on tnd.transfer_id = tnm.transfer_id
+        where cast(tnm.issues_date as date) >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and cast(tnm.issues_date as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and tnd.item_id = mqmm.item_id
+          and tnm.transfer_status = 'I'
+          and tnm.organization_id = {orgId}
+          and tnm.issuing_branch_id in({branchIds})
+    ) trnsissuesd,
     0 sq1, 0 st1, 0 sv1, 0 ssd1,
-    0 gq, 0 gp, 0 gv, 0 gs
+    (
+        select coalesce(sum(gd.quantity), 0)
+        from gift_items_detail gd
+        where cast(gd.date_consumable_challan as date) >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and cast(gd.date_consumable_challan as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and gd.item_id = mqmm.item_id
+          and gd.organization_id = {orgId}
+          and gd.org_branch_id in({branchIds})
+    ) gq,
+    (
+        select coalesce(sum(gd.price), 0)
+        from gift_items_detail gd
+        where cast(gd.date_consumable_challan as date) >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and cast(gd.date_consumable_challan as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and gd.item_id = mqmm.item_id
+          and gd.organization_id = {orgId}
+          and gd.org_branch_id in({branchIds})
+    ) gp,
+    (
+        select coalesce(sum(gd.discounted_vat), 0)
+        from gift_items_detail gd
+        where cast(gd.date_consumable_challan as date) >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and cast(gd.date_consumable_challan as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and gd.item_id = mqmm.item_id
+          and gd.organization_id = {orgId}
+          and gd.org_branch_id in({branchIds})
+    ) gv,
+    (
+        select coalesce(sum(gd.discounted_sd), 0)
+        from gift_items_detail gd
+        where cast(gd.date_consumable_challan as date) >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and cast(gd.date_consumable_challan as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
+          and gd.item_id = mqmm.item_id
+          and gd.organization_id = {orgId}
+          and gd.org_branch_id in({branchIds})
+    ) gs
     from
     (
         select tpd.item_id,
