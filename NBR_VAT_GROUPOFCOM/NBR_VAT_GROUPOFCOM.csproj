@@ -3347,6 +3347,9 @@
     <Compile Include="UserControls\MsgBoxs.ascx.designer.cs">
       <DependentUpon>MsgBoxs.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\MsgBox.ascx.cs">
+      <DependentUpon>MsgBox.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Others.ascx.cs">
       <DependentUpon>Others.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
