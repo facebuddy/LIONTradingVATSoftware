@@ -313,7 +313,7 @@ from
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) cpv,
     (
-        select coalesce(sum(tnd.sd_amount), 0)
+        select coalesce(sum(tnd.return_sd), 0)
         from trns_note_detail tnd
         inner join trns_note_master tnm on tnd.note_id = tnm.note_id
         where tnd.item_id = mqmm.item_id
@@ -361,7 +361,7 @@ from
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) dpv,
     (
-        select coalesce(sum(tnd.sd_amount), 0)
+        select coalesce(sum(tnd.return_sd), 0)
         from trns_note_detail tnd
         inner join trns_note_master tnm on tnd.note_id = tnm.note_id
         where tnd.item_id = mqmm.item_id
