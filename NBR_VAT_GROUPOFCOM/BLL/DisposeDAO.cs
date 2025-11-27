@@ -43,6 +43,18 @@ namespace NBR_VAT_GROUPOFCOM.BLL
 
         private short purchaseChallanId;
 
+        private int propertyID1;
+
+        private int propertyID2;
+
+        private int propertyID3;
+
+        private int propertyID4;
+
+        private int propertyID5;
+
+        private char purchaseType = 'L';
+
         private double actualPrice;
 
         private short userIdInsert;
@@ -233,6 +245,18 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             set;
         }
 
+        public char PurchaseType
+        {
+            get
+            {
+                return this.purchaseType;
+            }
+            set
+            {
+                this.purchaseType = value;
+            }
+        }
+
         public short RowNo
         {
             get
@@ -302,6 +326,66 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             set
             {
                 this.vat = value;
+            }
+        }
+
+        public int PropertyID1
+        {
+            get
+            {
+                return this.propertyID1;
+            }
+            set
+            {
+                this.propertyID1 = value;
+            }
+        }
+
+        public int PropertyID2
+        {
+            get
+            {
+                return this.propertyID2;
+            }
+            set
+            {
+                this.propertyID2 = value;
+            }
+        }
+
+        public int PropertyID3
+        {
+            get
+            {
+                return this.propertyID3;
+            }
+            set
+            {
+                this.propertyID3 = value;
+            }
+        }
+
+        public int PropertyID4
+        {
+            get
+            {
+                return this.propertyID4;
+            }
+            set
+            {
+                this.propertyID4 = value;
+            }
+        }
+
+        public int PropertyID5
+        {
+            get
+            {
+                return this.propertyID5;
+            }
+            set
+            {
+                this.propertyID5 = value;
             }
         }
 
