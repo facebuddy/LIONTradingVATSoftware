@@ -118,7 +118,7 @@
                   <div class="form-group form-group-sm">
                       <label class="col-sm-5 control-label"><span class="required" style="color:red"> * </span>Purchase Challan No :</label>
                       <div class="col-sm-7">
-                          <asp:DropDownList ID="drpPurchaseChlNo" CssClass="form-control" runat="server" AutoPostBack="True"  onselectedindexchanged="drpPurchaseChlNo_SelectedIndexChanged" />
+                          <asp:DropDownList ID="drpPurchaseChlNo" CssClass="form-control select2" runat="server" AutoPostBack="True"  onselectedindexchanged="drpPurchaseChlNo_SelectedIndexChanged" />
                           <asp:Label runat="server" ID="lblPurchaseChallan" Visible ="false" />
                      </div>
                   </div>
