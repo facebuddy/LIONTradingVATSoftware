@@ -12,10 +12,6 @@ namespace NBR_VAT_GROUPOFCOM.Reports
 {
     public partial class Dispose_Inputs_Form26s : System.Web.UI.Page
     {
-        protected void Page_Load(object sender, EventArgs e)
-        {
-
-        }
         private DisposalBLL dbBll = new DisposalBLL();
 
         public Dispose_Inputs_Form26s()
