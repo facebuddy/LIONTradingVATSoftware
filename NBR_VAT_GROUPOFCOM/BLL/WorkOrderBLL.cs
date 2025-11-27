@@ -64,7 +64,7 @@ from
 (
     select item_id, item_name, unit_id, unit_code, product_type, weight, weight_unit_id, unit_codei,
     (
-        -- Opening Qty (Purchase - Sale)
+        -- Opening Qty (Purchase - Sale/Transfer/Gift + Credit Note)
         (
             select coalesce(sum(d.quantity), 0)
             from trns_purchase_detail d
@@ -87,9 +87,41 @@ from
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
         )
+        -
+        (
+            select coalesce(sum(tnd.quantity), 0)
+            from trns_transfer_detail tnd
+            inner join trns_transfer_master tnm on tnd.transfer_id = tnm.transfer_id
+            where CAST(tnm.issues_date AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and tnd.item_id = mqmm.item_id
+              and tnm.transfer_status = 'I'
+              and tnm.organization_id = {orgId}
+              and tnm.issuing_branch_id in({branchIds})
+        )
+        -
+        (
+            select coalesce(sum(gd.quantity), 0)
+            from gift_items_detail gd
+            where CAST(gd.date_consumable_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and gd.item_id = mqmm.item_id
+              and gd.organization_id = {orgId}
+              and gd.org_branch_id in({branchIds})
+        )
+        +
+        (
+            select coalesce(sum(tnd.quantity), 0)
+            from trns_note_detail tnd
+            inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+            where CAST(tnm.date_note AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and tnd.item_id = mqmm.item_id
+              and tnd.status <> 'O'
+              and tnm.note_type = 'C'
+              and tnm.organization_id = {orgId}
+              and tnm.org_branch_reg_id in({branchIds})
+        )
     ) preQuantity,
     (
-        -- Opening Amount (Purchase - Sale)
+        -- Opening Amount (Purchase - Sale/Transfer/Gift + Credit Note)
         (
             select coalesce(sum(d.quantity * d.purchase_unit_price), 0)
             from trns_purchase_detail d
@@ -111,6 +143,38 @@ from
               and d.installment_status = false
               and m.organization_id = {orgId}
               and m.org_branch_reg_id in({branchIds})
+        )
+        -
+        (
+            select coalesce(sum(tnd.quantity * tnd.unit_price), 0)
+            from trns_transfer_detail tnd
+            inner join trns_transfer_master tnm on tnd.transfer_id = tnm.transfer_id
+            where CAST(tnm.issues_date AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and tnd.item_id = mqmm.item_id
+              and tnm.transfer_status = 'I'
+              and tnm.organization_id = {orgId}
+              and tnm.issuing_branch_id in({branchIds})
+        )
+        -
+        (
+            select coalesce(sum(gd.price), 0)
+            from gift_items_detail gd
+            where CAST(gd.date_consumable_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and gd.item_id = mqmm.item_id
+              and gd.organization_id = {orgId}
+              and gd.org_branch_id in({branchIds})
+        )
+        +
+        (
+            select coalesce(sum(tnd.quantity * tnd.actual_price), 0)
+            from trns_note_detail tnd
+            inner join trns_note_master tnm on tnd.note_id = tnm.note_id
+            where CAST(tnm.date_note AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
+              and tnd.item_id = mqmm.item_id
+              and tnd.status <> 'O'
+              and tnm.note_type = 'C'
+              and tnm.organization_id = {orgId}
+              and tnm.org_branch_reg_id in({branchIds})
         )
     ) preQntAmount,
     (
