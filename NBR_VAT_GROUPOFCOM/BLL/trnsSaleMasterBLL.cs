@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Data;
 using System.Web;
 using System.Web.SessionState;
+
 namespace NBR_VAT_GROUPOFCOM.BLL
 {
-
     public class trnsSaleMasterBLL
     {
         private DBUtility DBUtil = new DBUtility();
@@ -19,10 +19,25 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             DataTable dataTable = new DataTable();
             try
             {
-                Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
-                string[] str = new string[] { "select distinct tsm.challan_id,tsm.challan_no,tp.party_name,tp.party_id\r\n                        from trns_sale_master tsm \r\n                        inner join trns_party tp on tsm.party_id = tp.party_id\r\n                        where cast(tsm.date_challan as Date)>=TO_DATE('", fromDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') AND cast(tsm.date_challan as Date) <=TO_DATE('", toDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')" };
+                int num = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"]);
+                int num1 = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
+                object[] str = new object[] { "select distinct tsm.challan_id,tsm.challan_no,tp.party_name,tp.party_id\r\n                        from trns_sale_master tsm \r\n                        inner join trns_party tp on tsm.party_id = tp.party_id\r\n                        inner join trns_sale_detail tsd on tsd.challan_id =tsm.challan_id\r\n                        where cast(tsm.date_challan as Date)>=TO_DATE('", fromDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') AND cast(tsm.date_challan as Date) <=TO_DATE('", toDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') \r\n                        and tsm.approver_stage='F' and tsm.organization_id = ", num1, " and tsm.org_branch_reg_id=", num, " order by  tsm.challan_id desc" };
                 string str1 = string.Concat(str);
                 dataTable = this.DBUtil.GetDataTable(str1);
+            }
+            catch (Exception exception)
+            {
+                ReallySimpleLog.WriteLog(exception);
+            }
+            return dataTable;
+        }
+
+        public DataTable GetAllDebitCustomer(DateTime fromDate, DateTime toDate)
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                dataTable = this.DBUtil.GetDataTable("select distinct tsm.party_id,tsm.party_id,tp.party_name\r\n                        from trns_note_master tsm \r\n                        inner join trns_party tp on tsm.party_id = tp.party_id\r\n                        inner join trns_note_detail td on tsm.note_id=td.note_id\r\n                        where  note_type='D' and td.status != 'O' and  td.item_id != 0");
             }
             catch (Exception exception)
             {
@@ -37,7 +52,7 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             try
             {
                 Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
-                string str = string.Concat("select distinct tsm.challan_id,tsm.challan_no,tp.party_name,tp.party_id\r\n                        from trns_sale_master tsm \r\n                        inner join trns_party tp on tsm.party_id = tp.party_id\r\n                        where challan_id=", challanid);
+                string str = string.Concat("select distinct tsm.challan_id,tsm.challan_no,tsm.invoice_no, tp.party_name,tp.party_id\r\n                        from trns_sale_master tsm \r\n                        inner join trns_sale_detail tsd on tsd.challan_id =tsm.challan_id\r\n                        inner join trns_party tp on tsm.party_id = tp.party_id\r\n                        where tsm.challan_id=", challanid, "  and tsm.approver_stage='F'");
                 dataTable = this.DBUtil.GetDataTable(str);
             }
             catch (Exception exception)
@@ -58,7 +73,9 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             try
             {
                 int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
-                string str = string.Concat("select distinct tp.party_id, tp.party_name\r\n                        from trns_sale_master tsm\r\n                        inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id\r\n                        inner join trns_party tp on tsm.party_id = tp.party_id where tp.organization_id = ", num);
+                int num1 = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"]);
+                object[] objArray = new object[] { "select distinct tp.party_id,case when party_code = '' then party_name||' '|| phone else party_name||' '|| phone ||'('|| party_code||')' end party_name\r\n                        from trns_sale_master tsm\r\n                        inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id\r\n                        inner join trns_party tp on tsm.party_id = tp.party_id where ((tp.organization_id = ", num, " AND tp.org_branch_reg_id = ", num1, ") or tp.isApplicable_all_bin=true or (tp.isApplicable_all_branch=true and tp.organization_id = ", num, ")) and tsm.approver_stage='F" };
+                string str = string.Concat(objArray);
                 dataTable = this.DBUtil.GetDataTable(str);
             }
             catch (Exception exception)
@@ -71,6 +88,38 @@ namespace NBR_VAT_GROUPOFCOM.BLL
         public DataSet getDisposalReason()
         {
             return this.DBUtil.GetDataSet("select * from app_code_detail where Is_deleted=false and code_id_m=10", "DisposalReason");
+        }
+
+        public DataTable GetDisposeChallanNo4_4()
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"]);
+                Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
+                dataTable = this.DBUtil.GetDataTable("select challan_no,challan_id from trns_sale_master where challan_type = 'D' and m_no = 26 order by challan_id desc");
+            }
+            catch (Exception exception)
+            {
+                ReallySimpleLog.WriteLog(exception);
+            }
+            return dataTable;
+        }
+
+        public DataTable GetDisposeChallanNo4_5()
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"]);
+                Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
+                dataTable = this.DBUtil.GetDataTable("select challan_no,challan_id from trns_sale_master where challan_type = 'D' and m_no = 27 order by challan_id desc");
+            }
+            catch (Exception exception)
+            {
+                ReallySimpleLog.WriteLog(exception);
+            }
+            return dataTable;
         }
 
         public DataTable GetinvoicebyChallanId(int challanid)
@@ -146,12 +195,12 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return dataTable;
         }
 
-        public DataTable GetSaleChallanbyCustomebyDater(int customerid, DateTime fromDate, DateTime toDate)
+        public DataTable GetSaleChallanbyCustomebyDater(long customerid, DateTime fromDate, DateTime toDate)
         {
             DataTable dataTable = new DataTable();
             try
             {
-                object[] objArray = new object[] { "select distinct tsm.challan_id,tsm.challan_no\r\n                        from trns_sale_master tsm \r\n                        inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id\r\n                        inner join trns_party tp on tsm.party_id = tp.party_id where tsm.party_id=", customerid, " and cast(tsm.date_challan as Date) >=TO_DATE('", fromDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') AND cast(tsm.date_challan as Date) <=TO_DATE('", toDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')" };
+                object[] objArray = new object[] { "select distinct tsm.challan_id,tsm.challan_no\r\n                        from trns_sale_master tsm \r\n                        inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id\r\n                        inner join trns_party tp on tsm.party_id = tp.party_id where tsm.party_id=", customerid, " and cast(tsm.date_challan as Date) >=TO_DATE('", fromDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')\r\n                         AND cast(tsm.date_challan as Date) <=TO_DATE('", toDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')   and tsm.approver_stage='F'" };
                 string str = string.Concat(objArray);
                 dataTable = this.DBUtil.GetDataTable(str);
             }
@@ -162,7 +211,7 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return dataTable;
         }
 
-        public DataTable GetSaleChallanbyCustomer(int customerid)
+        public DataTable GetSaleChallanbyCustomer(long customerid)
         {
             DataTable dataTable = new DataTable();
             try
@@ -183,8 +232,14 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             try
             {
                 int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
-                object[] str = new object[] { "select distinct tsm.challan_id,tsm.challan_no\r\n                        from trns_sale_master tsm where tsm.organization_id=", num, " and tsm.date_challan >=TO_DATE('", fromDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') AND tsm.date_challan <=TO_DATE('", toDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')" };
-                string str1 = string.Concat(str);
+                bool flag = Convert.ToBoolean(HttpContext.Current.Session["is_9_1_generate"]);
+                string str = HttpContext.Current.Session["branch_unit_bin"].ToString();
+                if (flag)
+                {
+                    string.Concat(" and obri.branch_unit_bin = '", str, "'");
+                }
+                object[] objArray = new object[] { "select distinct tsm.challan_id,tsm.challan_no\r\n                        from trns_sale_master tsm\r\n                        inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id \r\n                        inner join org_branch_reg_info obri on obri.org_branch_reg_id= tsmm.org_branch_reg_id\r\n                        where tsm.organization_id=", num, " and tsm.date_challan >=TO_DATE('", fromDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy') AND tsm.date_challan <=TO_DATE('", toDate.ToString("dd/MM/yyyy"), "','dd/MM/yyyy')   and tsm.approver_stage='F'" };
+                string str1 = string.Concat(objArray);
                 dataTable = this.DBUtil.GetDataTable(str1);
             }
             catch (Exception exception)
@@ -199,11 +254,11 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             return this.DBUtil.GetDataTable("select challan_no from trns_sale_master where trans_type='E' and Is_deleted=FALSE");
         }
 
-        public DataTable GetSales_unitId(DateTime fromDate, DateTime toDate, int itemID, int branchID)
+        public DataTable GetSales_unitId(DateTime fromDate, DateTime toDate, long itemID, int branchID)
         {
             string str = "";
             string str1 = "";
-            if (itemID > 0)
+            if (itemID > (long)0)
             {
                 str = string.Concat(" AND d.item_id = '", itemID, "'");
             }
@@ -218,7 +273,9 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             try
             {
                 int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"]);
-                string str = string.Concat("select distinct i.item_id, i.item_name, i.item_sku\r\n                        from trns_sale_master tsm\r\n                        inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id\r\n                        inner join item i on tsd.item_id = i.item_id where tsm.organization_id = ", num);
+                int num1 = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"]);
+                object[] objArray = new object[] { "select distinct i.item_id, i.item_name, i.item_sku\r\n                        from trns_sale_master tsm\r\n                        inner join trns_sale_detail tsd on tsm.challan_id = tsd.challan_id\r\n                        inner join item i on tsd.item_id = i.item_id where ((i.organization_id = ", num, " AND i.org_branch_reg_id = ", num1, ") or i.is_for_all_bss_unit=true or (i.isApplicable_all_branch=true and i.organization_id = ", num, "))" };
+                string str = string.Concat(objArray);
                 dataTable = this.DBUtil.GetDataTable(str);
             }
             catch (Exception exception)
@@ -230,15 +287,45 @@ namespace NBR_VAT_GROUPOFCOM.BLL
 
         public bool InsertDisposeData(trnsSaleMasterDAO objMDAO, ArrayList arrDetailDAO)
         {
+            string str = "";
+            string str1 = "";
+            string str2 = "";
+            string str3 = "";
+            string str4 = "";
             ArrayList arrayLists = new ArrayList();
             objMDAO.ChallanId = Convert.ToInt16(this.DBUtil.GetSingleValue("SELECT  nextval('sale_challan_id_seq')"));
-            object[] challanId = new object[] { "insert into trns_sale_master(Challan_id, Organization_id, challan_no, cg_challan_no, challan_year, challan_type, date_challan, User_id_insert, Remarks,challan_page_discard_reason_m,challan_page_discard_reason_d,m_no) values('", objMDAO.ChallanId, "', '", objMDAO.OrganizationId, "', '", objMDAO.ChallanNo, "', (select coalesce (max (cg_challan_no),0)+1 from trns_sale_master where challan_type='D' and challan_year='", objMDAO.ChallanYear, "'),", objMDAO.ChallanYear, ", '", objMDAO.ChallanType, "', to_timestamp('", objMDAO.DateChallan.ToString("MM/dd/yyyy HH:mm"), "','MM/dd/yyyy HH24:MI'),", objMDAO.UserIdInsert, ", '", objMDAO.Remarks, "',", objMDAO.DisposeIDM, ",", objMDAO.DisposeIDD, ",", objMDAO.MNo, ")" };
+            object[] challanId = new object[] { "insert into trns_sale_master(Challan_id, Organization_id, org_branch_reg_id , challan_no, cg_challan_no, challan_year, challan_type, date_challan, User_id_insert, Remarks,challan_page_discard_reason_m,challan_page_discard_reason_d,m_no) values('", objMDAO.ChallanId, "', '", objMDAO.OrganizationId, "','", objMDAO.BranchId, "', '", objMDAO.ChallanNo, "', (select coalesce (max (cg_challan_no),0)+1 from trns_sale_master where challan_type='D' and challan_year='", objMDAO.ChallanYear, "'),", objMDAO.ChallanYear, ", '", objMDAO.ChallanType, "', to_timestamp('", objMDAO.DateChallan.ToString("MM/dd/yyyy HH:mm"), "','MM/dd/yyyy HH24:MI'),", objMDAO.UserIdInsert, ", '", objMDAO.Remarks, "',", objMDAO.DisposeIDM, ",", objMDAO.DisposeIDD, ",", objMDAO.MNo, ")" };
             arrayLists.Add(string.Concat(challanId));
             for (int i = 0; i < arrDetailDAO.Count; i++)
             {
+                str = " NULL";
+                str1 = " NULL";
+                str2 = " NULL";
+                str3 = " NULL";
+                str4 = " NULL";
                 DisposeDAO disposeDAO = new DisposeDAO();
                 disposeDAO = (DisposeDAO)arrDetailDAO[i];
-                object[] objArray = new object[] { "insert into trns_sale_detail(Challan_id, row_no, lot_no, detail_id, Item_id, unit_id, Quantity, actual_price, Vat, disposal_reason_m, disposal_reason_d, User_id_insert, sale_row_no, purchase_challan_id, current_price,remarks) values('", objMDAO.ChallanId, "', '", disposeDAO.RowNo, "', '", disposeDAO.LotNo, "', ", disposeDAO.DetailId, ", ", disposeDAO.ItemId, ", ", disposeDAO.UnitId, ", ", disposeDAO.DisposeQuantity, ", ", disposeDAO.ActualPrice, ", ", disposeDAO.Vat2, ", ", disposeDAO.DisposeReasonM, ", ", disposeDAO.DisposeReasonD, ", ", disposeDAO.UserIdInsert, ", ", disposeDAO.RowNo, ", ", disposeDAO.PurchaseChallanId, ", '", disposeDAO.PresentUnitPrice, "','", disposeDAO.Remarks, "')" };
+                if (disposeDAO.PropertyID1 != 0)
+                {
+                    str = disposeDAO.PropertyID1.ToString();
+                }
+                if (disposeDAO.PropertyID2 != 0)
+                {
+                    str1 = disposeDAO.PropertyID2.ToString();
+                }
+                if (disposeDAO.PropertyID3 != 0)
+                {
+                    str2 = disposeDAO.PropertyID3.ToString();
+                }
+                if (disposeDAO.PropertyID4 != 0)
+                {
+                    str3 = disposeDAO.PropertyID4.ToString();
+                }
+                if (disposeDAO.PropertyID5 != 0)
+                {
+                    str4 = disposeDAO.PropertyID5.ToString();
+                }
+                object[] objArray = new object[] { "insert into trns_sale_detail(Challan_id, row_no, lot_no, detail_id, Item_id, unit_id, Quantity, actual_price, Vat, disposal_reason_m, disposal_reason_d, User_id_insert, sale_row_no, purchase_challan_id, current_price,type_p,remarks,property_id1, property_id2, property_id3, \r\n            property_id4, property_id5) values('", objMDAO.ChallanId, "', '", disposeDAO.RowNo, "', '", disposeDAO.LotNo, "', ", disposeDAO.DetailId, ", ", disposeDAO.ItemId, ", ", disposeDAO.UnitId, ", ", disposeDAO.DisposeQuantity, ", ", disposeDAO.ActualPrice, ", ", disposeDAO.Vat2, ", ", disposeDAO.DisposeReasonM, ", ", disposeDAO.DisposeReasonD, ", ", disposeDAO.UserIdInsert, ", ", disposeDAO.RowNo, ", ", disposeDAO.PurchaseChallanId, ", '", disposeDAO.PresentUnitPrice, "','", disposeDAO.PurchaseType, "','", disposeDAO.Remarks, "',", str, ", ", str1, ", ", str2, ", ", str3, ", ", str4, ")" };
                 arrayLists.Add(string.Concat(objArray));
             }
             object[] challanBookID = new object[] { "update trns_challan_no_detail set is_used = true, page_status = 1 where challan_book_id = ", objMDAO.ChallanBookID, " and page_no = ", objMDAO.ChallanPageNo };
@@ -250,7 +337,7 @@ namespace NBR_VAT_GROUPOFCOM.BLL
         {
             string str = "";
             string str1 = "";
-            if (objtrnsSaleMasterDAO.PartyId != 0)
+            if (objtrnsSaleMasterDAO.PartyId != (long)0)
             {
                 str = string.Concat(" AND tsm.Party_id=", objtrnsSaleMasterDAO.PartyId);
             }
@@ -262,41 +349,28 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             string str2 = string.Concat(orgName);
             return this.DBUtil.GetDataSet(str2, "SaleCashMemo");
         }
-        public DataTable rptChallanForm112(trnsSaleMasterDAO objtrnsSaleMasterDAO)
-        {
-            string str = "";
-            int num = 0;
-            num = Convert.ToInt32(objtrnsSaleMasterDAO.ChallanNo);
-            if (objtrnsSaleMasterDAO.PartyId != 0)
-            {
-                str = string.Concat(str, " and tp.Party_id = ", objtrnsSaleMasterDAO.PartyId);
-            }
-            if (objtrnsSaleMasterDAO.ChallanNo.Trim() != "")
-            {
-                str = string.Concat(str, " and tsm.challan_id='", objtrnsSaleMasterDAO.ChallanNo, "'");
-            }
-            string str1 = "01/01/2023";
-            string str2 = "01/01/2050";
-            object[] orgName = new object[] { "SELECT i.item_id,'", objtrnsSaleMasterDAO.OrgName, "' OrgName1, '", objtrnsSaleMasterDAO.OrgAddress, "' OrgAddress, '", objtrnsSaleMasterDAO.OrgBIN, "' OrgTin, tp.party_name Customer_name,\r\n        tp.party_address Customer_Address, tp.party_tin Customer_TIN, tp.party_bin, tp.national_id_no nid, tsm.ultimate_destination Goods_Services_Shipping_Address, acd.code_name Vehicle_Type, tsm.challan_no Challan_No, to_char(tsm.date_challan,'dd-MON-yyyy') Challan_Date, to_char(tsm.date_challan::Time, 'HH24:MI') Challan_Time, \r\n        tsm.date_goods_delivery Goods_Unload_Date_Time, tsm.vehicle_no Vehicle_No, row_number() over (order by i.item_name nulls last) as Sl_No,acd.code_name\r\n        --,i.item_name Goods_Services_Name\r\n\r\n            ,(i.item_name \r\n            || ' ' || (CASE WHEN tsd.property_id1 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id1=c.property_id \r\n\t\t\twhere a.property_id1=tsd.property_id1 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id2 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id2=c.property_id \r\n\t\t\twhere a.property_id2=tsd.property_id2 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id3 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id3=c.property_id \r\n\t\t\twhere a.property_id3=tsd.property_id3 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id4 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id4=c.property_id \r\n\t\t\twhere a.property_id4=tsd.property_id4 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id5 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id5=c.property_id \r\n\t\t\twhere a.property_id5=tsd.property_id5 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t) AS Goods_Services_Name\r\n        ,(case when tsd.item_serials<>'' THEN CONCAT('(',tsd.item_serials,')') ELSE '' END) AS itemserials      --added this portion to add item serials with each item name by sabbir\r\n       ,tsd.is_fixed_vat,i.item_specification,tsd.Quantity Quantity,tsd.sale_quantity, ui.unit_code UNIT, tsd.actual_price SD_Applicable_Price, tsd.Sd SD_Amount, tsd.Vat VAT_Amount,\r\n        to_text(int2(substr(to_char(date_challan, 'dd/mm/yyyy'),1,2)))||' '||substr(to_char(date_challan, 'dd/yyyy/MONTH'),9)||' '||to_text(int2(substr(to_char(date_challan, 'dd/mm/yyyy'),7,4))) TextDate,\r\n        to_text(int2(substr(to_char(date_challan, 'HH24:mi'),1,2)))||' HOUR '||to_text(int2(substr(to_char(date_challan, 'hh:mi'),4,2)))||' MINUTE' TextTime, (acd.code_name||'  '||tsm.vehicle_no) Vehicle \r\n        ,tsd.vat_rate,tsd.sd_rate sd_rate,property_quantity,tsd.discount_amt,tsd.additional_property\r\n        FROM trns_sale_master tsm \r\n        LEFT OUTER JOIN trns_party tp ON tsm.Party_id=tp.Party_id\r\n        LEFT OUTER JOIN app_code_detail acd ON tsm.vehicle_type_m=acd.code_id_m AND tsm.vehicle_type_d=acd.code_id_d\r\n        LEFT OUTER JOIN trns_sale_detail tsd ON tsm.Challan_id=tsd.Challan_id\r\n        LEFT OUTER JOIN Item i ON tsd.Item_id=i.Item_id\r\n       -- inner join item_unit ui on ui.unit_id=i.unit_id\r\n        inner join item_unit ui on ui.unit_id=tsd.sale_unit\r\n        WHERE tsm.challan_type='S' and tsm.Is_deleted=false and tsm.date_challan>= to_date('", str1, "','dd/MM/yyyy') and tsm.date_challan<=to_date('", str2, "','dd/MM/yyyy') ", str, "  order by tsm.date_challan " };
-            string str3 = string.Concat(orgName);
-            return this.DBUtil.GetDataTable(str3);
-        }
+
         public DataTable rptChallanForm11(trnsSaleMasterDAO objtrnsSaleMasterDAO)
         {
             string str = "";
             int num = 0;
             num = Convert.ToInt32(objtrnsSaleMasterDAO.ChallanNo);
-            if (objtrnsSaleMasterDAO.PartyId != 0)
+            if (objtrnsSaleMasterDAO.PartyId != (long)0)
             {
                 str = string.Concat(str, " and tp.Party_id = ", objtrnsSaleMasterDAO.PartyId);
             }
-            if (objtrnsSaleMasterDAO.ChallanNo.Trim() != "")
+            if (objtrnsSaleMasterDAO.ChallanNo.Trim() != null && objtrnsSaleMasterDAO.ChallanNo.Trim() != "")
             {
                 str = string.Concat(str, " and tsm.challan_id='", objtrnsSaleMasterDAO.ChallanNo, "'");
             }
             string str1 = objtrnsSaleMasterDAO.StartDate.ToString("dd/MM/yyyy");
             string str2 = objtrnsSaleMasterDAO.FinishDate.ToString("dd/MM/yyyy");
-            object[] orgName = new object[] { "SELECT i.item_id,'", objtrnsSaleMasterDAO.OrgName, "' OrgName1, '", objtrnsSaleMasterDAO.OrgAddress, "' OrgAddress, '", objtrnsSaleMasterDAO.OrgBIN, "' OrgTin, tp.party_name Customer_name,\r\n        tp.party_address Customer_Address, tp.party_tin Customer_TIN, tp.party_bin, tp.national_id_no nid, tsm.ultimate_destination Goods_Services_Shipping_Address, acd.code_name Vehicle_Type, tsm.challan_no Challan_No, to_char(tsm.date_challan,'dd-MON-yyyy') Challan_Date, to_char(tsm.date_challan::Time, 'HH24:MI') Challan_Time, \r\n        tsm.date_goods_delivery Goods_Unload_Date_Time, tsm.vehicle_no Vehicle_No, row_number() over (order by i.item_name nulls last) as Sl_No,acd.code_name\r\n        --,i.item_name Goods_Services_Name\r\n\r\n            ,(i.item_name \r\n            || ' ' || (CASE WHEN tsd.property_id1 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id1=c.property_id \r\n\t\t\twhere a.property_id1=tsd.property_id1 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id2 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id2=c.property_id \r\n\t\t\twhere a.property_id2=tsd.property_id2 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id3 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id3=c.property_id \r\n\t\t\twhere a.property_id3=tsd.property_id3 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id4 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id4=c.property_id \r\n\t\t\twhere a.property_id4=tsd.property_id4 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id5 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id5=c.property_id \r\n\t\t\twhere a.property_id5=tsd.property_id5 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t) AS Goods_Services_Name\r\n        ,(case when tsd.item_serials<>'' THEN CONCAT('(',tsd.item_serials,')') ELSE '' END) AS itemserials      --added this portion to add item serials with each item name by sabbir\r\n       ,tsd.is_fixed_vat,i.item_specification,tsd.Quantity Quantity,tsd.sale_quantity, ui.unit_code UNIT, tsd.actual_price SD_Applicable_Price, tsd.Sd SD_Amount, tsd.Vat VAT_Amount,\r\n        to_text(int2(substr(to_char(date_challan, 'dd/mm/yyyy'),1,2)))||' '||substr(to_char(date_challan, 'dd/yyyy/MONTH'),9)||' '||to_text(int2(substr(to_char(date_challan, 'dd/mm/yyyy'),7,4))) TextDate,\r\n        to_text(int2(substr(to_char(date_challan, 'HH24:mi'),1,2)))||' HOUR '||to_text(int2(substr(to_char(date_challan, 'hh:mi'),4,2)))||' MINUTE' TextTime, (acd.code_name||'  '||tsm.vehicle_no) Vehicle \r\n        ,tsd.vat_rate,tsd.sd_rate sd_rate,property_quantity,tsd.discount_amt,tsd.additional_property\r\n        FROM trns_sale_master tsm \r\n        LEFT OUTER JOIN trns_party tp ON tsm.Party_id=tp.Party_id\r\n        LEFT OUTER JOIN app_code_detail acd ON tsm.vehicle_type_m=acd.code_id_m AND tsm.vehicle_type_d=acd.code_id_d\r\n        LEFT OUTER JOIN trns_sale_detail tsd ON tsm.Challan_id=tsd.Challan_id\r\n        LEFT OUTER JOIN Item i ON tsd.Item_id=i.Item_id\r\n       -- inner join item_unit ui on ui.unit_id=i.unit_id\r\n        inner join item_unit ui on ui.unit_id=tsd.sale_unit\r\n        WHERE tsm.challan_type='S' and tsm.Is_deleted=false and tsm.date_challan>= to_date('", str1, "','dd/MM/yyyy') and tsm.date_challan<=to_date('", str2, "','dd/MM/yyyy') ", str, "  order by tsm.date_challan " };
+            if (num == 0)
+            {
+                string.Concat("and cast(tsm.date_challan as date)>= to_date('", str1, "','dd/MM/yyyy')");
+                string.Concat("and cast(tsm.date_challan as date)<=to_date('", str2, "','dd/MM/yyyy')");
+            }
+            object[] orgName = new object[] { "SELECT i.item_id,'", objtrnsSaleMasterDAO.OrgName, "' OrgName1, '", objtrnsSaleMasterDAO.OrgAddress, "' OrgAddress, '", objtrnsSaleMasterDAO.OrgBIN, "' OrgTin, tp.party_name Customer_name,\r\n        tp.party_address Customer_Address, tp.party_tin Customer_TIN, tp.party_bin, tp.national_id_no nid,tsm.aggrement_no,tsm.user_id_insert as userId ,tsm.ultimate_destination Goods_Services_Shipping_Address, acd.code_name Vehicle_Type, tsm.challan_no Challan_No, to_char(tsm.date_challan,'dd-MON-yyyy') Challan_Date, to_char(tsm.date_challan::Time, 'HH24:MI:SS') Challan_Time, \r\n        tsm.date_goods_delivery Goods_Unload_Date_Time, tsm.vehicle_no Vehicle_No, row_number() over (order by i.item_name nulls last) as Sl_No,acd.code_name\r\n        --,i.item_name Goods_Services_Name\r\n\r\n            ,(i.item_name \r\n            || ' ' || (CASE WHEN tsd.property_id1 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id1=c.property_id \r\n\t\t\twhere a.property_id1=tsd.property_id1 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id2 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id2=c.property_id \r\n\t\t\twhere a.property_id2=tsd.property_id2 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id3 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id3=c.property_id \r\n\t\t\twhere a.property_id3=tsd.property_id3 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id4 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id4=c.property_id \r\n\t\t\twhere a.property_id4=tsd.property_id4 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t|| ' ' ||\r\n\t\t\t(CASE WHEN tsd.property_id5 > 0 THEN (select c.property_name from trns_sale_detail a \r\n\t\t\tinner join trns_sale_master b on a.challan_id=b.challan_id \r\n\t\t\tinner join item_property c on a.property_id5=c.property_id \r\n\t\t\twhere a.property_id5=tsd.property_id5 and b.challan_id = ", num, " limit 1) ELSE '' END)\r\n\t\t\t) AS Goods_Services_Name\r\n        ,(case when tsd.item_serials<>'' THEN CONCAT('(',tsd.item_serials,')') ELSE '' END) AS itemserials      --added this portion to add item serials with each item name by sabbir\r\n       ,tsd.is_fixed_vat,i.item_specification,tsd.Quantity Quantity,tsd.sale_quantity,(CASE WHEN i.item_id=-999 Then 'Service' ELSE ui.unit_code END ) AS UNIT, tsd.actual_price SD_Applicable_Price, tsd.Sd SD_Amount, tsd.Vat VAT_Amount,\r\n        to_text(int2(substr(to_char(date_challan, 'dd/mm/yyyy'),1,2)))||' '||substr(to_char(date_challan, 'dd/yyyy/MONTH'),9)||' '||to_text(int2(substr(to_char(date_challan, 'dd/mm/yyyy'),7,4))) TextDate,\r\n        to_text(int2(substr(to_char(date_challan, 'HH24:mi'),1,2)))||' HOUR '||to_text(int2(substr(to_char(date_challan, 'hh:mi'),4,2)))||' MINUTE' TextTime, (acd.code_name||'  '||tsm.vehicle_no) Vehicle \r\n        ,tsd.vat_rate,tsd.sd_rate sd_rate,property_quantity,tsd.remarks,tsd.discount_amt,tsm.discount as totalDisAmount,tsm.discount_pct as totalDisPct ,tsd.additional_property,coalesce(tsd.purchase_challan_id,0) purchase_challan_id\r\n        FROM trns_sale_master tsm \r\n        LEFT OUTER JOIN trns_party tp ON tsm.Party_id=tp.Party_id\r\n        LEFT OUTER JOIN app_code_detail acd ON tsm.vehicle_type_m=acd.code_id_m AND tsm.vehicle_type_d=acd.code_id_d\r\n        LEFT OUTER JOIN trns_sale_detail tsd ON tsm.Challan_id=tsd.Challan_id\r\n        LEFT OUTER JOIN Item i ON tsd.Item_id=i.Item_id\r\n       -- inner join item_unit ui on ui.unit_id=i.unit_id\r\n        inner join item_unit ui on ui.unit_id=tsd.sale_unit\r\n        WHERE tsm.challan_type='S' and tsm.approver_stage='F' and tsm.Is_deleted=false ", str, "  order by tsm.date_challan,tsd.row_no " };
             string str3 = string.Concat(orgName);
             return this.DBUtil.GetDataTable(str3);
         }
@@ -309,7 +383,7 @@ namespace NBR_VAT_GROUPOFCOM.BLL
             {
                 str = string.Concat(" and m.Organization_id=", objtrnsSaleMasterDAO.OrganizationId);
             }
-            if (objtrnsSaleMasterDAO.ItemId != 0)
+            if (objtrnsSaleMasterDAO.ItemId != (long)0)
             {
                 str1 = string.Concat(" and i.Item_id=", objtrnsSaleMasterDAO.ItemId);
             }
