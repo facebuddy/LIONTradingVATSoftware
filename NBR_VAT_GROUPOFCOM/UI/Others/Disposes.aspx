@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/DashboardVTR.Master" AutoEventWireup="true" CodeBehind="Disposes.aspx.cs" Inherits="NBR_VAT_GROUPOFCOM.UI.Others.Disposes" %>
+﻿<%@ Page Title="অব্যবহৃত বা ব্যবহার অনুপযোগী উপকরণ (মূসক-৪.৪ & ৪.৫)" Language="C#" MasterPageFile="~/DashboardVTR.Master" AutoEventWireup="true" CodeBehind="Disposes.aspx.cs" Inherits="NBR_VAT_GROUPOFCOM.UI.Others.Disposes" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <%@ Register Src="~/UserControls/MsgBoxs.ascx" TagPrefix="uc1" TagName="MsgBoxs" %>
@@ -12,7 +12,7 @@
              <div class="container-fluid">
     <div class="panel-group">
       <div class="panel panel-primary">
-        <div class="panel-heading" style="text-align:center;font-family:Tahoma; font-size:18px; font-weight:bold; height:30px; padding-top:0px">অব্যবহৃত বা ব্যবহার অনুপযোগী উপকরণ (মূসক-১৮.৭ & ১৮.৮)</div>
+        <div class="panel-heading" style="text-align:center;font-family:Tahoma; font-size:18px; font-weight:bold; height:30px; padding-top:0px">অব্যবহৃত বা ব্যবহার অনুপযোগী উপকরণ (মূসক-৪.৪ & ৪.৫)</div>
           <div class="panel-body">
               <div class="row">
                   <div class="col-md-4">
