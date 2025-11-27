@@ -1646,7 +1646,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
 
                             num14 = Convert.ToDecimal(dataTable.Rows[i]["purqnt"].ToString());
                             num17 = Convert.ToDecimal(dataTable.Rows[i]["puramount"].ToString());
-                            if (num10 > new decimal(0) && num11 == new decimal(0))
+                            if (num10 > new decimal(0) && num11 <= new decimal(0))
                             {
                                 decimal fallbackRate = new decimal(0);
                                 if (openingAmount > new decimal(0) && openingQuantity > new decimal(0))
@@ -1665,6 +1665,10 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                 if (fallbackRate > new decimal(0))
                                 {
                                     num11 = fallbackRate * num10;
+                                }
+                                else
+                                {
+                                    num11 = new decimal(0);
                                 }
                             }
                             if (this.drpProductType.SelectedValue == "R" && (num10 + num14) > new decimal(0))
@@ -1713,7 +1717,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                     str5 = Utilities.formatFraction(num12);
                                     decimal totalQuantity = num10 + num14;
                                     decimal averageRate = (totalQuantity > new decimal(0) ? (num11 + num17) / totalQuantity : new decimal(0));
-                                    if (closingAmount != new decimal(0))
+                                    if (closingAmount > new decimal(0))
                                     {
                                         num13 = closingAmount;
                                     }
