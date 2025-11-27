@@ -15,12 +15,13 @@ using System.Web.SessionState;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Text;
 
 namespace NBR_VAT_GROUPOFCOM.Reports
 {
     public partial class PeriodicStockReportsNew : Page, IRequiresSessionState
     {
-
+        private DBUtility db = new DBUtility();
 
         private WorkOrderBLL dbBLL = new WorkOrderBLL();
 
@@ -29,12 +30,80 @@ namespace NBR_VAT_GROUPOFCOM.Reports
         public ArrayList tableNameList = new ArrayList();
 
         private ExcelUtility excelUtility = new ExcelUtility();
+
+        private void LogException(Exception exception, string context)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine(string.Concat("Context: ", context));
+            stringBuilder.AppendLine(string.Concat("Message: ", exception.Message));
+            if (exception.InnerException != null)
+            {
+                stringBuilder.AppendLine(string.Concat("Inner: ", exception.InnerException.Message));
+            }
+            stringBuilder.AppendLine(string.Concat("StackTrace: ", exception.StackTrace));
+            string logDetails = stringBuilder.ToString();
+            Console.Error.WriteLine(logDetails);
+            ReallySimpleLog.WriteLog(logDetails);
+        }
         public PeriodicStockReportsNew()
         {
         }
 
 
+        public DataTable GetPurchaseInformationByItemId(DateTime fDate, DateTime tDate, int Item_id)
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                int num = Convert.ToInt32(HttpContext.Current.Session["ORGBRANCHID"].ToString());
+                int num1 = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+                object[] itemId = new object[] { "select to_char(tpm.date_challan,'dd-MON-yyyy') date_challan,tpd.item_id,i.item_name,tpd.quantity,(tpd.quantity*tpd.purchase_unit_price) price,\r\n                       purchase_vat,purchase_sd,\r\n                       case when  tpm.challan_type='P' then 'Purchase' \r\n                       when tpm.challan_type='O' then 'Opening Balance'\r\n                       when tpm.challan_type='T' then 'Transfer Receive'\r\n                       when tpm.challan_type='D' then 'Debit' end remarks \r\n                       from trns_purchase_master tpm\r\n                       inner join trns_purchase_detail tpd on tpm.challan_id = tpd.challan_id\r\n                       inner join item i on tpd.item_id = i.item_id\r\n                       where i.item_id=", Item_id, " and tpm.organization_id=", num1, " and tpm.org_branch_reg_id=", num, " and tpm.is_trns_accepted=true  and tpd.approver_stage='F'\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tpd.quantity !=0 and tpm.challan_type in ('P','D','O','T')" };
+                string str = string.Concat(itemId);
+                dataTable = this.db.GetDataTable(str);
+            }
+            catch (Exception exception)
+            {
+                this.LogException(exception, "GetPurchaseInformationByItemId (single branch)");
+            }
+            return dataTable;
+        }
 
+
+        public DataTable GetPurchaseInformationByItemId(DateTime fDate, DateTime tDate, long Item_id, string branchIds)
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+                object[] itemId = new object[] { "select to_char(tpm.date_challan,'dd-MON-yyyy') date_challan,tpd.item_id,i.item_name,tpd.quantity,(tpd.quantity*tpd.purchase_unit_price) price,\r\n                       purchase_vat,purchase_sd,\r\n                       case when  tpm.challan_type='P' then 'Purchase' \r\n                       when tpm.challan_type='O' then 'Opening Balance'\r\n                       when tpm.challan_type='T' then 'Transfer Receive'\r\n                       when tpm.challan_type='D' then 'Debit' end remarks \r\n                       from trns_purchase_master tpm\r\n                       inner join trns_purchase_detail tpd on tpm.challan_id = tpd.challan_id\r\n                       inner join item i on tpd.item_id = i.item_id\r\n                       where i.item_id=", Item_id, " and tpm.organization_id=", num, " and tpm.org_branch_reg_id in(", branchIds, ") and tpm.is_trns_accepted=true  and tpm.approver_stage='F'\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                       and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tpd.quantity !=0 and tpm.challan_type in ('P','D','O','T')" };
+                string str = string.Concat(itemId);
+                dataTable = this.db.GetDataTable(str);
+            }
+            catch (Exception exception)
+            {
+                this.LogException(exception, "GetPurchaseInformationByItemId (multiple branches)");
+            }
+            return dataTable;
+        }
+
+
+
+        public DataTable GetSaleInformationByItemId(DateTime fDate, DateTime tDate, long Item_id, string branchIds)
+        {
+            DataTable dataTable = new DataTable();
+            try
+            {
+                int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
+                object[] itemId = new object[] { "select to_char(tpm.date_challan,'dd-MON-yyyy') date_challan,tpd.item_id,i.item_name,case when installment_status=false then tpd.quantity else 0 end quantity,(tpd.quantity*tpd.actual_price) price,\r\n                      vat,sd ,CASE WHEN tpm.CHALLAN_TYPE='D' THEN 'Dispose' ELSE 'Sale' END as remarks, tpm.date_challan orderDate\r\n                from trns_sale_master tpm\r\n                inner join trns_sale_detail tpd on tpm.challan_id = tpd.challan_id\r\n                inner join item i on tpd.item_id = i.item_id\r\n                where i.item_id=", Item_id, "  and  tpm.organization_id=", num, " and tpm.org_branch_reg_id in(", branchIds, ") and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and to_date(to_char(tpm.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tpm.approver_stage='F'\r\n                \r\n                union ALL\r\n\r\n                select to_char(tnm.date_note,'dd-MON-yyyy') date_challan,tnd.item_id,i.item_name,tnd.quantity,(tnd.quantity*tnd.actual_price) price,\r\n                tnd.return_vat,tnd.return_sd ,'Credit' remarks , tnm.date_note orderDate\r\n                from trns_note_master tnm\r\n                inner join trns_note_detail tnd on tnm.note_id = tnd.note_id\r\n                inner join item i on tnd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and tnm.organization_id=", num, " and tnm.org_branch_reg_id in(", branchIds, ") and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tnd.status!='O' and tnm.note_type='C'\r\n           \r\n                union ALL\r\n\r\n                 select to_char(tnm.issues_date,'dd-MON-yyyy') date_challan,tnd.item_id,i.item_name,tnd.quantity,(tnd.quantity*tnd.unit_price) price,\r\n                tnd.vat_amount,tnd.sd_amount ,'Transfer Receive' remarks , tnm.issues_date orderDate\r\n                from trns_transfer_master tnm\r\n                inner join trns_transfer_detail tnd on tnm.transfer_id = tnd.transfer_id\r\n                inner join item i on tnd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and tnm.organization_id=", num, " and tnm.issuing_branch_id in(", branchIds, ") \r\n                and cast(tnm.issues_date as date) >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and cast(tnm.issues_date as date) <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy') and tnm.transfer_status = 'I'\r\n                \r\n                union ALL\r\n\r\n                select to_char(gd.date_consumable_challan ,'dd-MON-yyyy') date_challan,gd.item_id,i.item_name,gd.quantity,gd.price,\r\n                gd.discounted_vat vat_amount,gd.discounted_sd sd_amount ,case when gd.remarks='' then 'Gift' else gd.remarks end remarks, gd.date_consumable_challan orderDate\r\n                from gift_items_detail gd               \r\n                inner join item i on gd.item_id = i.item_id\r\n                where i.item_id=", Item_id, " and gd.organization_id=", num, " and gd.org_branch_id in(", branchIds, ")  \r\n                and cast(gd.date_consumable_challan as date) >= to_date('", fDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n                and cast(gd.date_consumable_challan as date) <= to_date('", tDate.ToString("MM/dd/yyy"), "','MM/dd/yyyy')\r\n\r\n                order by orderDate desc" };
+                string str = string.Concat(itemId);
+                dataTable = this.db.GetDataTable(str);
+            }
+            catch (Exception exception)
+            {
+                this.LogException(exception, "GetSaleInformationByItemId");
+            }
+            return dataTable;
+        }
 
         protected void btnExportToExcel_Click(object sender, EventArgs e)
         {
@@ -50,7 +119,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                this.LogException(exception, "btnExportToExcel_Click");
             }
         }
 
@@ -62,7 +131,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
+                this.LogException(exception, "btnSearch_Click");
             }
         }
 
@@ -109,10 +178,10 @@ namespace NBR_VAT_GROUPOFCOM.Reports
             IRow rows1 = sheet.CreateRow(2);
             IRow rows2 = sheet.CreateRow(3);
             sheet.CreateRow(4);
-            string str = this.Session["ORGANIZATION_NAME"].ToString();
-            string str1 = this.Session["ORGANIZATION_BIN"].ToString();
-            string str2 = this.Session["OrgBranch_Name"].ToString();
-            string str3 = this.Session["OrgBranch_Address"].ToString();
+            string str = this.Session["ORGANIZATION_NAME"] as string ?? string.Empty;
+            string str1 = this.Session["ORGANIZATION_BIN"] as string ?? string.Empty;
+            string str2 = this.Session["OrgBranch_Name"] as string ?? string.Empty;
+            string str3 = this.Session["OrgBranch_Address"] as string ?? string.Empty;
             DateTime dateTime = DateTime.ParseExact(this.txtFDate.Text.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
             DateTime dateTime1 = DateTime.ParseExact(this.txtToDate.Text.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
             string str4 = dateTime.ToString("dd-MMM-yyyy");
@@ -932,7 +1001,8 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                         }
                     }
                 }
-                num1 = num4;
+                num1 = num3;
+                num2 = num4;
             }
             arrayLists.Add(num1);
             arrayLists.Add(num2);
@@ -1392,7 +1462,8 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                     }
                     else
                     {
-                        DataTable businessInformation = userBLL.GetBusinessInformation(Convert.ToInt32(this.Session["orgId"]), num9);
+                        int num10 = Convert.ToInt32(this.Session["ORGANIZATION_ID"]);
+                        DataTable businessInformation = userBLL.GetBusinessInformation(num10, num9);
                         //this.OrgBranchName.Text = businessInformation.Rows[0]["branch_unit_name"].ToString();
                         //this.OrgBranchAddress.Text = businessInformation.Rows[0]["org_branch_address"].ToString();
                     }
@@ -1494,6 +1565,10 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             decimal num34 = new decimal(0);
                             decimal num35 = new decimal(0);
                             decimal num36 = new decimal(0);
+                            decimal openingQuantity = new decimal(0);
+                            decimal openingAmount = new decimal(0);
+                            decimal closingQuantity = new decimal(0);
+                            decimal closingAmount = new decimal(0);
                             long num37 = Convert.ToInt64(dataTable.Rows[i]["item_id"].ToString());
                             DataTable lastPurchaseUnitId = _trnsPurchaseMasterBLL.GetLastPurchase_unitId(dateTime, dateTime1, num37, num9);
                             if (lastPurchaseUnitId.Rows.Count > 0)
@@ -1505,10 +1580,11 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                 ArrayList arrayLists = new ArrayList();
                                 ArrayList rawMaterialValue = new ArrayList();
                                 arrayLists = this.GetRawMaterialValue(dateTime.AddDays(-1), num37, selectedValue1);
-                                num31 = Convert.ToDecimal(arrayLists[0]);
+                                openingQuantity = Convert.ToDecimal(arrayLists[0]);
+                                openingAmount = Convert.ToDecimal(arrayLists[1]);
                                 rawMaterialValue = this.GetRawMaterialValue(dateTime1, num37, selectedValue1);
-                                num32 = Convert.ToDecimal(rawMaterialValue[0]);
-                                num36 = Convert.ToDecimal(rawMaterialValue[1]);
+                                closingQuantity = Convert.ToDecimal(rawMaterialValue[0]);
+                                closingAmount = Convert.ToDecimal(rawMaterialValue[1]);
                             }
                             empty1 = this.loadAdditionalPropertyData(num37, selectedValue1);
                             HtmlGenericControl popupContainer1 = this.PopupContainer1;
@@ -1516,7 +1592,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             str = this.loadPurchaseData(num37, selectedValue1);
                             HtmlGenericControl popupContainer = this.PopupContainer;
                             popupContainer.InnerHtml = string.Concat(popupContainer.InnerHtml, str);
-                            num10 = Convert.ToDecimal(dataTable.Rows[i]["openpurqnt"]) + Convert.ToDecimal(dataTable.Rows[i]["preQuantity"]);
+                            num10 = (openingQuantity > new decimal(0) ? openingQuantity : Convert.ToDecimal(dataTable.Rows[i]["openpurqnt"]) + Convert.ToDecimal(dataTable.Rows[i]["preQuantity"]));
                             str1 = Utilities.formatFraction(num10);
                             if (num10 == new decimal(0))
                             {
@@ -1524,7 +1600,7 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             }
                             else if (this.drpProductType.SelectedValue == "R")
                             {
-                                num11 = (num31 != new decimal(0) ? num31 : Convert.ToDecimal(dataTable.Rows[i]["openpuramount"]) + Convert.ToDecimal(dataTable.Rows[i]["preQntAmount"]));
+                                num11 = (openingAmount != new decimal(0) ? openingAmount : Convert.ToDecimal(dataTable.Rows[i]["openpuramount"]) + Convert.ToDecimal(dataTable.Rows[i]["preQntAmount"]));
                             }
                             else if (this.drpProductType.SelectedValue == "C")
                             {
@@ -1579,7 +1655,8 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                                 {
                                     decimal num40 = num32 / num39;
                                 }
-                                num23 = (num36 > new decimal(0) ? num36 : new decimal(0));
+
+                                num23 = num30;
                             }
                             if (this.drpProductType.SelectedValue == "C")
                             {
@@ -1587,15 +1664,25 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             }
                             if (this.drpProductType.SelectedValue == "R")
                             {
-                                num12 = (num10 + num14) - (num24 + num28);
+                                num12 = (closingQuantity > new decimal(0) ? closingQuantity : (num10 + num14) - (num24 + num28));
                                 str5 = Utilities.formatFraction(num12);
-                                if (num32 != new decimal(0))
+                                if (closingAmount != new decimal(0))
                                 {
-                                    num13 = (num32 > new decimal(0) ? num32 : new decimal(0));
+                                    num13 = (closingAmount > new decimal(0) ? closingAmount : new decimal(0));
                                 }
                                 else
                                 {
                                     num13 = (num11 + num17) - (num25 + num23);
+                                }
+
+                                if (num12 > new decimal(0) && num13 < new decimal(1))
+                                {
+                                    decimal totalQuantity = num10 + num14;
+                                    if (totalQuantity > new decimal(0))
+                                    {
+                                        decimal averageRate = (num11 + num17) / totalQuantity;
+                                        num13 = averageRate * num12;
+                                    }
                                 }
                             }
                             else if (this.drpProductType.SelectedValue == "C")

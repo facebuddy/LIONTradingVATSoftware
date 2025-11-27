@@ -16,7 +16,6 @@
 
     <link rel="stylesheet" href="/resources/demos/style.css">
     <link href="../../Styles/muktadir.css" rel="stylesheet" />
-    <script src="../../Scripts/jquery-1.4.4.min.js"></script>
     <script type="text/javascript">
         function PrintPanel() {
             var panel = document.getElementById("<%=printPNL.ClientID %>");

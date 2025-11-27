@@ -421,7 +421,11 @@
                       </li>--%>
 
                             <li><a href="/UI/Admin/ProductsTransfer_receive_6.5s.aspx"><i class="bx bx-right-arrow-alt"></i>Receive / কেন্দ্রীয় নিবন্ধিত প্রতিষ্ঠানের পণ্য স্থানান্তর চালানপত্র (মুসক-৬.৫)</a>
+
                       </li>
+
+                               <li><a href="/UI/Others/Disposes.aspx"><i class="bx bx-right-arrow-alt"></i>অব্যবহৃত বা ব্যবহার অনুপযোগী উপকরণ (মূসক-৪.৪ & ৪.৫)</a></li>
+                        
 
                        
                                
