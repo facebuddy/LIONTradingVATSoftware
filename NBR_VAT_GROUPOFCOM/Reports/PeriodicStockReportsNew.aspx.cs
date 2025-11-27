@@ -189,32 +189,32 @@ namespace NBR_VAT_GROUPOFCOM.Reports
             string[] strArrays = new string[] { "Periodic Stock Report \n", str, "\nBIN:", str1, "\nBranch Name:", str2, "\nBranch Address:", str3, "\nPeriod:", str4, " To ", str5 };
             string str6 = string.Concat(strArrays);
             this.excelUtility.CreateCell(rows, 0, str6, headerStyle);
-            this.excelUtility.CreateCell(rows1, 0, "ক্র:নং", headerStyle);
-            this.excelUtility.CreateCell(rows1, 1, "তারিখ", headerStyle);
-            this.excelUtility.CreateCell(rows1, 2, "একক", headerStyle);
-            this.excelUtility.CreateCell(rows1, 3, "মজুদ উপকরণের প্রারম্ভিক জের", headerStyle);
-            this.excelUtility.CreateCell(rows1, 5, "ক্রয় হিসাব", headerStyle);
-            this.excelUtility.CreateCell(rows1, 9, "উৎপাদন হিসাব", headerStyle);
-            this.excelUtility.CreateCell(rows1, 13, "বিক্রয় হিসাব/স্থানান্তর", headerStyle);
-            this.excelUtility.CreateCell(rows1, 17, "প্রান্তিক জের", headerStyle);
-            this.excelUtility.CreateCell(rows1, 19, "প্রান্তিক জের", headerStyle);
-            this.excelUtility.CreateCell(rows2, 3, "পরিমাণ", headerStyle);
-            this.excelUtility.CreateCell(rows2, 4, "মূল্য", headerStyle);
-            this.excelUtility.CreateCell(rows2, 5, "পরিমাণ", headerStyle);
-            this.excelUtility.CreateCell(rows2, 6, "মূল্য", headerStyle);
-            this.excelUtility.CreateCell(rows2, 7, "সম্পূরক শুল্ক", headerStyle);
-            this.excelUtility.CreateCell(rows2, 8, "মূসক", headerStyle);
-            this.excelUtility.CreateCell(rows2, 9, "পরিমাণ", headerStyle);
-            this.excelUtility.CreateCell(rows2, 10, "মূল্য", headerStyle);
-            this.excelUtility.CreateCell(rows2, 11, "সম্পূরক শুল্ক", headerStyle);
-            this.excelUtility.CreateCell(rows2, 12, "মূসক", headerStyle);
-            this.excelUtility.CreateCell(rows2, 13, "পরিমাণ", headerStyle);
-            this.excelUtility.CreateCell(rows2, 14, "মূল্য", headerStyle);
-            this.excelUtility.CreateCell(rows2, 15, "সম্পূরক শুল্ক", headerStyle);
-            this.excelUtility.CreateCell(rows2, 16, "মূসক", headerStyle);
-            this.excelUtility.CreateCell(rows2, 17, "পরিমাণ", headerStyle);
-            this.excelUtility.CreateCell(rows2, 18, "মূল্য", headerStyle);
-            this.excelUtility.CreateCell(rows2, 19, "পরিমাণ", headerStyle);
+            this.excelUtility.CreateCell(rows1, 0, "S/N", headerStyle);
+            this.excelUtility.CreateCell(rows1, 1, "Item Name", headerStyle);
+            this.excelUtility.CreateCell(rows1, 2, "Unit", headerStyle);
+            this.excelUtility.CreateCell(rows1, 3, "Opening Balance", headerStyle);
+            this.excelUtility.CreateCell(rows1, 5, "Purchase", headerStyle);
+            this.excelUtility.CreateCell(rows1, 9, "Production", headerStyle);
+            this.excelUtility.CreateCell(rows1, 13, "Sale/Transfer", headerStyle);
+            this.excelUtility.CreateCell(rows1, 17, "Closing Balance", headerStyle);
+            this.excelUtility.CreateCell(rows1, 19, "Weight-wise Balance", headerStyle);
+            this.excelUtility.CreateCell(rows2, 3, "Quantity", headerStyle);
+            this.excelUtility.CreateCell(rows2, 4, "Value", headerStyle);
+            this.excelUtility.CreateCell(rows2, 5, "Quantity", headerStyle);
+            this.excelUtility.CreateCell(rows2, 6, "Value", headerStyle);
+            this.excelUtility.CreateCell(rows2, 7, "Supplementary Duty", headerStyle);
+            this.excelUtility.CreateCell(rows2, 8, "VAT", headerStyle);
+            this.excelUtility.CreateCell(rows2, 9, "Quantity", headerStyle);
+            this.excelUtility.CreateCell(rows2, 10, "Value", headerStyle);
+            this.excelUtility.CreateCell(rows2, 11, "Supplementary Duty", headerStyle);
+            this.excelUtility.CreateCell(rows2, 12, "VAT", headerStyle);
+            this.excelUtility.CreateCell(rows2, 13, "Quantity", headerStyle);
+            this.excelUtility.CreateCell(rows2, 14, "Value", headerStyle);
+            this.excelUtility.CreateCell(rows2, 15, "Supplementary Duty", headerStyle);
+            this.excelUtility.CreateCell(rows2, 16, "VAT", headerStyle);
+            this.excelUtility.CreateCell(rows2, 17, "Quantity", headerStyle);
+            this.excelUtility.CreateCell(rows2, 18, "Value", headerStyle);
+            this.excelUtility.CreateCell(rows2, 19, "Quantity", headerStyle);
             this.excelUtility.MergeCell(workbook, sheet, 0, 1, 0, 19);
             this.excelUtility.MergeCell(workbook, sheet, 2, 2, 3, 4);
             this.excelUtility.MergeCell(workbook, sheet, 2, 2, 5, 8);
@@ -427,6 +427,21 @@ namespace NBR_VAT_GROUPOFCOM.Reports
             }
         }
 
+        private decimal ParseDecimalSafe(string value)
+        {
+            if (decimal.TryParse(value, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal result))
+            {
+                return result;
+            }
+
+            if (decimal.TryParse(value, out result))
+            {
+                return result;
+            }
+
+            return new decimal(0);
+        }
+
         private string GetDataHtml(string displayHTML, int i, DataTable dt, decimal PreQuantity, long item_iddt, string sPreQty, decimal PrePrice, decimal PurQuantity, string sPurQty, decimal PurPrice, decimal PurSD, decimal PurVat, decimal ProductionQuantity, string sProductionQty, decimal ProductionPrice, decimal ProductionSD, decimal ProductionVat, decimal SaleQuantity, string sSaleQty, decimal SalePrice, decimal SaleSD, decimal SaleVat, decimal ExtQuantity, string sExtQty, decimal ExtPrice, decimal weightQuantity)
         {
             int num = (!string.IsNullOrWhiteSpace(this.precisionTxtBox.Text) ? (int)Convert.ToInt16(this.precisionTxtBox.Text) : -1);
@@ -438,11 +453,11 @@ namespace NBR_VAT_GROUPOFCOM.Reports
             object[] itemIddt = new object[] { obj1, "<td style='text-align:left;padding:5px'><a href='#PopupContent_", item_iddt, "' data-toggle='modal' data-target='#PopupContent_", item_iddt, "'>", dt.Rows[i]["item"].ToString(), "</a></td>" };
             displayHTML = string.Concat(itemIddt);
             displayHTML = string.Concat(displayHTML, "<td style='text-align:left;padding:5px'>", dt.Rows[i]["unit"].ToString(), "</td>");
-            decimal num1 = Convert.ToDecimal(sPreQty);
-            decimal num2 = Convert.ToDecimal(sPurQty);
-            decimal num3 = Convert.ToDecimal(sProductionQty);
-            decimal num4 = Convert.ToDecimal(sSaleQty);
-            decimal num5 = Convert.ToDecimal(sExtQty);
+            decimal num1 = this.ParseDecimalSafe(sPreQty);
+            decimal num2 = this.ParseDecimalSafe(sPurQty);
+            decimal num3 = this.ParseDecimalSafe(sProductionQty);
+            decimal num4 = this.ParseDecimalSafe(sSaleQty);
+            decimal num5 = this.ParseDecimalSafe(sExtQty);
             if (this.chk1.Checked)
             {
                 this.col1.Visible = true;

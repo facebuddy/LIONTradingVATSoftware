@@ -222,36 +222,36 @@
                                         <table border="1" class="allSolid" style="width: 100%; border-collapse: collapse; border: 1px solid #000000">
                                             <thead style="text-align: center; font-weight: bold">
                                                 <tr>
-                                                    <td rowspan="2">ক্র:নং</td>
-                                                    <td rowspan="2">উপকরণের নাম</td>
-                                                    <td rowspan="2">একক</td>
-                                                    <td colspan="2" style="height: 35px;" id="col1" runat="server">মজুদ উপকরণের প্রারম্ভিক জের</td>
-                                                    <td colspan="4" id="col2" runat="server">ক্রয় হিসাব </td>
-                                                    <td colspan="4" id="col3" runat="server">উৎপাদন হিসাব</td>
-                                                    <td colspan="4" id="col4" runat="server">বিক্রয় হিসাব/স্থানান্তর/Dispose </td>
-                                                    <td colspan="2" id="col5" runat="server">প্রান্তিক জের</td>
-                                                    <td id="col6" runat="server">প্রান্তিক জের</td>
+                                                    <td rowspan="2">S/N</td>
+                                                    <td rowspan="2">Item Name</td>
+                                                    <td rowspan="2">Unit</td>
+                                                    <td colspan="2" style="height: 35px;" id="col1" runat="server">Opening Balance</td>
+                                                    <td colspan="4" id="col2" runat="server">Purchase</td>
+                                                    <td colspan="4" id="col3" runat="server">Production</td>
+                                                    <td colspan="4" id="col4" runat="server">Sale/Transfer/Dispose</td>
+                                                    <td colspan="2" id="col5" runat="server">Closing Balance</td>
+                                                    <td id="col6" runat="server">Weight-wise Balance</td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="height: 25px;" id="col11" runat="server">পরিমাণ</td>
-                                                    <td id="col12" runat="server">মূল্য</td>
-                                                    <td id="col21" runat="server">পরিমাণ</td>
-                                                    <td id="col22" runat="server">মূল্য</td>
-                                                    <td id="col23" runat="server">সম্পূরক শুল্ক</td>
-                                                    <td id="col24" runat="server">মূসক</td>
-                                                    <td id="col31" runat="server">পরিমাণ</td>
-                                                    <td id="col32" runat="server">মূল্য</td>
+                                                    <td style="height: 25px;" id="col11" runat="server">Quantity</td>
+                                                    <td id="col12" runat="server">Value</td>
+                                                    <td id="col21" runat="server">Quantity</td>
+                                                    <td id="col22" runat="server">Value</td>
+                                                    <td id="col23" runat="server">Supplementary Duty</td>
+                                                    <td id="col24" runat="server">VAT</td>
+                                                    <td id="col31" runat="server">Quantity</td>
+                                                    <td id="col32" runat="server">Value</td>
                                                     <%--<td>কর যোগ্য মূল্য</td>--%>
-                                                    <td id="col33" runat="server">সম্পূরক শুল্ক</td>
-                                                    <td id="col34" runat="server">মূসক</td>
-                                                    <td id="col41" runat="server">পরিমাণ</td>
-                                                    <td id="col42" runat="server">মূল্য</td>
+                                                    <td id="col33" runat="server">Supplementary Duty</td>
+                                                    <td id="col34" runat="server">VAT</td>
+                                                    <td id="col41" runat="server">Quantity</td>
+                                                    <td id="col42" runat="server">Value</td>
                                                     <%--<td>কর যোগ্য মূল্য</td>--%>
-                                                    <td id="col43" runat="server">সম্পূরক শুল্ক</td>
-                                                    <td id="col44" runat="server">মূসক</td>
-                                                    <td id="col51" runat="server">পরিমাণ</td>
-                                                    <td id="col52" runat="server">মূল্য</td>
-                                                    <td id="col53" runat="server">পরিমাণ</td>
+                                                    <td id="col43" runat="server">Supplementary Duty</td>
+                                                    <td id="col44" runat="server">VAT</td>
+                                                    <td id="col51" runat="server">Quantity</td>
+                                                    <td id="col52" runat="server">Value</td>
+                                                    <td id="col53" runat="server">Quantity</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
