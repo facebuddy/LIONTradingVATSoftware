@@ -2220,6 +2220,13 @@
       <DependentUpon>Dispose.rpt</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Reports\Destroy_Inputs_Form27.aspx.cs">
+      <DependentUpon>Destroy_Inputs_Form27.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Destroy_Inputs_Form27.aspx.designer.cs">
+      <DependentUpon>Destroy_Inputs_Form27.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\Dispose_Inputs_Form26.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
