@@ -517,7 +517,7 @@
                          <li><a href="/Reports/SaleReportsNew.aspx"><i class="bx bx-right-arrow-alt"></i> Periodic Sale Report</a>
                         </li>
                    
-                        <li><a href="/Reports/PeriodicStockReports.aspx"><i class="bx bx-right-arrow-alt"></i> Stock Report</a>
+                        <li><a href="/Reports/PeriodicStockReportsNew.aspx"><i class="bx bx-right-arrow-alt"></i> Stock Report</a>
                         </li>
                         <li><a href="/Reports/RawMaterialConsumptionReports.aspx"><i class="bx bx-right-arrow-alt"></i> Raw Material Consumption Reports</a>
                         </li>

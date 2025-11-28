@@ -22,6 +22,7 @@
     <UseGlobalApplicationHostFile />
     <ApplicationInsightsResourceId />
     <TargetFrameworkProfile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -3349,6 +3350,7 @@
     </Compile>
     <Compile Include="UserControls\MsgBox.ascx.cs">
       <DependentUpon>MsgBox.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserControls\Others.ascx.cs">
       <DependentUpon>Others.ascx</DependentUpon>
