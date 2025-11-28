@@ -56,10 +56,10 @@ namespace NBR_VAT_GROUPOFCOM.BLL
         max(openpt) openpuramount,
         max(openpv) openpurvat,
         max(opensd) openpursd,
-        (max(sq) + max(disposeq) + max(trnsisuueq) + max(gq) - max(cpq)) salqnt,
-        (max(st1) + max(disposeamount) + max(st) + max(trnsissueprice) + max(gp) - max(cpt)) salamount,
-        (max(sv1) + max(disposevat) + max(sv) + max(trnsissuevat) + max(gv) - max(cpv)) salvat,
-        (max(ssd1) + max(disposesd) + max(ssd) + max(trnsissuesd) + max(gs) - max(cpsd)) salsd,
+        (max(sq) + max(trnsisuueq) + max(gq) - max(cpq)) salqnt,
+        (max(st1) + max(st) + max(trnsissueprice) + max(gp) - max(cpt)) salamount,
+        (max(sv1) + max(sv) + max(trnsissuevat) + max(gv) - max(cpv)) salvat,
+        (max(ssd1) + max(ssd) + max(trnsissuesd) + max(gs) - max(cpsd)) salsd,
         max(disposeq) disposeqnt,
         max(disposeamount) disposeamount,
         max(disposevat) disposevat,
@@ -503,7 +503,6 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
     ) disposeq,
     (
         select coalesce(sum(d.quantity * d.actual_price), 0)
@@ -515,7 +514,6 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
     ) disposeamount,
     (
         select coalesce(sum(d.vat), 0)
@@ -527,7 +525,6 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
     ) disposevat,
     (
         select coalesce(sum(d.sd), 0)
@@ -539,7 +536,6 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
     ) disposesd,
     (
         select coalesce(sum(tnd.quantity), 0)
