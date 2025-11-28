@@ -1391,7 +1391,7 @@ order by item_id;";
 
                 string query = $@"
             -- 1) Sale / Dispose
-            select 
+            select
                 to_char(tpm.date_challan,'dd-MON-yyyy')      as date_challan,
                 tpd.item_id,
                 i.item_name,
@@ -1403,7 +1403,7 @@ order by item_id;";
                 vat,
                 sd,
                 case
-                    when tpm.challan_type = 'D' then 'Will be disposed'
+                    when tpm.challan_type = 'D' then 'Dispose'
                     else 'Sale'
                 end                                          as remarks,
                 tpm.date_challan                             as orderDate
@@ -1413,6 +1413,7 @@ order by item_id;";
             where tpd.item_id         = {itemId}
               and tpm.organization_id = {orgId}
               and tpm.org_branch_reg_id in ({branchIds})
+              and tpm.challan_type    in ('S','D')
               and tpm.date_challan::date >= '{fromDate}'::date
               and tpm.date_challan::date <= '{toDate}'::date
               -- আগের মতো approver_stage ফিল্টার দরকার হলে, আগে টেবিলে কলাম আছে কিনা নিশ্চিত হয়ে তারপর আবার যোগ করবেন
