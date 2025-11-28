@@ -1303,7 +1303,7 @@ order by item_id;";
             inner join item i on tpd.item_id = i.item_id
             where tpd.item_id = {itemId}
               and tpm.organization_id = {orgId}
-              and tpm.org_branch_reg_id in ({branchIds})
+            --  and tpm.org_branch_reg_id in ({branchIds})
               and tpm.is_trns_accepted = true
               -- approver_stage কলাম না থাকায় এটা সরানো হয়েছে:
               -- and tpm.approver_stage = 'F'
@@ -1419,7 +1419,7 @@ order by item_id;";
             inner join item i              on tpd.item_id     = i.item_id
             where tpd.item_id         = {itemId}
               and tpm.organization_id = {orgId}
-              and tpm.org_branch_reg_id in ({branchIds})
+            
               and tpm.challan_type    in ('S','D')
               and tpm.date_challan::date >= '{fromDate}'::date
               and tpm.date_challan::date <= '{toDate}'::date
@@ -1493,7 +1493,7 @@ order by item_id;";
             inner join item i on gd.item_id = i.item_id
             where gd.item_id          = {itemId}
               and gd.organization_id  = {orgId}
-              and gd.org_branch_id in ({branchIds})
+       
               and gd.date_consumable_challan::date >= '{fromDate}'::date
               and gd.date_consumable_challan::date <= '{toDate}'::date
 
