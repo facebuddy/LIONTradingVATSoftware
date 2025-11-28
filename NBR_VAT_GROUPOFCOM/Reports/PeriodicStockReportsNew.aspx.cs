@@ -1699,13 +1699,15 @@ namespace NBR_VAT_GROUPOFCOM.Reports
                             str3 = Utilities.formatFraction(num20);
                             num18 = Convert.ToDecimal(dataTable.Rows[i]["productionqnt"].ToString());
                             num19 = Convert.ToDecimal(dataTable.Rows[i]["productionpuramount"].ToString());
-                            num24 = Convert.ToDecimal(dataTable.Rows[i]["salqnt"].ToString());
-                            str4 = Utilities.formatFraction(num24);
-                            num25 = Convert.ToDecimal(dataTable.Rows[i]["salamount"].ToString());
-                            num26 = Convert.ToDecimal(dataTable.Rows[i]["salvat"].ToString());
-                            num27 = Convert.ToDecimal(dataTable.Rows[i]["salsd"].ToString());
                             disposeQuantity = Convert.ToDecimal(dataTable.Rows[i]["disposeqnt"].ToString());
                             disposeAmount = Convert.ToDecimal(dataTable.Rows[i]["disposeamount"].ToString());
+                            decimal disposeVat = Convert.ToDecimal(dataTable.Rows[i]["disposevat"].ToString());
+                            decimal disposeSd = Convert.ToDecimal(dataTable.Rows[i]["disposesd"].ToString());
+                            num24 = Convert.ToDecimal(dataTable.Rows[i]["salqnt"].ToString()) + disposeQuantity;
+                            str4 = Utilities.formatFraction(num24);
+                            num25 = Convert.ToDecimal(dataTable.Rows[i]["salamount"].ToString()) + disposeAmount;
+                            num26 = Convert.ToDecimal(dataTable.Rows[i]["salvat"].ToString()) + disposeVat;
+                            num27 = Convert.ToDecimal(dataTable.Rows[i]["salsd"].ToString()) + disposeSd;
                             if (this.drpProductType.SelectedValue == "R")
                             {
                                 decimal num39 = (num10 + num14) - (num24 + num28);
