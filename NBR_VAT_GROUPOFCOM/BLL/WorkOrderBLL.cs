@@ -503,7 +503,6 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
     ) disposeq,
     (
         select coalesce(sum(d.quantity * d.actual_price), 0)
@@ -515,7 +514,6 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
     ) disposeamount,
     (
         select coalesce(sum(d.vat), 0)
@@ -527,7 +525,6 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
     ) disposevat,
     (
         select coalesce(sum(d.sd), 0)
@@ -539,7 +536,6 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type = 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
     ) disposesd,
     (
         select coalesce(sum(tnd.quantity), 0)
