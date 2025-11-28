@@ -1396,10 +1396,17 @@ order by item_id;";
                 tpd.item_id,
                 i.item_name,
                 case
+                    when tpm.challan_type = 'D' then tpd.quantity
                     when coalesce(installment_status, false) = false then tpd.quantity
                     else 0
                 end                                          as quantity,
-                (tpd.quantity * tpd.actual_price)            as price,
+                (
+                    case
+                        when tpm.challan_type = 'D' then tpd.quantity
+                        when coalesce(installment_status, false) = false then tpd.quantity
+                        else 0
+                    end * tpd.actual_price
+                )                                            as price,
                 vat,
                 sd,
                 case
