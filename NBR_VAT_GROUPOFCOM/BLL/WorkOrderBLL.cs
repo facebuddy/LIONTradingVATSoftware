@@ -25,6 +25,7 @@ namespace NBR_VAT_GROUPOFCOM.BLL
         public DataTable GetPreodicStockReportData(DateTime fDate, DateTime tDate, long itemId, string branchIds, string productType)
         {
             int orgId = Convert.ToInt32(HttpContext.Current.Session["organization_id"]);
+            branchIds = string.Concat("select org_branch_reg_id from org_branch where organization_id = ", orgId);
             string filterItem = string.Empty;
             DataTable dataTable = new DataTable();
 
@@ -78,7 +79,7 @@ from
               and m.is_trns_accepted = true
               and challan_type not in ('D','Cr')
               and m.organization_id = {orgId}
-              and m.org_branch_reg_id in({branchIds})
+             
         )
         -
         (
@@ -90,7 +91,7 @@ from
               and coalesce(d.installment_status, false) = false
               and m.challan_type <> 'D'
               and m.organization_id = {orgId}
-              and m.org_branch_reg_id in({branchIds})
+             
         )
         -
         (
@@ -102,7 +103,7 @@ from
               and coalesce(d.installment_status, false) = false
               and m.challan_type = 'D'
               and m.organization_id = {orgId}
-              and m.org_branch_reg_id in({branchIds})
+             
         )
         -
         (
@@ -113,7 +114,7 @@ from
               and tnd.item_id = mqmm.item_id
               and tnm.transfer_status = 'I'
               and tnm.organization_id = {orgId}
-              and tnm.issuing_branch_id in({branchIds})
+             
         )
         -
         (
@@ -122,7 +123,7 @@ from
             where CAST(gd.date_consumable_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and gd.item_id = mqmm.item_id
               and gd.organization_id = {orgId}
-              and gd.org_branch_id in({branchIds})
+             
         )
         +
         (
@@ -134,7 +135,7 @@ from
               and tnd.status <> 'O'
               and tnm.note_type = 'C'
               and tnm.organization_id = {orgId}
-              and tnm.org_branch_reg_id in({branchIds})
+             
         )
     ) preQuantity,
     (
@@ -148,7 +149,7 @@ from
               and m.is_trns_accepted = true
               and challan_type not in ('D','Cr')
               and m.organization_id = {orgId}
-              and m.org_branch_reg_id in({branchIds})
+             
         )
         -
         (
@@ -160,7 +161,7 @@ from
               and coalesce(d.installment_status, false) = false
               and m.challan_type <> 'D'
               and m.organization_id = {orgId}
-              and m.org_branch_reg_id in({branchIds})
+             
         )
         -
         (
@@ -172,7 +173,7 @@ from
               and coalesce(d.installment_status, false) = false
               and m.challan_type = 'D'
               and m.organization_id = {orgId}
-              and m.org_branch_reg_id in({branchIds})
+             
         )
         -
         (
@@ -183,7 +184,7 @@ from
               and tnd.item_id = mqmm.item_id
               and tnm.transfer_status = 'I'
               and tnm.organization_id = {orgId}
-              and tnm.issuing_branch_id in({branchIds})
+             
         )
         -
         (
@@ -192,7 +193,7 @@ from
             where CAST(gd.date_consumable_challan AS DATE) < to_date('{fDate:dd/MM/yyyy}','dd/MM/yyyy')
               and gd.item_id = mqmm.item_id
               and gd.organization_id = {orgId}
-              and gd.org_branch_id in({branchIds})
+             
         )
         +
         (
@@ -204,7 +205,7 @@ from
               and tnd.status <> 'O'
               and tnm.note_type = 'C'
               and tnm.organization_id = {orgId}
-              and tnm.org_branch_reg_id in({branchIds})
+             
         )
     ) preQntAmount,
     (
@@ -219,7 +220,7 @@ from
               <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.status = 'R'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
     ) proq,
     (
         -- Production Amount in period
@@ -252,7 +253,7 @@ from
               <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.status = 'R'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
     ) prot,
     (
         select coalesce(sum(d.quantity), 0)
@@ -262,7 +263,7 @@ from
           and d.approver_stage = 'F'
           and d.item_id = mqmm.item_id
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
           and m.challan_type in ('P','D','O','T')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
@@ -275,7 +276,7 @@ from
           and d.approver_stage = 'F'
           and d.item_id = mqmm.item_id
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
           and m.challan_type in ('P','D','O','T')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
@@ -288,7 +289,7 @@ from
           and d.approver_stage = 'F'
           and d.item_id = mqmm.item_id
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
           and m.challan_type in ('P','D','O','T')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
@@ -301,7 +302,7 @@ from
           and d.approver_stage = 'F'
           and d.item_id = mqmm.item_id
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
           and m.challan_type in ('P','D','O','T')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(m.date_challan,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
@@ -314,7 +315,7 @@ from
           and tnm.note_type = 'C'
           and tnd.status <> 'O'
           and tnm.organization_id = {orgId}
-          and tnm.org_branch_reg_id in({branchIds})
+         
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) cpq,
@@ -326,7 +327,7 @@ from
           and tnm.note_type = 'C'
           and tnd.status <> 'O'
           and tnm.organization_id = {orgId}
-          and tnm.org_branch_reg_id in({branchIds})
+         
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) cpt,
@@ -338,7 +339,7 @@ from
           and tnm.note_type = 'C'
           and tnd.status <> 'O'
           and tnm.organization_id = {orgId}
-          and tnm.org_branch_reg_id in({branchIds})
+         
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) cpv,
@@ -350,7 +351,7 @@ from
           and tnm.note_type = 'C'
           and tnd.status <> 'O'
           and tnm.organization_id = {orgId}
-          and tnm.org_branch_reg_id in({branchIds})
+         
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) cpsd,
@@ -362,7 +363,7 @@ from
           and tnm.note_type = 'D'
           and tnd.status <> 'O'
           and tnm.organization_id = {orgId}
-          and tnm.org_branch_reg_id in({branchIds})
+         
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) dpq,
@@ -374,7 +375,7 @@ from
           and tnm.note_type = 'D'
           and tnd.status <> 'O'
           and tnm.organization_id = {orgId}
-          and tnm.org_branch_reg_id in({branchIds})
+         
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) dpt,
@@ -386,7 +387,7 @@ from
           and tnm.note_type = 'D'
           and tnd.status <> 'O'
           and tnm.organization_id = {orgId}
-          and tnm.org_branch_reg_id in({branchIds})
+         
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) dpv,
@@ -398,7 +399,7 @@ from
           and tnm.note_type = 'D'
           and tnd.status <> 'O'
           and tnm.organization_id = {orgId}
-          and tnm.org_branch_reg_id in({branchIds})
+         
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') >= to_date('{fDate:MM/dd/yyyy}','MM/dd/yyyy')
           and to_date(to_char(tnm.date_note,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
     ) dpsd,
@@ -411,7 +412,7 @@ from
           and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.status = 'R'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
     ) productionpq,
     (
         select cast(
@@ -441,7 +442,7 @@ from
           and to_date(to_char(m.date_production,'MM/dd/yyyy'),'MM/dd/yyyy') <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and d.status = 'R'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
     ) productionpt,
     0 productionpv, 0 productionpsd,
     0 openpq, 0 openpt, 0 openpv, 0 opensd,
@@ -455,7 +456,7 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type <> 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
     ) sq,
     (
         select coalesce(sum(d.quantity * d.actual_price), 0)
@@ -467,7 +468,7 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type <> 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
     ) st,
     (
         select coalesce(sum(d.vat), 0)
@@ -479,7 +480,7 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type <> 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
     ) sv,
     (
         select coalesce(sum(d.sd), 0)
@@ -491,7 +492,7 @@ from
           and coalesce(d.installment_status, false) = false
           and m.challan_type <> 'D'
           and m.organization_id = {orgId}
-          and m.org_branch_reg_id in({branchIds})
+         
     ) ssd,
     (
         select coalesce(sum(d.quantity), 0)
@@ -546,7 +547,7 @@ from
           and tnd.item_id = mqmm.item_id
           and tnm.transfer_status = 'I'
           and tnm.organization_id = {orgId}
-          and tnm.issuing_branch_id in({branchIds})
+         
     ) trnsisuueq,
     (
         select coalesce(sum(tnd.quantity * tnd.unit_price), 0)
@@ -557,7 +558,7 @@ from
           and tnd.item_id = mqmm.item_id
           and tnm.transfer_status = 'I'
           and tnm.organization_id = {orgId}
-          and tnm.issuing_branch_id in({branchIds})
+         
     ) trnsissueprice,
     (
         select coalesce(sum(tnd.vat_amount), 0)
@@ -568,7 +569,7 @@ from
           and tnd.item_id = mqmm.item_id
           and tnm.transfer_status = 'I'
           and tnm.organization_id = {orgId}
-          and tnm.issuing_branch_id in({branchIds})
+         
     ) trnsissuevat,
     (
         select coalesce(sum(tnd.sd_amount), 0)
@@ -579,7 +580,7 @@ from
           and tnd.item_id = mqmm.item_id
           and tnm.transfer_status = 'I'
           and tnm.organization_id = {orgId}
-          and tnm.issuing_branch_id in({branchIds})
+         
     ) trnsissuesd,
     0 sq1, 0 st1, 0 sv1, 0 ssd1,
     (
@@ -589,7 +590,7 @@ from
           and cast(gd.date_consumable_challan as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and gd.item_id = mqmm.item_id
           and gd.organization_id = {orgId}
-          and gd.org_branch_id in({branchIds})
+         
     ) gq,
     (
         select coalesce(sum(gd.price), 0)
@@ -598,7 +599,7 @@ from
           and cast(gd.date_consumable_challan as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and gd.item_id = mqmm.item_id
           and gd.organization_id = {orgId}
-          and gd.org_branch_id in({branchIds})
+         
     ) gp,
     (
         select coalesce(sum(gd.discounted_vat), 0)
@@ -607,7 +608,7 @@ from
           and cast(gd.date_consumable_challan as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and gd.item_id = mqmm.item_id
           and gd.organization_id = {orgId}
-          and gd.org_branch_id in({branchIds})
+         
     ) gv,
     (
         select coalesce(sum(gd.discounted_sd), 0)
@@ -616,7 +617,7 @@ from
           and cast(gd.date_consumable_challan as date) <= to_date('{tDate:MM/dd/yyyy}','MM/dd/yyyy')
           and gd.item_id = mqmm.item_id
           and gd.organization_id = {orgId}
-          and gd.org_branch_id in({branchIds})
+         
     ) gs
     from
     (
@@ -634,7 +635,6 @@ from
         left join item_unit iu  on tpd.unit_id      = iu.unit_id
         left join item_unit iuu on i.weight_unit_id = iuu.unit_id
         where tpm.organization_id = {orgId}
-          and tpm.org_branch_reg_id in({branchIds})
           and tpm.is_deleted = false
           and tpm.is_trns_accepted = true
 
@@ -655,7 +655,7 @@ from
         left join item_unit iuu on i.weight_unit_id = iuu.unit_id
         where tsm.is_deleted = false
           and tsm.organization_id = {orgId}
-          and tsm.org_branch_reg_id in({branchIds})
+         
     ) mqmm
 ) mqmm2
 where product_type = '{productType}'
@@ -679,7 +679,8 @@ order by item_id;";
             try
             {
                 int num = Convert.ToInt32(HttpContext.Current.Session["ORGANIZATION_ID"].ToString());
-                object[] itemId = new object[] { " select d.item_id,i.item_name,d.quantity,0 purchase_vat,0 purchase_sd, to_char(m.date_production,'dd-MON-yyyy') date_production,m.date_production dtc,\r\n\r\n\r\ncast(coalesce((d.quantity * (select coalesce(case when d.unit_price!=0 then d.unit_price/d.quantity  when max(purchase_unit_price)=0 then (max(total_price/quantity)) else max(purchase_unit_price) end,0)  from trns_purchase_detail where item_id = ", Item_id, " and quantity!=0)),0) as decimal(18,2)) price,\r\n'Received' remarks,d.unit_price\r\n\t\t                from trns_production_detail d\r\n                                inner join trns_production_master m on d.production_id = m.production_id\r\n                                inner join item i on d.item_id = i.item_id\r\n                      where cast (m.Date_Production as Date) >= TO_DATE('", fDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy') AND cast (m.Date_Production as Date) <= TO_DATE('", tDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                                       AND d.item_id =  ", Item_id, "  AND d.Is_deleted = false AND d.status = 'R' AND m.organization_id= ", num, " AND M.org_branch_reg_id in(", branchIds, ") order by m.Date_Production" };
+                branchIds = string.Concat("select org_branch_reg_id from org_branch where organization_id = ", num);
+                object[] itemId = new object[] { " select d.item_id,i.item_name,d.quantity,0 purchase_vat,0 purchase_sd, to char(m.date_production,'dd-MON-yyyy') date_production,m.date_production dtc,\r\n\r\n\r\ncast(coalesce((d.quantity * (select coalesce(case when d.unit_price!=0 then d.unit_price/d.quantity  when max(purchase_unit_price)=0 then (max(total_price/quantity)) else max(purchase_unit_price) end,0)  from trns_purchase_detail where item_id = ", Item_id, " and quantity!=0)),0) as decimal(18,2)) price,\r\n'Received' remarks,d.unit_price\r\n\t\t                from trns_production_detail d\r\n                                inner join trns_production_master m on d.production_id = m.production_id\r\n                                inner join item i on d.item_id = i.item_id\r\n                      where cast (m.Date_Production as Date) >= TO_DATE('", fDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy') AND cast (m.Date_Production as Date) <= TO_DATE('", tDate.ToString("dd/MM/yyy"), "', 'dd/MM/yyy')\r\n                                       AND d.item_id =  ", Item_id, "  AND d.Is_deleted = false AND d.status = 'R' AND m.organization_id= ", num, "", branchIds, ") order by m.Date_Production" };
                 string str = string.Concat(itemId);
                 dataTable = this.db.GetDataTable(str);
             }
@@ -1440,7 +1441,6 @@ order by item_id;";
             inner join item i              on tnd.item_id = i.item_id
             where tnd.item_id         = {itemId}
               and tnm.organization_id = {orgId}
-              and tnm.org_branch_reg_id in ({branchIds})
               and tnm.date_note::date >= '{fromDate}'::date
               and tnm.date_note::date <= '{toDate}'::date
               and tnd.status <> 'O'
